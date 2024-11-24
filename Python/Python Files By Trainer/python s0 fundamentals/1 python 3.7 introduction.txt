@@ -1,0 +1,305 @@
+----------------------------------------------------------------------------
+Python is a general-purpose interpreted, interactive, object-oriented and 
+high-level programming language.
+---------------------------------------------------------------------------
+It was created by Guido van Rossum during 1985- 1990.
+---------------------------------------------------------------------------
+Python is designed to be highly readable. 
+---------------------------------------------------------------------------
+It uses English keywords frequently where as other languages use 
+punctuation, and it has fewer syntactical constructions than other 
+languages.
+---------------------------------------------------------------------------
+Python is processed at runtime by the interpreter. 
+---------------------------------------------------------------------------
+You do not need to compile your program before executing it. 
+---------------------------------------------------------------------------
+This is similar to PERL and PHP.
+---------------------------------------------------------------------------
+You can actually sit at a Python prompt and interact with the interpreter 
+directly to write your programs.
+---------------------------------------------------------------------------
+Python supports Object-Oriented style or technique of programming that 
+encapsulates code within objects.
+---------------------------------------------------------------------------
+Python is a great language for the beginner-level programmers and supports 
+the development of a wide range of applications from simple text 
+processing to WWW browsers to games.
+---------------------------------------------------------------------------
+Python was developed by Guido van Rossum in the late eighties and early 
+nineties at the National Research Institute for Mathematics and Computer 
+Science in the Netherlands.
+---------------------------------------------------------------------------
+Python is derived from many other languages, including ABC, Modula-3, C, 
+C++, Algol-68, SmallTalk, and Unix shell and other scripting languages.
+---------------------------------------------------------------------------
+Python is copyrighted. Like Perl, Python source code is now available 
+under the GNU General Public License (GPL).
+---------------------------------------------------------------------------
+Python is now maintained by a core development team at the institute, 
+although Guido van Rossum still holds a vital role in directing its progress.
+---------------------------------------------------------------------------
+Python has few keywords, simple structure, and a clearly defined syntax. 
+---------------------------------------------------------------------------
+This allows the student to pick up the language quickly.
+---------------------------------------------------------------------------
+Python code is more clearly defined and visible to the eyes.
+---------------------------------------------------------------------------
+Python's source code is fairly easy-to-maintain.
+---------------------------------------------------------------------------
+Python's bulk of the library is very portable and cross-platform 
+compatible on UNIX, Windows, and Macintosh.
+---------------------------------------------------------------------------
+Python has support for an interactive mode which allows interactive 
+testing and debugging of snippets of code.
+--------------------------------------------------------------------------
+Python can run on a wide variety of hardware platforms and has the 
+same interface on all platforms.
+---------------------------------------------------------------------------
+You can add low-level modules to the Python interpreter. 
+---------------------------------------------------------------------------
+These modules enable programmers to add to or customize their tools 
+to be more efficient.
+---------------------------------------------------------------------------
+Python provides interfaces to all major commercial databases.
+---------------------------------------------------------------------------
+Python supports GUI applications that can be created and ported to 
+many system calls, libraries and windows systems, such as Windows MFC, 
+Macintosh, and the X Window system of Unix.
+---------------------------------------------------------------------------
+Python provides a better structure and support for large programs than 
+shell scripting.
+---------------------------------------------------------------------------
+It supports functional and structured programming methods as well as OOP.
+---------------------------------------------------------------------------
+It can be used as a scripting language or can be compiled to byte-code 
+for building large applications.
+---------------------------------------------------------------------------
+It provides very high-level dynamic data types and supports dynamic type 
+checking.
+---------------------------------------------------------------------------
+It supports automatic garbage collection.
+---------------------------------------------------------------------------
+It can be easily integrated with C, C++, COM, ActiveX, CORBA, and Java.
+---------------------------------------------------------------------------
+You can start Python from Unix, DOS, or any other system that provides 
+you a command-line interpreter or shell window.
+---------------------------------------------------------------------------
+				command
+----------------------------------------------------------------------------
+Enter python the command line.
+		> python
+With this command python prompt will be displayed
+		>>>
+ to exit from python, type :-
+		> exit()
+---------------------------------------------------------------------------
+				Command Options & Description
+---------------------------------------------------------------------------
+-d
+---------------------------------------------------------------------------
+It provides debug output
+---------------------------------------------------------------------------
+-O
+---------------------------------------------------------------------------
+It generates optimized bytecode (resulting in .pyo files).
+---------------------------------------------------------------------------
+-S
+---------------------------------------------------------------------------
+Do not run import site to look for Python paths on startup
+---------------------------------------------------------------------------
+-v
+---------------------------------------------------------------------------
+verbose output (detailed trace on import statements)
+---------------------------------------------------------------------------
+-X
+---------------------------------------------------------------------------
+disable class-based built-in exceptions (just use strings); obsolete starting with version 1.6.
+---------------------------------------------------------------------------
+-c cmd
+---------------------------------------------------------------------------
+run Python script sent in as cmd string
+---------------------------------------------------------------------------
+file
+---------------------------------------------------------------------------
+run Python script from given file
+---------------------------------------------------------------------------
+to display the message at the python prompt
+		>>> print ('hi');
+---------------------------------------------------------------------------
+Store the python program in .py file extension, p1.py :- 
+---------------------------------------------------------------------------
+The file now contains the following python code:
+---------------------------------------------------------------------------
+		print('hi');
+---------------------------------------------------------------------------
+This program can be executed from the prompt as follows:
+		>python p1.py
+---------------------------------------------------------------------------
+				Identifiers
+---------------------------------------------------------------------------
+A Python identifier is a name used to identify a variable, function, 
+class, module or other object. 
+---------------------------------------------------------------------------
+An identifier starts with a letter A to Z or a to z or an 
+underscore (_) followed by zero or more letters, underscores and 
+digits (0 to 9).
+---------------------------------------------------------------------------
+Python does not allow punctuation characters such as @, $, and % 
+within identifiers. 
+---------------------------------------------------------------------------
+Python is a case sensitive programming language
+---------------------------------------------------------------------------
+Class names start with an uppercase letter. 
+---------------------------------------------------------------------------
+All other identifiers start with a lowercase letter.
+---------------------------------------------------------------------------
+Starting an identifier with a single leading underscore indicates that 
+the identifier is private.
+---------------------------------------------------------------------------
+				Conventions
+---------------------------------------------------------------------------
+Starting an identifier with two leading underscores indicates a strongly 
+private identifier.
+---------------------------------------------------------------------------
+If the identifier also ends with two trailing underscores, the identifier 
+is a language-defined special name.
+---------------------------------------------------------------------------
+				Python Keywords
+---------------------------------------------------------------------------
+and	assert		break		class		continue
+def	del		elif		else		except
+exec	finally		for		from		global
+if	import		in		is		lambda
+not	or		pass		print		raise
+return	try		while		with		yield
+---------------------------------------------------------------------------
+				Lines & Indentation
+---------------------------------------------------------------------------
+Python provides no braces to indicate blocks of code for class and 
+function definitions or flow control. 
+---------------------------------------------------------------------------
+Blocks of code are denoted by line indentation, which is rigidly enforced.
+---------------------------------------------------------------------------
+The number of spaces in the indentation is variable, but all statements 
+within the block must be indented the same amount
+---------------------------------------------------------------------------
+if True:
+   print ("True")
+else:
+   print ("False")
+---------------------------------------------------------------------------
+Multi-Line Statements
+---------------------------------------------------------------------------
+Statements in Python typically end with a new line. 
+---------------------------------------------------------------------------
+Python does, however, allow the use of the line continuation 
+character (\) to denote that the line should continue.
+---------------------------------------------------------------------------
+total = item_one + \
+        item_two + \
+        item_three
+---------------------------------------------------------------------------
+Statements contained within the [], {}, or () brackets do not need to 
+use the line continuation character.
+---------------------------------------------------------------------------
+days = ['Monday', 'Tuesday', 'Wednesday',
+        'Thursday', 'Friday']
+---------------------------------------------------------------------------
+				Quotations
+---------------------------------------------------------------------------
+Python accepts single ('), double (") and triple (''' or """) quotes to 
+denote string literals, as long as the same type of quote starts and 
+ends the string.
+---------------------------------------------------------------------------
+The triple quotes are used to span the string across multiple lines. 
+---------------------------------------------------------------------------
+word = 'word'
+sentence = "This is a sentence."
+paragraph = """This is a paragraph. It is
+made up of multiple lines and sentences."""
+---------------------------------------------------------------------------
+				Comments
+---------------------------------------------------------------------------
+A hash sign (#) that is not inside a string literal begins a comment. 
+---------------------------------------------------------------------------
+All characters after the # and up to the end of the physical line are 
+part of the comment and the Python interpreter ignores them.
+---------------------------------------------------------------------------
+# First comment
+print ("Hello, Python!") # second comment
+---------------------------------------------------------------------------
+				Users Response
+---------------------------------------------------------------------------
+The following line of the program displays the prompt, the statement 
+saying  Press the enter key to exit , and waits for the user to take action 
+---------------------------------------------------------------------------
+raw_input("\n\n...enter a number..")
+#...above not supported in python 3.7 
+---------------------------------------------------------------------------
+input(r"\n\n..enter a number..")
+---------------------------------------------------------------------------
+input("\n\n...enter a number...")
+---------------------------------------------------------------------------
+.....please check the difference in the above 2 input statements.....
+---------------------------------------------------------------------------
+Multiple Statements on a Single Line
+---------------------------------------------------------------------------
+The semicolon ( ; ) allows multiple statements on the single line 
+given that neither statement starts a new code block
+---------------------------------------------------------------------------
+import sys; x = 'abc'; sys.stdout.write(x + '\n')
+---------------------------------------------------------------------------
+				Command Line Arguments
+--------------------------------------------------------------------------
+Many programs can be run to provide you with some basic information 
+about how they should be run. 
+---------------------------------------------------------------------------
+Python enables you to do this with -h 
+---------------------------------------------------------------------------
+>python -h
+---------------------------------------------------------------------------
+usage: 
+python [option] ... [-c cmd | -m mod | file | -] [arg] ...
+---------------------------------------------------------------------------
+Options and arguments (and corresponding environment variables):
+---------------------------------------------------------------------------
+-c cmd 
+---------------------------------------------------------------------------
+program passed in as string (terminates option list)
+---------------------------------------------------------------------------
+-d    
+--------------------------------------------------------------------------- 
+debug output from parser (also PYTHONDEBUG=x)
+---------------------------------------------------------------------------
+-E
+---------------------------------------------------------------------------
+ignore environment variables (such as PYTHONPATH)
+---------------------------------------------------------------------------
+-h
+---------------------------------------------------------------------------
+print this help message and exit
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,217 @@
+----------------------------------------------------------------------------
+				Decisions | Loops
+---------------------------------------------------------------------------
+	Example:1
+---------------------------------------------------------------------------
+#....example of..if statement….
+x = 10
+if x:
+   print ("..hi..")
+   print (x)
+y = 0
+if y:
+   print ("..hello..")
+   print (y)
+
+print ("..thank u..")
+---------------------------------------------------------------------------
+	Example:2
+---------------------------------------------------------------------------
+#...example of...if else…statement
+x = 10
+if x:
+   print ("...hi..")
+   print (x)
+else:
+   print ("..hello..")
+   print (x)
+---------------------------------------------------------------------------
+	Example:2.1
+---------------------------------------------------------------------------
+y = 0
+if y:
+   print ("..hi111..")
+   print (y)
+else:
+   print ("..hello2222")
+   print (y)
+
+print ("..thank u..")
+---------------------------------------------------------------------------
+	Example:3
+---------------------------------------------------------------------------
+#..example of..elif statement..
+x = 10
+if x == 200:
+   print ("..hi111111..")
+   print (x)
+elif x == 150:
+   print ("..hi22222222..")
+   print x
+elif y == 100:
+   print ("..hi3333...")
+   print (x)
+else:
+   print ("..hi44444…")
+   print (x)
+
+print ("..thank u..")
+---------------------------------------------------------------------------
+	Example:4
+---------------------------------------------------------------------------
+#..example of..nested if statement..
+var = 100
+if var < 200:
+   print ("Expression value is less than 200")
+   if var == 150:
+      print ("Which is 150")
+   elif var == 100:
+      print ("Which is 100")
+   elif var == 50:
+      print ("Which is 50")
+   elif var < 50:
+      print ("Expression value is less than 50")
+else:
+   print ("Could not find true expression")
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:5
+---------------------------------------------------------------------------
+#..example of ..infinite loop..
+var = 100
+if ( var == 100 ) : print ("Value of expression is 100")
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:6
+---------------------------------------------------------------------------
+#..example of..while loop..
+count = 0
+while (count < 9):
+   print ('The count is:', count)
+   count = count + 1
+
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:7
+---------------------------------------------------------------------------
+var = 1
+while var == 1 :  # This constructs an infinite loop
+   num = input("Enter a number  :")
+   print ("You entered: ", num)
+
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:8
+---------------------------------------------------------------------------
+#..example of..while and else statement
+count = 0
+while count < 5:
+   print (count, " is  less than 5")
+   count = count + 1
+else:
+   print (count, " is not less than 5")
+---------------------------------------------------------------------------
+	Example:9
+---------------------------------------------------------------------------
+#..example of..while..infinite loop
+flag = 1
+while (flag): print ('Given flag is really true!')
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:10
+---------------------------------------------------------------------------
+#..example of ..for..in..statement
+for letter in 'Python':     # First Example
+   print ('Current Letter :', letter)
+
+fruits = ['banana', 'apple',  'mango']
+for fruit in fruits:        # Second Example
+   print ('Current fruit :', fruit)
+
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:10.1
+---------------------------------------------------------------------------
+#using index
+fruits = ['banana', 'apple',  'mango']
+for index in range(len(fruits)):
+   print ('Current fruit :', fruits[index])
+
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:11
+---------------------------------------------------------------------------
+#....example of……break statement…
+for letter in 'Python':     # First Example
+   if letter == 'h':
+      break
+   print ('Current Letter :', letter)
+---------------------------------------------------------------------------
+	Example:12
+---------------------------------------------------------------------------  
+var = 10                    # Second Example
+while var > 0:              
+   print ('Current variable value :', var)
+   var = var -1
+   if var == 5:
+      break
+
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:15
+---------------------------------------------------------------------------
+#....example of ….continue statement……
+for letter in 'Python':     # First Example
+   if letter == 'h':
+      continue
+   print ('Current Letter :', letter)
+---------------------------------------------------------------------------
+	Example:16
+---------------------------------------------------------------------------
+var = 10                    # Second Example
+while var > 0:              
+   var = var -1
+   if var == 5:
+      continue
+   print ('Current variable value :', var)
+print ("Good bye!")
+---------------------------------------------------------------------------
+	Example:17
+---------------------------------------------------------------------------
+#....example of…pass statement…..
+for letter in 'Python': 
+   if letter == 'h':
+      pass
+      print ('This is pass block')
+   print ('Current Letter :', letter)
+
+print ("Good bye!")
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+-----------------------------------------------------------------------------
+				MySQL connector
+-----------------------------------------------------------------------------
+To connect the python application with the MySQL database, import the mysql.connector module in the program.
+-----------------------------------------------------------------------------
+The mysql.connector is not a built-in module that comes with the python installation.
+-----------------------------------------------------------------------------
+pip install mysql-connector  
+-----------------------------------------------------------------------------
+Microsoft Windows [Version 10.0.22631.4317]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\dhanp>pip install mysql-connector
+Collecting mysql-connector
+  Downloading mysql-connector-2.2.9.tar.gz (11.9 MB)
+     |████████████████████████████████| 11.9 MB 1.1 MB/s
+  Preparing metadata (setup.py) ... done
+Using legacy 'setup.py install' for mysql-connector, since package 'wheel' is not installed.
+Installing collected packages: mysql-connector
+    Running setup.py install for mysql-connector ... done
+Successfully installed mysql-connector-2.2.9
+WARNING: You are using pip version 21.3.1; however, version 24.2 is available.
+You should consider upgrading via the 'C:\Users\dhanp\AppData\Local\Programs\Python\Python310\python.exe -m pip install --upgrade pip' command.
+
+C:\Users\dhanp>
+-----------------------------------------------------------------------------
+C:\Users\dhanp>python
+Python 3.10.0 (tags/v3.10.0:b494f59, Oct  4 2021, 19:00:18) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import mysql
+>>>
+
+>>> exit()
+-----------------------------------------------------------------------------
+C:\Users\dhanp>
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+
+
+
+
