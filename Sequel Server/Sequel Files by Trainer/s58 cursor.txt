@@ -1,0 +1,247 @@
+-----------------------------------------------------------------------------
+refer image : cursor
+-----------------------------------------------------------------------------
+			1: Declare Cursor
+-----------------------------------------------------------------------------
+The first step is to declare the cursor using the below SQL statement:
+-----------------------------------------------------------------------------
+DECLARE cursor_name CURSOR  
+    FOR select_statement;  
+-----------------------------------------------------------------------------
+Declare a cursor by specifying its name with the data type CURSOR after the DECLARE keyword. 
+-----------------------------------------------------------------------------
+Then write the SELECT statement that defines the output for the cursor.
+-----------------------------------------------------------------------------
+			2: Open Cursor
+-----------------------------------------------------------------------------
+Open the cursor to store data retrieved from the result set. 
+-----------------------------------------------------------------------------
+OPEN cursor_name;  
+-----------------------------------------------------------------------------
+			3: Fetch Cursor
+-----------------------------------------------------------------------------
+Rows can be fetched one by one or in a block to do data manipulation like insert, update, and delete operations on the currently active row in 
+the cursor. 
+-----------------------------------------------------------------------------
+FETCH NEXT FROM cursor INTO variable_list;  
+-----------------------------------------------------------------------------
+Use the @@FETCHSTATUS function in SQL Server to get the status of the most recent FETCH statement cursor that was executed against the cursor. 
+-----------------------------------------------------------------------------
+The FETCH statement was successful when the @@FETCHSTATUS gives zero output. 
+-----------------------------------------------------------------------------The WHILE statement can be used to retrieve all records from the cursor. 
+-----------------------------------------------------------------------------
+WHILE @@FETCH_STATUS = 0    
+    BEGIN  
+        FETCH NEXT FROM cursor_name;    
+    END; 
+----------------------------------------------------------------------------- 
+			4: Close Cursor
+-----------------------------------------------------------------------------
+Cursor should be closed after being used.
+-----------------------------------------------------------------------------
+CLOSE cursor_name;  
+-----------------------------------------------------------------------------
+			5: Deallocate Cursor
+-----------------------------------------------------------------------------
+Erase the cursor definition and release all the system resources associated with the cursor. 
+-----------------------------------------------------------------------------
+DEALLOCATE cursor_name;  
+-----------------------------------------------------------------------------
+			Types of Cursors in SQL Server
+-----------------------------------------------------------------------------
+		1.	Static Cursors
+-----------------------------------------------------------------------------
+		2.	Dynamic Cursors
+-----------------------------------------------------------------------------
+		3.	Forward-Only Cursors
+-----------------------------------------------------------------------------
+		4.	Keyset Cursors
+-----------------------------------------------------------------------------
+			Static Cursors
+-----------------------------------------------------------------------------
+The result set shown by the static cursor is always the same as when the cursor was first opened. 
+-----------------------------------------------------------------------------
+Since the static cursor will store the result in tempdb, they are always 
+read-only. 
+-----------------------------------------------------------------------------
+We can use the static cursor to move both forward and backward direction. 
+-----------------------------------------------------------------------------
+In contrast to other cursors, it is slower and consumes more memory. 
+-----------------------------------------------------------------------------
+Use it only when scrolling is necessary and other cursors aren't suitable.
+-----------------------------------------------------------------------------
+This cursor shows rows that were removed from the database after it was opened. 
+-----------------------------------------------------------------------------
+A static cursor does not represent any INSERT, UPDATE, or DELETE operations (unless the cursor is closed and reopened).
+-----------------------------------------------------------------------------
+			Dynamic Cursors
+-----------------------------------------------------------------------------
+The dynamic cursors are opposite to the static cursors that allow us to perform the data updation, deletion and insertion operations while the 
+cursor is open. 
+-----------------------------------------------------------------------------
+It is scrollable by default. 
+-----------------------------------------------------------------------------
+It can detect all changes made to the rows, order and values in the result set, whether the changes occur inside the cursor or outside the cursor. 
+-----------------------------------------------------------------------------Outside the cursor, we cannot see the updates until they are committed.
+-----------------------------------------------------------------------------
+			Forward-Only Cursors
+-----------------------------------------------------------------------------
+It is the default and fastest cursor type among all cursors. 
+-----------------------------------------------------------------------------
+It is called a forward-only cursor because it moves only forward through the result set. 
+-----------------------------------------------------------------------------
+This cursor doesn't support scrolling. 
+-----------------------------------------------------------------------------
+It can only retrieve rows from the beginning to the end of the result set. 
+-----------------------------------------------------------------------------
+It allows us to perform insert, update and delete operations. 
+-----------------------------------------------------------------------------
+The effect of insert, update and delete operations made by the user that affect rows in the result set are visible as the rows are fetched from the cursor. 
+-----------------------------------------------------------------------------
+When the row was fetched, we cannot see the changes made to rows through the cursor.
+-----------------------------------------------------------------------------
+The Forward-Only cursors are three categorize into three types:
+-----------------------------------------------------------------------------
+		a.	Forward_Only Keyset
+-----------------------------------------------------------------------------
+		b.	Forward_Only Static
+-----------------------------------------------------------------------------
+		c.	Fast_Forward
+-----------------------------------------------------------------------------
+			Keyset Driven Cursors
+-----------------------------------------------------------------------------
+This cursor functionality lies between a static and a dynamic cursor 
+regarding its ability to detect changes. 
+-----------------------------------------------------------------------------
+It can't always detect changes in the result set's membership and order 
+like a static cursor. 
+-----------------------------------------------------------------------------
+It can detect changes in the result set's rows values as like a dynamic cursor. 
+-----------------------------------------------------------------------------
+It can only move from the first to last and last to the first row. 
+-----------------------------------------------------------------------------
+The order and the membership are fixed whenever this cursor is opened.
+-----------------------------------------------------------------------------
+It is operated by a set of unique identifiers the same as the keys in the keyset. 
+-----------------------------------------------------------------------------
+The keyset is determined by all rows that qualified the SELECT statement 
+when the cursor was first opened. 
+-----------------------------------------------------------------------------
+It can also detect any changes to the data source, which supports update and delete operations. 
+-----------------------------------------------------------------------------
+It is scrollable by default.
+-----------------------------------------------------------------------------
+use db1;
+go
+-----------------------------------------------------------------------------
+CREATE TABLE db1.s1.customer 	(      
+  				id 	int  identity   PRIMARY KEY,      
+  				name 	nvarchar(45) 	NOT NULL,      
+  				email 	nvarchar(45) 	NOT NULL,      
+  				city 	nvarchar(25) 	NOT NULL      
+			); 
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+INSERT INTO db1.s1.customer (name, email, city)       
+VALUES 	( 'sunil', 	'sunil@gmail.com', 	'mumbai'),       
+	( 'suresh', 	'suresh@gmail.com', 	'pune'),       
+	( 'prakash', 	'prakash@gmail.com', 	'hyderabad'),    
+	( 'ramesh', 	'ramesh@gmail.com', 	'banglore'),       
+	( 'rajesh', 	'rajesh@gmail.com', 	'delhi'),  
+	( 'mangesh', 	'mangesh@gmail.com', 	'mumbai'),    
+	( 'vijay', 	'vijay@gmail.com', 	'nagar');    
+go
+-----------------------------------------------------------------------------
+(7 rows affected)
+-----------------------------------------------------------------------------
+SELECT * FROM db1.s1.customer; 
+go
+-----------------------------------------------------------------------------
+id	name		email				city
+-----------------------------------------------------------------------------
+1	sunil		sunil@gmail.com			mumbai
+2	suresh		suresh@gmail.com		pune
+3	prakash		prakash@gmail.com		hyderabad
+4	ramesh		ramesh@gmail.com		banglore
+5	rajesh		rajesh@gmail.com		delhi
+6	mangesh		mangesh@gmail.com		mumbai
+7	vijay		vijay@gmail.com			nagar
+-----------------------------------------------------------------------------
+ --Declare the variables for holding data.  
+DECLARE @id1 INT, @name1 NVARCHAR(45), @city1 NVARCHAR(25)  
+   
+--Declare and set counter.  
+DECLARE @Counter1 INT  
+SET @Counter1 = 1  
+   
+--Declare a cursor  
+DECLARE PrintCustomers CURSOR  
+FOR  
+SELECT id, name, city FROM db1.s1customer  
+  
+--Open cursor  
+OPEN PrintCustomers  
+   
+--Fetch the record into the variables.  
+FETCH NEXT FROM PrintCustomers INTO  
+@id1, @name1, @city1  
+  
+--LOOP UNTIL RECORDS ARE AVAILABLE.  
+WHILE @@FETCH_STATUS = 0  
+    BEGIN  
+        IF @Counter1 = 1  
+        BEGIN  
+            PRINT 'id' + CHAR(9) + 'name' + CHAR(9) + CHAR(9) + 'city'  
+            PRINT '--------------------------------------------------'  
+        END  
+   
+        --Print the current record  
+        PRINT CAST(@id1 AS NVARCHAR(10)) + CHAR(9) + @name1 + CHAR(9) + CHAR(9) + @city1  
+      
+        --Increment the counter variable  
+        SET @Counter1 = @Counter1 + 1  
+   
+        --Fetch the next record into the variables.  
+        FETCH NEXT FROM PrintCustomers INTO  
+        @id1, @name1, @city1  
+    END  
+   
+--Close the cursor  
+CLOSE PrintCustomers  
+  
+--Deallocate the cursor  
+DEALLOCATE PrintCustomers  
+
+go
+-----------------------------------------------------------------------------
+id	name		city
+----------------------------------------------------------------------------
+1	sunil		mumbai
+2	suresh		pune
+3	prakash		hyderabad
+4	ramesh		banglore
+5	rajesh		delhi
+6	mangesh		mumbai
+7	vijay		nagar
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+			Limitations of SQL Server Cursor
+-----------------------------------------------------------------------------
+	1.	Cursor consumes network resources by requiring a network 		roundtrip each time it fetches a record.
+-----------------------------------------------------------------------------
+	2.	A cursor is a memory resident set of pointers, which means it 		takes some memory that other processes could use on the 		machine.
+-----------------------------------------------------------------------------
+	3.	It imposes locks on a portion of the table or the entire table 		when processing data.
+-----------------------------------------------------------------------------
+	4.	The cursor's performance and speed are slower because they 		update table records one row at a time.
+-----------------------------------------------------------------------------
+	5.	Cursors are quicker than while loops, but they do have more 		overhead.
+-----------------------------------------------------------------------------
+	6.	The number of rows and columns brought into the cursor is 		another aspect that affects cursor speed. 
+-----------------------------------------------------------------------------
+	7.	It refers to how much time it takes to open your cursor and 		execute a fetch statement.
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+

@@ -1,0 +1,170 @@
+----------------------------------------------------------------------------
+			SQL Server Row Number
+----------------------------------------------------------------------------
+Row number is the most common ranking function used in SQL Server. 
+----------------------------------------------------------------------------
+The ROW_NUMBER() function generates a sequential number for each row 
+within a partition in the resultant output. 
+----------------------------------------------------------------------------
+In each partition, the first-row number begins with 1. 
+----------------------------------------------------------------------------
+We must always use the ORDER BY clause to ensure that the numbers are 
+assigned in the proper sequence. 
+----------------------------------------------------------------------------
+The values returned by this function are of "BIG INT" data type. 
+----------------------------------------------------------------------------
+The ROW_NUMBER determines the temporary value when the query is executed.
+----------------------------------------------------------------------------
+If you want to get the numbers in a table, you need to see the IDENTITY property and SEQUENCE. 
+----------------------------------------------------------------------------
+When the ROW_NUMBER function in SQL Server encounters two identical values 
+in the same partition, it assigns different rank numbers to them. 
+----------------------------------------------------------------------------
+The rank number will be determined by the order in which they are displayed.
+----------------------------------------------------------------------------
+There is no guarantee that the value returned by this function will be 
+ordered the same for each execution unless the following are true:
+----------------------------------------------------------------------------
+	1.	Partitioned columns values are unique
+----------------------------------------------------------------------------
+	2.	ORDER BY columns values are unique
+----------------------------------------------------------------------------
+	3.	Combination of Partition and Order By columns are unique
+----------------------------------------------------------------------------
+ROW_NUMBER() OVER 	(  
+    				[PARTITION BY partition_expression, ... ]  
+    				ORDER BY sort_expression [ASC | DESC], ...  
+			)  
+----------------------------------------------------------------------------
+			OVER
+----------------------------------------------------------------------------
+Specifies the window or set of rows that the window function operates. 
+----------------------------------------------------------------------------
+The PARTITION BY and ORDER BY are the two possible clauses of the OVER clause.
+----------------------------------------------------------------------------
+The OVER clause's ORDER BY expression is supported when the rows must come in a specific order for the function to execute.
+----------------------------------------------------------------------------			PARTITION BY
+----------------------------------------------------------------------------
+It is an optional clause that splits the result set into partitions 
+(groups of rows). 
+----------------------------------------------------------------------------
+Then ROW NUMBER() function is applied to each partition and assigns each partition's rank number separately.
+----------------------------------------------------------------------------
+If we omit the partition by clause, the ROW_NUMBER function will treat the whole result as a single partition and provide ranking in the top to bottom order.
+----------------------------------------------------------------------------
+			ORDER BY
+----------------------------------------------------------------------------
+This clause allows us to sort the rows of the result set within each partition. 
+----------------------------------------------------------------------------
+It is a required clause because the ROW_NUMBER() function is order-dependent.
+----------------------------------------------------------------------------
+CREATE TABLE Persons 	(    
+  				name 	varchar(45) 	NOT NULL,    
+  				product varchar(45) 	DEFAULT NULL,    
+  				country varchar(25) 	DEFAULT NULL,  
+  				price 	float,  
+  				years 	int 		NOT NULL    
+			); 
+
+go
+----------------------------------------------------------------------------
+INSERT INTO Persons (name, product, country, price, years)     
+VALUES 	('Sunil', 	'Computer', 	'USA', 		20000.00, 	2018),     
+	('Joseph', 	'Laptop', 	'India', 	35000.00, 	2016),     
+	('Kavita', 	'TV', 		'USA', 		15000.00, 	2016),     
+	('Tate', 	'Mobile', 	'France', 	12500.00, 	2017),   
+	('Dinesh', 	'Laptop', 	'England', 	30000.00, 	2018),    
+	('Joseph', 	'Mobile', 	'India', 	18000.00, 	2018),    
+	('Mahesh', 	'Desktop', 	'France', 	22000.00, 	2017),     
+	('Anil', 	'Mouse', 	'England', 	1200.00, 	2016);
+go  
+----------------------------------------------------------------------------
+select * from persons;
+go
+----------------------------------------------------------------------------
+name	product		country		price	years
+----------------------------------------------------------------------------
+Sunil	Computer	USA		20000	2018
+Joseph	Laptop		India		35000	2016
+Kavita	TV		USA		15000	2016
+Tate	Mobile		France		12500	2017
+Dinesh	Laptop		England		30000	2018
+Joseph	Mobile		India		18000	2018
+Mahesh	Desktop		France		22000	2017
+Anil	Mouse		England		1200	2016
+----------------------------------------------------------------------------
+			1. Simple ROW_NUMBER()
+----------------------------------------------------------------------------
+SELECT *, ROW_NUMBER()   
+OVER (ORDER BY price) AS row_num  
+FROM Persons; 
+go  
+----------------------------------------------------------------------------
+name	product		country		price	years		row_num
+----------------------------------------------------------------------------
+Anil	Mouse		England		1200	2016		1
+Tate	Mobile		France		12500	2017		2
+Kavita	TV		USA		15000	2016		3
+Joseph	Mobile		India		18000	2018		4
+Sunil	Computer	USA		20000	2018		5
+Mahesh	Desktop		France		22000	2017		6
+Dinesh	Laptop		England		30000	2018		7
+Joseph	Laptop		India		35000	2016		8
+----------------------------------------------------------------------------
+			2. ROW_NUMBER() over Partitions Example
+----------------------------------------------------------------------------
+SELECT name, product, price, years,   
+ROW_NUMBER() OVER ( PARTITION BY years ORDER BY price) AS row_num  
+FROM Persons;  
+go
+----------------------------------------------------------------------------
+name	product		price	years	row_num
+----------------------------------------------------------------------------
+Anil	Mouse		1200	2016	1
+Kavita	TV		15000	2016	2
+Joseph	Laptop		35000	2016	3
+Tate	Mobile		12500	2017	1
+Mahesh	Desktop		22000	2017	2
+Joseph	Mobile		18000	2018	1
+Sunil	Computer	20000	2018	2
+Dinesh	Laptop		30000	2018	3
+----------------------------------------------------------------------------
+			3. ROW_NUMBER()  for Pagination
+----------------------------------------------------------------------------
+To get all of a person's information in an application by pages, first 
+assign each row a sequential number using the ROW_NUMBER() function. 
+----------------------------------------------------------------------------
+Next, sort the rows by the requested page.
+----------------------------------------------------------------------------
+SELECT * FROM ( SELECT ROW_NUMBER()   
+		OVER (ORDER BY price) 
+		AS row_num, 
+		name, product, price  
+		FROM Persons) P  
+		WHERE row_num > 3 AND row_num <= 6;  
+go
+----------------------------------------------------------------------------
+row_num		name	product		price
+----------------------------------------------------------------------------
+4		Joseph	Mobile		18000
+5		Sunil	Computer	20000
+6		Mahesh	Desktop		22000
+----------------------------------------------------------------------------
+If we do not want to use the subquery, we can use the common table expression (CTE) as below statement:
+----------------------------------------------------------------------------
+WITH CTE_Person AS 	(  
+				SELECT ROW_NUMBER()   
+				OVER (ORDER BY price) AS row_num, 
+				name, product, price  
+				FROM Persons
+			)  
+SELECT * FROM CTE_Person WHERE row_num > 3 AND row_num <= 6;  
+go
+----------------------------------------------------------------------------
+row_num		name		product		price
+----------------------------------------------------------------------------
+4		Joseph		Mobile		18000
+5		Sunil		Computer	20000
+6		Mahesh		Desktop		22000
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

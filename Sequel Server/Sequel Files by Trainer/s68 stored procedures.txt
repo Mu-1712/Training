@@ -1,0 +1,523 @@
+-----------------------------------------------------------------------------
+			SQL Server Stored Procedures
+-----------------------------------------------------------------------------
+A stored procedure is a group of one or more pre-compiled SQL statements into a logical unit. 
+-----------------------------------------------------------------------------
+It is stored as an object inside the database server. 
+-----------------------------------------------------------------------------
+It is a subroutine or a subprogram in the common computing language that has been created and stored in the database. 
+-----------------------------------------------------------------------------
+Each procedure in SQL Server always contains a name, parameter lists and Transact-SQL statements. 
+-----------------------------------------------------------------------------
+The SQL Database Server stores the stored procedures as named objects. 
+-----------------------------------------------------------------------------
+We can invoke the procedures by using triggers, other procedures and applications such as Java, Python, PHP, etc. 
+-----------------------------------------------------------------------------
+It can support almost all relational database systems.
+-----------------------------------------------------------------------------
+SQL Server builds an execution plan when the stored procedure is called the first time and stores them in the cache memory. 
+-----------------------------------------------------------------------------
+The plan is reused by SQL Server in subsequent executions of the stored procedure, allowing it to run quickly and efficiently.
+-----------------------------------------------------------------------------
+Types of Stored Procedures
+-----------------------------------------------------------------------------
+		1.	User-defined Stored Procedures
+-----------------------------------------------------------------------------
+		2.	System Stored Procedures
+-----------------------------------------------------------------------------
+User-defined Stored Procedures
+-----------------------------------------------------------------------------
+Database developers or database administrators build user-defined stored procedures. 
+-----------------------------------------------------------------------------
+These procedures provide one or more SQL statements for selecting, updating, or removing data from database tables. 
+-----------------------------------------------------------------------------
+A stored procedure specified by the user can accept input parameters and 
+return the output parameters. 
+----------------------------------------------------------------------------
+DDL and DML commands can be used together in a user-defined procedure.
+-----------------------------------------------------------------------------
+We can further divide this procedure into two types:
+-----------------------------------------------------------------------------
+		a.	T-SQL Stored Procedures: 
+-----------------------------------------------------------------------------
+Transact-SQL procedures are one of the most popular types of SQL Server procedures. 
+-----------------------------------------------------------------------------
+It takes parameters and returns them. 
+-----------------------------------------------------------------------------
+These procedures handle INSERT, UPDATE, and DELETE statements with or without parameters and output row data.
+-----------------------------------------------------------------------------
+		b.	CLR Stored Procedures: 
+-----------------------------------------------------------------------------
+The SQL Server procedures are a group of SQL commands and the CLR indicates the common language runtime. 
+-----------------------------------------------------------------------------
+CLR stored procedures are made up of the CLR and a stored procedure, 
+which is written in a CLR-based language like VB.NET or C#. 
+-----------------------------------------------------------------------------
+CLR procedures are .Net objects that run in the SQL Server database's memory.
+-----------------------------------------------------------------------------
+			System Stored Procedures
+-----------------------------------------------------------------------------
+The server's administrative tasks depend primarily on system stored procedures. 
+-----------------------------------------------------------------------------
+When SQL Server is installed, it creates system procedures. 
+-----------------------------------------------------------------------------
+The system stored procedures prevent the administrator from querying or modifying the system and database catalog tables directly. 
+-----------------------------------------------------------------------------
+Developers often ignore system stored procedures.
+-----------------------------------------------------------------------------
+CREATE PROCEDURE [schema_name].procedure_name  
+                @parameter_name data_type,   
+                ....   
+                @parameter_name data_type  
+AS  
+   BEGIN  
+      -- SQL statements  
+      -- SELECT, INSERT, UPDATE, or DELETE statement  
+   END  
+-----------------------------------------------------------------------------
+SET NOCOUNT ON in Stored Procedure
+-----------------------------------------------------------------------------
+This statement prevents the message that displays the number of rows affected by SQL queries from being shown. 
+-----------------------------------------------------------------------------
+NOCOUNT denotes that the count is turned off. 
+-----------------------------------------------------------------------------
+How to execute/call a stored procedure?
+-----------------------------------------------------------------------------
+EXEC procedure_name;  
+-----------------------------------------------------------------------------EXECUTE procedure_name;  
+-----------------------------------------------------------------------------
+If we are using the SSMS, we need to use the below steps to execute stored procedures:
+-----------------------------------------------------------------------------
+	1.	Navigate to the Programmability -> Stored Procedures.
+-----------------------------------------------------------------------------
+	2.	select the Stored Procedure menu and expand it. 
+-----------------------------------------------------------------------------
+	3.	You will see the available stored procedures.
+-----------------------------------------------------------------------------
+	4.	Right-click on the stored procedure you want to execute and 		choose the Execute Stored Procedure
+-----------------------------------------------------------------------------
+	5.	The Execute Procedure window will appear. 
+-----------------------------------------------------------------------------
+	6.	If the procedure has any parameters, we must assign/pass 
+		them before clicking OK to execute it. 
+-----------------------------------------------------------------------------
+	7.	If no parameters are defined, click OK to run the procedure.
+-----------------------------------------------------------------------------
+use db1;
+go
+-----------------------------------------------------------------------------
+select * from db1.s1.emp18;
+go
+-----------------------------------------------------------------------------
+empid	empname		empage		empcity
+-----------------------------------------------------------------------------
+101	anil		24		pune
+102	sunil		20		mumbai
+103	suresh		19		pune
+104	centhil		17		agra
+105	rajesh		18		banglore
+106	ramesh		20		delhi
+107	sanjay		20		delhi
+108	sharad		20		delhi
+-----------------------------------------------------------------------------
+CREATE PROCEDURE empList  
+AS  
+BEGIN  
+    SELECT empid,empname 
+    FROM db1.s1.emp18 
+    ORDER BY empname;  
+END; 
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+EXEC empList  ;  
+go
+-----------------------------------------------------------------------------
+empid		empname
+-----------------------------------------------------------------------------
+101		anil
+104		centhil
+105		rajesh
+106		ramesh
+107		sanjay
+108		sharad
+102		sunil
+103		suresh
+-----------------------------------------------------------------------------
+If we are using the SSMS, use the following steps for creating the stored procedure:
+-----------------------------------------------------------------------------
+Step 1: Select the Database -> Programmability -> Stored Procedures.
+-----------------------------------------------------------------------------
+Step 2: Right-click on the Stored Procedures folder -> Stored Procedure 
+-----------------------------------------------------------------------------
+Step 3: The new query window containing the default Stored Procedure Template. 
+-----------------------------------------------------------------------------
+	Here, we can add the procedure name, parameters (if any), and the SQL 	query we want to use.
+-----------------------------------------------------------------------------
+SQL Server does not allow us to change the name of a stored procedure. 
+-----------------------------------------------------------------------------
+Because renaming a stored procedure does not modify the name of the corresponding object in the "sys.sql_modules". 
+-----------------------------------------------------------------------------
+Therefore, if we need to change the existing stored procedure, simply DROP 
+and recreate it with a new name.
+-----------------------------------------------------------------------------
+drop procedure emplist;
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+EXEC empList  ;  
+go
+-----------------------------------------------------------------------------
+Msg 2812, Level 16, State 62, Line 14
+Could not find stored procedure 'empList'.
+-----------------------------------------------------------------------------
+		Modify Stored Procedures using SSMS
+-----------------------------------------------------------------------------
+Step 1: Navigate to the Database -> Programmability -> Stored Procedures.
+-----------------------------------------------------------------------------
+Step 2: Expand the Stored Procedures folder, right-click on the stored procedure that you want to modify and then select the Modify option 
+-----------------------------------------------------------------------------
+Step 3: Once we click the Modify option, we will get a new query window 
+with an auto-generated ALTER PROCEDURE code. 
+-----------------------------------------------------------------------------
+		Modify Stored Procedures using T-SQL Query
+-----------------------------------------------------------------------------
+SQL Server provides an ALTER PROCEDURE statement to make modifications in 
+the existing stored procedures. 
+-----------------------------------------------------------------------------
+CREATE PROCEDURE empList  
+AS  
+BEGIN  
+    SELECT empid,empname 
+    FROM db1.s1.emp18 
+    ORDER BY empname;  
+END; 
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+ALTER PROCEDURE dbo.empList  
+AS  
+BEGIN  
+    SET NOCOUNT ON;  
+    SELECT empid,empname,empage 
+    FROM db1.s1.emp18 
+    ORDER BY empname;   
+END; 
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+EXEC empList  ;  
+go
+-----------------------------------------------------------------------------
+empid	empname		empage
+-----------------------------------------------------------------------------
+101	anil		24
+104	centhil		17
+105	rajesh		18
+106	ramesh		20
+107	sanjay		20
+108	sharad		20
+102	sunil		20
+103	suresh		19
+ -----------------------------------------------------------------------------
+How to list all stored procedures in SQL Server?
+-----------------------------------------------------------------------------
+SELECT * FROM sys.procedures;  
+go
+-----------------------------------------------------------------------------
+name	object_id	principal_id	schema_id	parent_object_id	type	type_desc	create_date	modify_date	is_ms_shipped	is_published	is_schema_published	is_auto_executed	is_execution_replicated	is_repl_serializable_only	skips_repl_constraints
+-----------------------------------------------------------------------------
+sp_upgraddiagrams	480720765	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-03 20:01:03.300	2024-10-03 20:01:03.300	0	0	0	0	0	0	0
+sp_helpdiagrams	544720993	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-03 20:01:03.317	2024-10-03 20:01:03.317	0	0	0	0	0	0	0
+sp_helpdiagramdefinition	560721050	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-03 20:01:03.320	2024-10-03 20:01:03.320	0	0	0	0	0	0	0
+sp_creatediagram	576721107	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-03 20:01:03.323	2024-10-03 20:01:03.323	0	0	0	0	0	0	0
+sp_renamediagram	592721164	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-03 20:01:03.323	2024-10-03 20:01:03.323	0	0	0	0	0	0	0
+sp_alterdiagram	608721221	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-03 20:01:03.327	2024-10-03 20:01:03.327	0	0	0	0	0	0	0
+sp_dropdiagram	624721278	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-03 20:01:03.327	2024-10-03 20:01:03.327	0	0	0	0	0	0	0
+empList	909246294	NULL	1	0	P 	SQL_STORED_PROCEDURE	2024-10-07 12:52:16.777	2024-10-07 12:56:03.693	0	0	0	0	0	0	0
+p1	1988202133	NULL	1	0	P 	SQL_STORED_PROCEDURE	2023-06-27 19:12:47.600	2023-06-27 19:12:47.600	0	0	0	0	0	0	0
+p2	2004202190	NULL	6	0	P 	SQL_STORED_PROCEDURE	2023-06-27 19:15:07.117	2023-06-27 19:15:07.117	0	0	0	0	0	0	0
+p3	2052202361	NULL	6	0	P 	SQL_STORED_PROCEDURE	2023-06-27 19:22:36.987	2023-06-27 19:22:36.987	0	0	0	0	0	0	0
+-----------------------------------------------------------------------------
+The best way for listing all user-defined stored procedures in a 
+database is to use the ROUTINES information schema view as below:
+-----------------------------------------------------------------------------
+SELECT ROUTINE_SCHEMA, ROUTINE_NAME  
+FROM INFORMATION_SCHEMA.ROUTINES  
+WHERE ROUTINE_TYPE = 'PROCEDURE'; 
+go
+ -----------------------------------------------------------------------------
+ROUTINE_SCHEMA		ROUTINE_NAME
+-----------------------------------------------------------------------------
+dbo			sp_upgraddiagrams
+dbo			sp_helpdiagrams
+dbo			sp_helpdiagramdefinition
+dbo			sp_creatediagram
+dbo			sp_renamediagram
+dbo			sp_alterdiagram
+dbo			sp_dropdiagram
+dbo			empList
+dbo			p1
+s1			p2
+s1			p3
+-----------------------------------------------------------------------------
+SELECT *   
+ FROM db1.INFORMATION_SCHEMA.ROUTINES  
+ WHERE ROUTINE_TYPE = 'PROCEDURE'  ;
+go
+-----------------------------------------------------------------------------
+SPECIFIC_CATALOG	SPECIFIC_SCHEMA	SPECIFIC_NAME	ROUTINE_CATALOG	ROUTINE_SCHEMA	ROUTINE_NAME	ROUTINE_TYPE	MODULE_CATALOG	MODULE_SCHEMA	MODULE_NAME	UDT_CATALOG	UDT_SCHEMA	UDT_NAME	DATA_TYPE	CHARACTER_MAXIMUM_LENGTH	CHARACTER_OCTET_LENGTH	COLLATION_CATALOG	COLLATION_SCHEMA	COLLATION_NAME	CHARACTER_SET_CATALOG	CHARACTER_SET_SCHEMA	CHARACTER_SET_NAME	NUMERIC_PRECISION	NUMERIC_PRECISION_RADIX	NUMERIC_SCALE	DATETIME_PRECISION	INTERVAL_TYPE	INTERVAL_PRECISION	TYPE_UDT_CATALOG	TYPE_UDT_SCHEMA	TYPE_UDT_NAME	SCOPE_CATALOG	SCOPE_SCHEMA	SCOPE_NAME	MAXIMUM_CARDINALITY	DTD_IDENTIFIER	ROUTINE_BODY	ROUTINE_DEFINITION	EXTERNAL_NAME	EXTERNAL_LANGUAGE	PARAMETER_STYLE	IS_DETERMINISTIC	SQL_DATA_ACCESS	IS_NULL_CALL	SQL_PATH	SCHEMA_LEVEL_ROUTINE	MAX_DYNAMIC_RESULT_SETS	IS_USER_DEFINED_CAST	IS_IMPLICITLY_INVOCABLE	CREATED	LAST_ALTERED
+-----------------------------------------------------------------------------
+db1	dbo	sp_upgraddiagrams	db1	dbo	sp_upgraddiagrams	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	   CREATE PROCEDURE dbo.sp_upgraddiagrams   AS   BEGIN    IF OBJECT_ID(N'dbo.sysdiagrams') IS NOT NULL     return 0;       CREATE TABLE dbo.sysdiagrams    (     name sysname NOT NULL,     principal_id int NOT NULL, -- we may change it to varbinary(85)     diagram_id int PRIMARY KEY IDENTITY,     version int,        definition varbinary(max)     CONSTRAINT UK_principal_name UNIQUE     (      principal_id,      name     )    );        /* Add this if we need to have some form of extended properties for diagrams */    /*    IF OBJECT_ID(N'dbo.sysdiagram_properties') IS NULL    BEGIN     CREATE TABLE dbo.sysdiagram_properties     (      diagram_id int,      name sysname,      value varbinary(max) NOT NULL     )    END    */      IF OBJECT_ID(N'dbo.dtproperties') IS NOT NULL    begin     insert into dbo.sysdiagrams     (      [name],      [principal_id],      [version],      [definition]     )     select        convert(sysname, dgnm.[uvalue]),      DATABASE_PRINCIPAL_ID(N'dbo'),   -- will change to the sid of sa      0,       -- zero for old format, dgdef.[version],      dgdef.[lvalue]     from dbo.[dtproperties] dgnm      inner join dbo.[dtproperties] dggd on dggd.[property] = 'DtgSchemaGUID' and dggd.[objectid] = dgnm.[objectid]       inner join dbo.[dtproperties] dgdef on dgdef.[property] = 'DtgSchemaDATA' and dgdef.[objectid] = dgnm.[objectid]           where dgnm.[property] = 'DtgSchemaNAME' and dggd.[uvalue] like N'_EA3E6268-D998-11CE-9454-00AA00A3F36E_'      return 2;    end    return 1;   END   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-03 20:01:03.300	2024-10-03 20:01:03.300
+db1	dbo	sp_helpdiagrams	db1	dbo	sp_helpdiagrams	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	   CREATE PROCEDURE dbo.sp_helpdiagrams   (    @diagramname sysname = NULL,    @owner_id int = NULL   )   WITH EXECUTE AS N'dbo'   AS   BEGIN    DECLARE @user sysname    DECLARE @dboLogin bit    EXECUTE AS CALLER;     SET @user = USER_NAME();     SET @dboLogin = CONVERT(bit,IS_MEMBER('db_owner'));    REVERT;    SELECT     [Database] = DB_NAME(),     [Name] = name,     [ID] = diagram_id,     [Owner] = USER_NAME(principal_id),     [OwnerID] = principal_id    FROM     sysdiagrams    WHERE     (@dboLogin = 1 OR USER_NAME(principal_id) = @user) AND     (@diagramname IS NULL OR name = @diagramname) AND     (@owner_id IS NULL OR principal_id = @owner_id)    ORDER BY     4, 5, 1   END   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-03 20:01:03.317	2024-10-03 20:01:03.317
+db1	dbo	sp_helpdiagramdefinition	db1	dbo	sp_helpdiagramdefinition	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	   CREATE PROCEDURE dbo.sp_helpdiagramdefinition   (    @diagramname  sysname,    @owner_id int = null      )   WITH EXECUTE AS N'dbo'   AS   BEGIN    set nocount on      declare @theId   int    declare @IsDbo   int    declare @DiagId  int    declare @UIDFound int       if(@diagramname is null)    begin     RAISERROR (N'E_INVALIDARG', 16, 1);     return -1    end       execute as caller;    select @theId = DATABASE_PRINCIPAL_ID();    select @IsDbo = IS_MEMBER(N'db_owner');    if(@owner_id is null)     select @owner_id = @theId;    revert;        select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname;    if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId ))    begin     RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1);     return -3    end      select version, definition FROM dbo.sysdiagrams where diagram_id = @DiagId ;     return 0   END   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-03 20:01:03.320	2024-10-03 20:01:03.320
+db1	dbo	sp_creatediagram	db1	dbo	sp_creatediagram	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	   CREATE PROCEDURE dbo.sp_creatediagram   (    @diagramname  sysname,    @owner_id  int = null,      @version   int,    @definition  varbinary(max)   )   WITH EXECUTE AS 'dbo'   AS   BEGIN    set nocount on       declare @theId int    declare @retval int    declare @IsDbo int    declare @userName sysname    if(@version is null or @diagramname is null)    begin     RAISERROR (N'E_INVALIDARG', 16, 1);     return -1    end       execute as caller;    select @theId = DATABASE_PRINCIPAL_ID();     select @IsDbo = IS_MEMBER(N'db_owner');    revert;         if @owner_id is null    begin     select @owner_id = @theId;    end    else    begin     if @theId <> @owner_id     begin      if @IsDbo = 0      begin       RAISERROR (N'E_INVALIDARG', 16, 1);       return -1      end      select @theId = @owner_id     end    end    -- next 2 line only for test, will be removed after define name unique    if EXISTS(select diagram_id from dbo.sysdiagrams where principal_id = @theId and name = @diagramname)    begin     RAISERROR ('The name is already used.', 16, 1);     return -2    end       insert into dbo.sysdiagrams(name, principal_id , version, definition)      VALUES(@diagramname, @theId, @version, @definition) ;        select @retval = @@IDENTITY     return @retval   END   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-03 20:01:03.323	2024-10-03 20:01:03.323
+db1	dbo	sp_renamediagram	db1	dbo	sp_renamediagram	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	   CREATE PROCEDURE dbo.sp_renamediagram   (    @diagramname   sysname,    @owner_id  int = null,    @new_diagramname sysname      )   WITH EXECUTE AS 'dbo'   AS   BEGIN    set nocount on    declare @theId    int    declare @IsDbo    int        declare @UIDFound   int    declare @DiagId   int    declare @DiagIdTarg  int    declare @u_name   sysname    if((@diagramname is null) or (@new_diagramname is null))    begin     RAISERROR ('Invalid value', 16, 1);     return -1    end       EXECUTE AS CALLER;    select @theId = DATABASE_PRINCIPAL_ID();    select @IsDbo = IS_MEMBER(N'db_owner');     if(@owner_id is null)     select @owner_id = @theId;    REVERT;       select @u_name = USER_NAME(@owner_id)       select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname     if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId))    begin     RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1)     return -3    end       -- if((@u_name is not null) and (@new_diagramname = @diagramname)) -- nothing will change    -- return 0;       if(@u_name is null)     select @DiagIdTarg = diagram_id from dbo.sysdiagrams where principal_id = @theId and name = @new_diagramname    else     select @DiagIdTarg = diagram_id from dbo.sysdiagrams where principal_id = @owner_id and name = @new_diagramname       if((@DiagIdTarg is not null) and  @DiagId <> @DiagIdTarg)    begin     RAISERROR ('The name is already used.', 16, 1);     return -2    end         if(@u_name is null)     update dbo.sysdiagrams set [name] = @new_diagramname, principal_id = @theId where diagram_id = @DiagId    else     update dbo.sysdiagrams set [name] = @new_diagramname where diagram_id = @DiagId    return 0   END   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-03 20:01:03.323	2024-10-03 20:01:03.323
+db1	dbo	sp_alterdiagram	db1	dbo	sp_alterdiagram	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	   CREATE PROCEDURE dbo.sp_alterdiagram   (    @diagramname  sysname,    @owner_id int = null,    @version  int,    @definition  varbinary(max)   )   WITH EXECUTE AS 'dbo'   AS   BEGIN    set nocount on       declare @theId    int    declare @retval   int    declare @IsDbo    int        declare @UIDFound   int    declare @DiagId   int    declare @ShouldChangeUID int       if(@diagramname is null)    begin     RAISERROR ('Invalid ARG', 16, 1)     return -1    end       execute as caller;    select @theId = DATABASE_PRINCIPAL_ID();      select @IsDbo = IS_MEMBER(N'db_owner');     if(@owner_id is null)     select @owner_id = @theId;    revert;       select @ShouldChangeUID = 0    select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname         if(@DiagId IS NULL or (@IsDbo = 0 and @theId <> @UIDFound))    begin     RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1);     return -3    end       if(@IsDbo <> 0)    begin     if(@UIDFound is null or USER_NAME(@UIDFound) is null) -- invalid principal_id     begin      select @ShouldChangeUID = 1 ;     end    end      -- update dds data       update dbo.sysdiagrams set definition = @definition where diagram_id = @DiagId ;      -- change owner    if(@ShouldChangeUID = 1)     update dbo.sysdiagrams set principal_id = @theId where diagram_id = @DiagId ;      -- update dds version    if(@version is not null)     update dbo.sysdiagrams set version = @version where diagram_id = @DiagId ;      return 0   END   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-03 20:01:03.327	2024-10-03 20:01:03.327
+db1	dbo	sp_dropdiagram	db1	dbo	sp_dropdiagram	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	   CREATE PROCEDURE dbo.sp_dropdiagram   (    @diagramname  sysname,    @owner_id int = null   )   WITH EXECUTE AS 'dbo'   AS   BEGIN    set nocount on    declare @theId    int    declare @IsDbo    int        declare @UIDFound   int    declare @DiagId   int       if(@diagramname is null)    begin     RAISERROR ('Invalid value', 16, 1);     return -1    end       EXECUTE AS CALLER;    select @theId = DATABASE_PRINCIPAL_ID();    select @IsDbo = IS_MEMBER(N'db_owner');     if(@owner_id is null)     select @owner_id = @theId;    REVERT;         select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname     if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId))    begin     RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1)     return -3    end       delete from dbo.sysdiagrams where diagram_id = @DiagId;       return 0;   END   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-03 20:01:03.327	2024-10-03 20:01:03.327
+db1	dbo	empList	db1	dbo	empList	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	CREATE PROCEDURE dbo.empList    AS    BEGIN        SET NOCOUNT ON;        SELECT empid,empname,empage       FROM db1.s1.emp18       ORDER BY empname;     END;   	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2024-10-07 12:52:16.777	2024-10-07 12:56:03.693
+db1	dbo	p1	db1	dbo	p1	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	create procedure p1 as  select * from s1.emp16;  	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2023-06-27 19:12:47.600	2023-06-27 19:12:47.600
+db1	s1	p2	db1	s1	p2	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	create procedure s1.p2 as  select * from s1.emp16 where empcity='pune';  	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2023-06-27 19:15:07.117	2023-06-27 19:15:07.117
+db1	s1	p3	db1	s1	p3	PROCEDURE	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	SQL	create procedure s1.p3  @x varchar(10)  as  select * from s1.emp16 where empcity=@x;  	NULL	NULL	NULL	NO	MODIFIES	NULL	NULL	YES	-1	NO	NO	2023-06-27 19:22:36.987	2023-06-27 19:22:36.987
+-----------------------------------------------------------------------------
+SELECT   
+  SCHEMA_NAME(schema_id) AS [Schema],  
+  name  
+FROM sys.objects  
+WHERE type = 'P';  
+go
+-----------------------------------------------------------------------------
+Schema	name
+-----------------------------------------------------------------------------
+dbo	sp_upgraddiagrams
+dbo	sp_helpdiagrams
+dbo	sp_helpdiagramdefinition
+dbo	sp_creatediagram
+dbo	sp_renamediagram
+dbo	sp_alterdiagram
+dbo	sp_dropdiagram
+dbo	empList
+dbo	p1
+s1	p2
+s1	p3
+-----------------------------------------------------------------------------
+How to delete/drop stored procedures in SQL Server?
+-----------------------------------------------------------------------------
+DROP Stored Procedures using SSMS
+-----------------------------------------------------------------------------
+Step 1: Go to the Database -> Programmability -> Stored Procedures.
+-----------------------------------------------------------------------------
+Step 2: Expand the Stored Procedures folder, right-click on the stored procedure that you want to remove and then select the Delete option as follows:
+-----------------------------------------------------------------------------
+Stored Procedure in SQL Server
+-----------------------------------------------------------------------------
+Step 3: Once we click the Delete option, we will get a Delete Object window. 
+-----------------------------------------------------------------------------
+We can check the dependencies by clicking on the Show Dependencies button 
+and then click OK to remove the stored procedure.
+-----------------------------------------------------------------------------
+Delete Stored Procedures using T-SQL Query
+-----------------------------------------------------------------------------
+drop procedure emplist;
+go
+-----------------------------------------------------------------------------
+IF OBJECT_ID ('empList', 'P') IS NOT NULL     
+    DROP PROCEDURE empList;  
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+NOTE: 
+-----------------------------------------------------------------------------
+It's a good idea to use IF OBJECT ID ('procedure_name', 'P') IS NOT NULL 
+to see if the stored procedure exists in the database.
+-----------------------------------------------------------------------------
+		Input Parameters in Stored Procedure
+-----------------------------------------------------------------------------
+SQL Server allows us to create input parameters stored procedures. 
+-----------------------------------------------------------------------------
+This type of stored procedure can enable us to pass one or more parameters 
+to get the filtered result. 
+-----------------------------------------------------------------------------
+select * from db1.s1.emp18;
+go
+-----------------------------------------------------------------------------
+empid	empname	empage	empcity
+-----------------------------------------------------------------------------
+101	anil	24	pune
+102	sunil	20	mumbai
+103	suresh	19	pune
+104	centhil	17	agra
+105	rajesh	18	banglore
+106	ramesh	20	delhi
+107	sanjay	20	delhi
+108	sharad	20	delhi
+-----------------------------------------------------------------------------
+CREATE PROCEDURE getEmployeeDetails (@age int)  
+AS  
+BEGIN  
+  SET NOCOUNT ON;  
+  SELECT empname, empage, empcity 
+  FROM db1.s1.emp18 
+  WHERE empage = @age  
+END  
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+EXEC [dbo].[getEmployeeDetails] 20;  
+go
+-----------------------------------------------------------------------------
+empname	empage	empcity
+-----------------------------------------------------------------------------
+sunil	20	mumbai
+ramesh	20	delhi
+sanjay	20	delhi
+sharad	20	delhi
+-----------------------------------------------------------------------------
+EXEC [dbo].[getEmployeeDetails] @age = 20;  
+go
+-----------------------------------------------------------------------------
+empname	empage	empcity
+-----------------------------------------------------------------------------
+sunil	20	mumbai
+ramesh	20	delhi
+sanjay	20	delhi
+sharad	20	delhi
+-----------------------------------------------------------------------------
+			Output Parameters in Stored Procedure
+-----------------------------------------------------------------------------
+SQL Server enables us to provide many output parameters in a stored procedure.
+-----------------------------------------------------------------------------
+CREATE PROCEDURE countEmployees (@empCount INT OUTPUT)  
+AS  
+BEGIN  
+    SELECT @empCount = COUNT(empid)FROM db1.s1.emp18;  
+END; 
+go 
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+DECLARE @empCount INT   
+EXEC  [dbo].[countEmployees] @empCount OUTPUT 
+PRINT @empCount
+go
+-----------------------------------------------------------------------------
+8
+-----------------------------------------------------------------------------
+			Temporary Stored Procedure
+-----------------------------------------------------------------------------
+The tempdb database is used to create these procedures. 
+-----------------------------------------------------------------------------
+		a.	Local Temporary Stored Procedures
+-----------------------------------------------------------------------------
+		b.	Global Temporary Procedures.
+-----------------------------------------------------------------------------
+	Local Temporary Stored Procedures: 
+-----------------------------------------------------------------------------
+We can create this type of procedure by using the # as prefix and accessed only in the session in which they were created. 
+-----------------------------------------------------------------------------
+When the connection is closed, this process is immediately terminated.
+-----------------------------------------------------------------------------
+CREATE PROCEDURE #Temp1  
+AS  
+BEGIN  
+PRINT 'Local temp procedure'  
+END ;
+go 
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+	Global Temporary Stored Procedure: 
+-----------------------------------------------------------------------------
+We can create this type of procedure by using the ## as a prefix and 
+accessed from any sessions. 
+-----------------------------------------------------------------------------
+When the connection that was used to create the procedure is closed, this procedure is automatically terminated.
+-----------------------------------------------------------------------------
+CREATE PROCEDURE ##Temp2  
+AS  
+BEGIN  
+PRINT 'Global temp procedure'  
+END;
+go
+----------------------------------------------------------------------------- 
+Commands completed successfully.
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+create PROCEDURE MaxOf33 (@a1 int,@a2 int ,@a3 int)
+AS 
+declare @max int = 0
+BEGIN  
+if (@a1>@a2)
+	set @max = @a1
+else
+	set @max = @a2
+if(@a3>@max)
+	set @max = @a3
+
+PRINT @max 
+END
+go
+-----------------------------------------------------------------------------
+exec MaxOf33 100,20,30
+go
+-----------------------------------------------------------------------------
+100
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+create PROCEDURE secondMaxOf5 (@a1 int,@a2 int ,@a3 int,@a4 int,@a5 int)
+AS 
+	declare @max1 int = 0
+	declare @max2 int = 0
+	declare @temp int = 0
+
+	BEGIN  
+		set @max1 = @a1
+		set @max2 = @a2
+		if (@max2>@max1)
+		begin
+			set @temp = @max1
+			set @max1 = @max2
+			set @max2 = @temp
+		end
+		if (@a3>@max1)
+		begin
+			set @max2 = @max1
+			set @max1 = @a3
+		end
+		else if (@a3 > @max2)
+			set @max2 = @a3	
+		if (@a4>@max1)
+		begin
+			set @max2 = @max1
+			set @max1 = @a4
+		end
+		else if (@a4 > @max2)
+			set @max2 = @a4
+		if (@a5>@max1)
+		begin
+			set @max2 = @max1
+			set @max1 = @a5
+		end
+		else if (@a5 > @max2)
+			set @max2 = @a5
+PRINT @max2
+END
+go
+-----------------------------------------------------------------------------
+exec secondMaxOf5 2, 5, 6 ,4, 9
+go
+-----------------------------------------------------------------------------
+6
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+
+
+		
+	

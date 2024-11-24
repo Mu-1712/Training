@@ -1,0 +1,183 @@
+-----------------------------------------------------------------------------
+ALTER command in SQL Server is used to make modifications in an existing table. 
+-----------------------------------------------------------------------------
+		1.	adding a column
+-----------------------------------------------------------------------------
+		2.	deleting a column
+-----------------------------------------------------------------------------
+		3.	changing the column size
+-----------------------------------------------------------------------------
+		4.	modifying the column data type
+-----------------------------------------------------------------------------
+		5.	adding or removing table indexes
+-----------------------------------------------------------------------------
+		6.	adding or deleting table constraints 
+-----------------------------------------------------------------------------
+		7.	rename and rebuild partitions 
+-----------------------------------------------------------------------------
+		8.	disable and enable constraints 
+-----------------------------------------------------------------------------
+		9.	disable and enable triggers
+-----------------------------------------------------------------------------
+use db1;
+go
+-----------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.emp14'; 
+go
+-----------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+-----------------------------------------------------------------------------
+empid	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empname	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+empage	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empcity	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+-----------------------------------------------------------------------------
+select * from db1.s1.emp14;
+go
+-----------------------------------------------------------------------------
+empid	empname		empage		empcity
+-----------------------------------------------------------------------------
+101	anil		24		pune
+102	sunil		20		mumbai
+103	suresh		19		pune
+104	centhil		17		agra
+105	centhil123	18		banglore
+106	centhil321	20		delhi
+107	sunil321	20		delhi
+108	anil321		22		mumbai
+109	anil123		22		mumbai
+110	suresh321	20	delhi
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+ADD egrade VARCHAR(2) NULL;  
+go
+-----------------------------------------------------------------------------
+select * from db1.s1.emp14;
+go
+-----------------------------------------------------------------------------
+empid	empname		empage	empcity		egrade
+-----------------------------------------------------------------------------
+101	anil		24	pune		NULL
+102	sunil		20	mumbai		NULL
+103	suresh		19	pune		NULL
+104	centhil		17	agra		NULL
+105	centhil123	18	banglore	NULL
+106	centhil321	20	delhi		NULL
+107	sunil321	20	delhi		NULL
+108	anil321		22	mumbai		NULL
+109	anil123		22	mumbai		NULL
+110	suresh321	20	delhi		NULL
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+ADD temp1 INT ,  temp2  INT ;  
+go
+-----------------------------------------------------------------------------
+select * from db1.s1.emp14;
+go
+-----------------------------------------------------------------------------
+empid	empname		empage	empcity		egrade	temp1	temp2
+-----------------------------------------------------------------------------
+101	anil		24	pune		NULL	NULL	NULL
+102	sunil		20	mumbai		NULL	NULL	NULL
+103	suresh		19	pune		NULL	NULL	NULL
+104	centhil		17	agra		NULL	NULL	NULL
+105	centhil123	18	banglore	NULL	NULL	NULL
+106	centhil321	20	delhi		NULL	NULL	NULL
+107	sunil321	20	delhi		NULL	NULL	NULL
+108	anil321		22	mumbai		NULL	NULL	NULL
+109	anil123		22	mumbai		NULL	NULL	NULL
+110	suresh321	20	delhi		NULL	NULL	NULL
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14  
+DROP COLUMN temp1; 
+go
+-----------------------------------------------------------------------------
+select * from db1.s1.emp14;
+go
+-----------------------------------------------------------------------------
+empid	empname		empage	empcity		egrade	temp2
+-----------------------------------------------------------------------------
+101	anil		24	pune		NULL	NULL
+102	sunil		20	mumbai		NULL	NULL
+103	suresh		19	pune		NULL	NULL
+104	centhil		17	agra		NULL	NULL
+105	centhil123	18	banglore	NULL	NULL
+106	centhil321	20	delhi		NULL	NULL
+107	sunil321	20	delhi		NULL	NULL
+108	anil321		22	mumbai		NULL	NULL
+109	anil123		22	mumbai		NULL	NULL
+110	suresh321	20	delhi		NULL	NULL
+-----------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.emp14';  
+go
+-----------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+-----------------------------------------------------------------------------empid	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empname	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+empage	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empcity	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+egrade	varchar	no	2	     	     	yes	no	yes	SQL_Latin1_General_CP1_CI_AS
+temp2	int	no	4	10   	0    	yes	(n/a)	(n/a)	NULL
+-----------------------------------------------------------------------------
+SQL Server provides the ALTER TABLE ALTER COLUMN statement to modify the column data type. 
+-----------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.emp14';  
+go
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+ALTER COLUMN temp2 NVARCHAR(10);  
+go
+-----------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+empid	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empname	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+empage	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empcity	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+egrade	varchar	no	2	     	     	yes	no	yes	SQL_Latin1_General_CP1_CI_AS
+temp2	nvarchar	no	20	     	     	yes	(n/a)	(n/a)	SQL_Latin1_General_CP1_CI_AS
+-----------------------------------------------------------------------------
+SQL Server provides the ALTER TABLE ADD CONSTRAINT statement for adding a constraint to the specified column.
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+ADD CONSTRAINT mhasis PRIMARY KEY (empid);  
+go
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+DROP CONSTRAINT mhasis;
+go
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+ADD temp3 INT  ;  
+go
+-----------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.emp14'; 
+go
+-----------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+-----------------------------------------------------------------------------
+empid	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empname	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+empage	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+empcity	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+egrade	varchar	no	2	     	     	yes	no	yes	SQL_Latin1_General_CP1_CI_AS
+temp2	nvarchar	no	20	     	     	yes	(n/a)	(n/a)	SQL_Latin1_General_CP1_CI_AS
+temp3	int	no	4	10   	0    	yes	(n/a)	(n/a)	NULL
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+ADD CONSTRAINT ut3 unique(temp3);  
+go
+-----------------------------------------------------------------------------
+ALTER TABLE db1.s1.emp14 
+DROP CONSTRAINT ut3;
+go  
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

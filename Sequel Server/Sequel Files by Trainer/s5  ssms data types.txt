@@ -1,0 +1,221 @@
+-----------------------------------------------------------------------------
+	1.	Exact numeric data types
+	2.	Approximate numeric data types
+	3.	Date and Time data types
+	4.	Character string data type
+	5.	Unicode character string data types
+	6.	Binary data types
+	7.	Special data types
+	8.	Spatial Geometry types
+	9.	Spatial Geography types
+	10.	Miscellaneous data types
+-----------------------------------------------------------------------------
+			Exact numeric data types
+-----------------------------------------------------------------------------
+This data type will store exact numbers such as integer, decimal and money. 
+-----------------------------------------------------------------------------They have their own lower, upper limit, and memory requirements.
+-----------------------------------------------------------------------------
+Data Type	Descriptions	Lower Range	Upper Range	Storage
+-----------------------------------------------------------------------------
+bit		It is an integer type that allows us to store 0, 1, and NULL 		values.
+				0			1	1 byte
+-----------------------------------------------------------------------------
+tinyint		It allows us to store whole numbers from 0 to 255.
+				0		255		1 byte
+-----------------------------------------------------------------------------
+smallint	It allows us to store whole numbers between -32768 to 32767.
+				-2^15 (-32,768)	2^15-1 (32,767)  2 byte
+-----------------------------------------------------------------------------
+int		It allows to store whole numbers between -2,147,483,648 and 		2,147,483,647
+			-2^31 (-2,147,483,648)	2^31-1 (2,147,483,647)
+								4 byte
+-----------------------------------------------------------------------------
+bigint	It allows to store whole numbers between -9,223,372,036,854,775,808 	and 9,223,372,036,854,775,807
+				-2^63 (-9,223,372,036,854,775,808)
+				to 2^63-1 (9,223,372,036,854,775,807)
+								8 byte
+-----------------------------------------------------------------------------
+Decimal(p, s)	It is used for scale and fixed precision numbers.
+		The p parameter indicates the maximum total number of digits 		that can be stored (both to the left and the right of the 		decimal point). 
+		By default, it is 18 but can be in a range of 1 to 38.
+		The s parameter indicates the maximum number of digits stored 		to the right of the decimal point. 
+		By default, its value is 0 but can be from 0 to p.
+				?10^38+1	10^381?1	5 to 17 bytes
+-----------------------------------------------------------------------------
+Numeric(p, s)	It is similar to the decimal data type because both are 		synonyms.
+				?10^38+1	10^38?1	5 to 17 bytes.
+-----------------------------------------------------------------------------
+smallmoney	It allows storing monetary or currency values.
+				-214,748.3648	214,748.3647	4 byte
+-----------------------------------------------------------------------------
+money		It allows to store monetary or currency values.
+				-922,337,203,685,477.5808
+				922,337,203,685,477.5807
+				8 byte
+-----------------------------------------------------------------------------
+			Approximate numeric data types
+-----------------------------------------------------------------------------
+This data type is used to store floating-point and real values. 
+-----------------------------------------------------------------------------
+It is mainly used in scientific calculations.
+-----------------------------------------------------------------------------
+Data Type	Lower range	Upper Range	Storage		Precision
+-----------------------------------------------------------------------------
+float(n)	?1.79E+308	1.79E+308	It depends on n.
+						4 or 8 bytes
+								   7 digit
+-----------------------------------------------------------------------------
+real		?3.40E+38	3.40E+38	4 byte		15 digit
+-----------------------------------------------------------------------------
+			Date and Time data types
+-----------------------------------------------------------------------------
+Data Type	Descriptions	Lower Range	Upper Range	Storage
+-----------------------------------------------------------------------------
+date		It is used to store dates in SQL Server. 
+		By default, its format is YYYY-MM-DD, and its value is 			1900-01-01.
+				0001-01-01	9999-12-31	3 bytes
+-----------------------------------------------------------------------------
+datetime	It is used to store date and time with fractional seconds. 
+		Its default value is 1900-01-01 00:00:00. 
+		Its accuracy is in the increment of .000, .003, or .007 		seconds. 
+		It is recommended to avoid this data type and use datetime2 		instead.
+				1753-01-01	9999-12-31	8 bytes
+-----------------------------------------------------------------------------
+datetime2	It specifies date and time with fractional seconds and an 		accuracy of 100 nanoseconds. 
+		It provides precision from 0 to 7 digits. 
+		By default, its precision is 7, and the format is YYYY-MM-DD 		hh:mm: ss[.fractional seconds].
+				0001-01-01 00:00:00
+					9999-12-31 23:59:59.9999999
+								6 to 8 bytes
+-----------------------------------------------------------------------------
+datetimeoffset
+		It is the same as datetime2 with the addition of a time zone 		offset. 
+		Its timezone offset value is between -14:00 through +14:00.
+		0001-01-01 00:00:00
+				9999-12-31 23:59:59.9999999	10 bytes
+-----------------------------------------------------------------------------
+smalldatetime
+		It specifies a date along with the time of day and an 
+		accuracy of 1 minute. 
+		Here time is calculated on a 24-hour clock, with seconds 		starting at zero (:00) and no fractional seconds.
+				1900-01-01 00:00:00
+						2079-06-06 23:59:59
+								4 bytes
+-----------------------------------------------------------------------------
+time		It specifies time data only with an accuracy of 100 			nanoseconds. 
+		It is based on a 24-hour clock without time zone awareness. 
+		By default, its format is hh:mm:ss[.nnnnnnn].
+				00:00:00.0000000
+						23:59:59.9999999									3 to 5 bytes
+-----------------------------------------------------------------------------
+			Character string data type
+-----------------------------------------------------------------------------
+This data type allows us to define the character data type only, which can be fixed or variable in length.
+-----------------------------------------------------------------------------
+Data Type	Descriptions	Lower Range	Upper Range	Storage
+-----------------------------------------------------------------------------
+char(n)		It is used to store fixed-length non-Unicode character data.
+				0 characters	8000 characters	  n bytes
+-----------------------------------------------------------------------------
+varchar(n)	It is used to store variable-length non-Unicode character 		data.
+				0 characters	8000 characters
+							n bytes + 2 bytes
+-----------------------------------------------------------------------------
+varchar(max)	It is a data type that stores variable-length data. 
+		It is recommended to avoid this data type unless required 		because of its huge memory storage.
+				0 characters	2^31 characters
+							n bytes + 2 bytes
+-----------------------------------------------------------------------------
+text		It is a variable-length character string. 
+		It is also recommended to avoid this data type because it 		would be deprecated in future releases.
+				0 characters	2,147,483,647 chars
+							n bytes + 4 bytes
+-----------------------------------------------------------------------------
+			Unicode character string data types
+-----------------------------------------------------------------------------
+This data type allows us to define the full range of Unicode character sets encoded in the UTF-16 character set. 
+-----------------------------------------------------------------------------
+The following table illustrates all Unicode character string data type support in SQL Server:
+-----------------------------------------------------------------------------
+Data Type	Descriptions	Lower Range	Upper Range	Storage
+-----------------------------------------------------------------------------
+nchar 		It is used to store fixed-length Unicode character data.
+				0 characters	4000 characters
+							2 times n bytes
+-----------------------------------------------------------------------------
+nvarchar	It is used to store variable-length Unicode character data.
+				0 characters	4000 characters 
+						2 times n bytes + 2 bytes
+-----------------------------------------------------------------------------
+ntext		It is used to store variable-length Unicode string data. 
+		It is recommended to avoid this data type because it would 
+		be deprecated in future releases.
+				0 characters	1,073,741,823 characters
+						2 times the string length
+-----------------------------------------------------------------------------
+			Binary data types
+-----------------------------------------------------------------------------
+This data type allows storing image, audio, and video files of fixed and variable length into a database location. 
+-----------------------------------------------------------------------------
+It stores information in 0 and 1 format. 
+-----------------------------------------------------------------------------
+The following table illustrates all binary string data type support in SQL Server:
+-----------------------------------------------------------------------------
+Data Type	Descriptions	Lower Range	Upper Range	Storage
+-----------------------------------------------------------------------------
+binary		It is used to store fixed-length binary strings.
+				0 bytes		8000 bytes	n bytes
+-----------------------------------------------------------------------------
+varbinary	It is used to store variable-length binary string.
+				0 bytes		8000 bytes	
+			The actual length of data entered + 2 bytes
+-----------------------------------------------------------------------------
+image		It is similar to the varbinary data type that can store up to 		2 GB. 
+		It is recommended to avoid this data type because it would be 		deprecated in future releases.
+				0 bytes		2,147,483,647 bytes
+-----------------------------------------------------------------------------
+			Special data types
+-----------------------------------------------------------------------------
+SQL Server also provides some special data types that can be used according 
+to our requirements. 
+-----------------------------------------------------------------------------
+The below table illustrates all special datatypes:
+-----------------------------------------------------------------------------
+Data Type	Descriptions	
+-----------------------------------------------------------------------------
+cursor		It is an object data type used for variable and stored 			procedure OUTPUT parameters containing a reference to a 		cursor. 
+		In addition, it stores temporary table information.
+		Its output is a column of sp_cursor_list and 				sp_describe_cursor that returns the name of the cursor 			variable.
+-----------------------------------------------------------------------------
+rowversion	It's a data type that returns automatically generated unique 		binary numbers within a database. 
+		It is commonly used for version-stamping table rows. 
+		Its memory storage is 8 bytes. 
+		It's an increasing number that doesn't preserver time and 		date.
+-----------------------------------------------------------------------------
+hierarchyid	It is a system data type with variable length representing a 		position in a hierarchy. 
+		Its value represents the position in a tree hierarchy.
+-----------------------------------------------------------------------------
+uniqueidentifier	This data type indicates the 16 byte GUID. 
+			It is used to convert a string constant in the form 			xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. 
+			Here, x is a hexadecimal digit (0-9 and a-f).
+-----------------------------------------------------------------------------
+XML	This data type is used to store XML data in a SQL Server table. 
+	Its storage limit is 2 GB.
+-----------------------------------------------------------------------------
+			Spatial Geometry Types
+-----------------------------------------------------------------------------
+It is a spatial planar data type used to represents data in a flat (Euclidean) coordinate system.
+-----------------------------------------------------------------------------
+			Spatial Geography Types
+-----------------------------------------------------------------------------
+It is a geography spatial data type used for storing ellipsoidal (round-earth) data, such as GPS latitude and longitude coordinates.
+-----------------------------------------------------------------------------
+			Miscellaneous data types
+-----------------------------------------------------------------------------
+sql_variant	This data type is used to store values of other SQL Server 		data types.
+-----------------------------------------------------------------------------
+table		It is a spatial data type used to store the temporary result 		in a table-valued function. 
+		This data is used for later processing. 
+		We can use it by using the syntax as DECLARE @local_variable. 		It can also be used in functions, stored procedures, and 		batches.
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

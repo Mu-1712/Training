@@ -1,0 +1,44 @@
+------------------------------------------------------------------------
+			SQL Server IF ELSE
+------------------------------------------------------------------------
+DECLARE @Marks INT = 65 ;  
+  
+IF @marks >= 45  
+BEGIN  
+   PRINT 'Congratulations! You pass the Examination';  
+END  
+go
+------------------------------------------------------------------------
+Congratulations! You pass the Examination
+------------------------------------------------------------------------
+DECLARE @Marks INT;  
+SET @Marks = 65;  
+IF @Marks < 45  
+BEGIN  
+   PRINT 'Congratulations! You pass the Examination';  
+END  
+ELSE  
+BEGIN  
+   PRINT 'You have Failed! Better Luck Next Time';  
+END  
+go
+------------------------------------------------------------------------
+You have Failed! Better Luck Next Time
+------------------------------------------------------------------------
+DECLARE @age INT;  
+SET @age = 6;  
+  
+IF @age < 18  
+   PRINT 'You are underage';  
+ELSE  
+BEGIN  
+   IF @age < 50  
+      PRINT 'You are below 50';  
+   ELSE  
+      PRINT 'You are senior citizen';  
+END;
+go  
+------------------------------------------------------------------------
+You are underage
+------------------------------------------------------------------------
+------------------------------------------------------------------------

@@ -1,0 +1,38 @@
+-----------------------------------------------------------------------------
+SQL Server will add these values automatically to a column that exists in 
+the table but doesn't appear in the INSERT command's column list:
+-----------------------------------------------------------------------------
+If the column has an IDENTITY property, it will add the next incremental value.
+-----------------------------------------------------------------------------
+If we define a default value for a column, it will add that value.
+-----------------------------------------------------------------------------
+If we have specified the column's data type as a timestamp data type, it 
+will add the current timestamp value.
+-----------------------------------------------------------------------------
+If the column is nullable, it will add the NULL value.
+-----------------------------------------------------------------------------
+If the column is a computed value, it will add the calculated value.
+-----------------------------------------------------------------------------
+use db2;
+go
+create table db2.dbo.emp ( eid int IDENTITY primary key, ename varchar(10) not null, eage int, egrade char);
+go
+insert into db2.dbo.emp(ename,eage,egrade)values('anil',24,'b');
+go
+insert into db2.dbo.emp values('sunil',25,'b');
+go
+insert into db2.dbo.emp(eage,ename,egrade)values(25,'centhil','a');
+go
+insert into db2.dbo.emp values('suresh',25,'b'),('ramesh',22,'c'),('rajesh',25,'a');
+go
+select * from db2.dbo.emp;
+go
+-----------------------------------------------------------------------------
+1	anil	24	b
+2	sunil	25	b
+3	centhil	25	a
+4	suresh	25	b
+5	ramesh	22	c
+6	rajesh	25	a
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

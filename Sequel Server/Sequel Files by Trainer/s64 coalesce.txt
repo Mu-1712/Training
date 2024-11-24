@@ -1,0 +1,165 @@
+-----------------------------------------------------------------------	
+			SQL Server COALESCE
+-----------------------------------------------------------------------
+The COALESCE() function in SQL Server evaluates the arguments in sequence 
+and gives the first NON-NULL value in a specified number of expressions. 
+-----------------------------------------------------------------------
+If it evaluates all the list values as null or as not found any non-null value, it returns NULL.
+-----------------------------------------------------------------------
+CASE1: COALESCE(NULL, NULL);
+-----------------------------------------------------------------------
+CASE2: COALESCE(0, NULL);
+-----------------------------------------------------------------------
+CASE1 and CASE2 always return NULL because they cannot find any non-null value.
+-----------------------------------------------------------------------
+	1. COALESCE function with expression as character string data
+-----------------------------------------------------------------------
+SELECT COALESCE(NULL, 'sql', 'python','java', 'oracle',NULL) AS Result;
+go  
+-----------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------
+sql
+-----------------------------------------------------------------------
+	2. COALESCE function with expression as a numeric value
+-----------------------------------------------------------------------
+SELECT COALESCE(NULL, 1500, NULL, 2500) AS Result;  
+go
+-----------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------
+1500
+-----------------------------------------------------------------------
+SELECT COALESCE(NULL, 0, NULL, 0) AS Result;  
+go
+-----------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------
+0
+-----------------------------------------------------------------------
+	3. COALESCE function always evaluates an integer first
+-----------------------------------------------------------------------
+SELECT COALESCE (NULL, 1, 'abc',2, 'xyz') AS Result; 
+go
+-----------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------
+1
+-----------------------------------------------------------------------
+SELECT COALESCE (NULL, 'abc',2,1,'xyz') AS Result; 
+go
+-----------------------------------------------------------------------
+Msg 245, Level 16, State 1, Line 42
+Conversion failed when converting the varchar value 'abc' to data type int.
+-----------------------------------------------------------------------
+	4. COALESCE function with tables
+-----------------------------------------------------------------------
+use db1;
+go
+-----------------------------------------------------------------------
+CREATE TABLE empm  	(  
+    				id int,  
+    				firstname   	VARCHAR(50) NOT NULL,  
+    				lastname    	VARCHAR(50) NOT NULL,	  
+    				homenumber   	VARCHAR(25),  
+    				worknumber   	VARCHAR(25),  
+    				personalnumber   VARCHAR(25)  
+  			);
+ go
+-----------------------------------------------------------------------
+INSERT INTO empm
+ (id, firstname, lastname, homenumber, worknumber, personalnumber)  
+VALUES 
+(1, 'anil', 'pawar',  NULL, '920,176,2156', '988,132,0012'),  
+(2, 'ajit', 'patil',  NULL, NULL, '988,132,4000'),  
+(3, 'sharad', 'jagtap',  NULL, NULL, NULL) ; 
+go
+-----------------------------------------------------------------------
+select * from empm;
+go
+-----------------------------------------------------------------------
+id  firstname	lastname homenumber	worknumber	personalnumber
+-----------------------------------------------------------------------
+1  anil		pawar	  NULL		920,176,2156	988,132,0012
+2  ajit		patil	  NULL		NULL		988,132,4000
+3  sharad	jagtap	  NULL		NULL		NULL
+-----------------------------------------------------------------------
+SELECT firstname+' '+lastname AS fullname,  
+  COALESCE(homenumber, worknumber, personalnumber, 'NA') AS phone  
+FROM empm;
+go
+-----------------------------------------------------------------------  
+fullname	phone
+-----------------------------------------------------------------------
+anil pawar	920,176,2156
+ajit patil	988,132,4000
+sharad jagtap	NA
+-----------------------------------------------------------------------
+			COALESCE and CASE Expression
+-----------------------------------------------------------------------
+SELECT firstname+ ' ' +lastname AS fullname,  
+  CASE   
+    WHEN homenumber is NOT NULL THEN homenumber  
+    WHEN worknumber is NOT NULL THEN worknumber  
+    WHEN personalnumber is NOT NULL THEN personalnumber  
+   ELSE 'NA'  
+   END  
+   phone  
+FROM empm;
+go
+----------------------------------------------------------------------- 
+fullname	phone
+-----------------------------------------------------------------------
+anil pawar	920,176,2156
+ajit patil	988,132,4000
+sharad jagtap	NA
+-----------------------------------------------------------------------
+ 			COALESCE vs. ISNULL
+-----------------------------------------------------------------------
+The COALESCE() function evaluates the arguments in sequence and 
+returns the first non-null value from a given list. 
+-----------------------------------------------------------------------
+In contrast, ISNULL() function tests whether the input expression is 
+NULL or not. 
+-----------------------------------------------------------------------
+If the expression is NULL, the value passed to the argument list is 
+returned; otherwise returns the expression.
+-----------------------------------------------------------------------
+The COALESCE() function can evaluate the input values multiple times, 
+whereas the ISNULL() function is evaluated only once.
+-----------------------------------------------------------------------
+COALESCE() function works the same as the CASE expression rules and 
+returns the value's data type with the highest precedence, while ISNULL returns the data type of the first parameter.
+-----------------------------------------------------------------------
+The ISNULL and COALESCE function returns the different nullability of the result expression. 
+-----------------------------------------------------------------------
+Therefore, the expressions ISNULL(NULL, 1) and COALESCE(NULL, 1) are 
+equal but give different nullability. 
+-----------------------------------------------------------------------
+use db1;
+go
+-----------------------------------------------------------------------
+CREATE TABLE #DemoTable1     
+(     
+  column1 INTEGER NULL,     
+  column2 AS COALESCE(col1, 0) PRIMARY KEY,     
+  column3 AS ISNULL(col1, 0)     
+);     
+-----------------------------------------------------------------------
+CREATE TABLE #DemoTable2   
+(     
+  column1 INTEGER NULL,     
+  column2 AS COALESCE(col1, 0),     
+  column3 AS ISNULL(col1, 0) PRIMARY KEY     
+);  
+-----------------------------------------------------------------------
+The #DempTable1 cannot be created because the PRIMARY KEY cannot allow 
+NULL values, and the nullability of the COALESCE expression for column2 can return NULL.
+-----------------------------------------------------------------------
+The #DempTable2 can be created because the ISNULL function's nullability evaluates to NOT NULL.
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+
+
+

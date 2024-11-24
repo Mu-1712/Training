@@ -1,0 +1,192 @@
+-----------------------------------------------------------------------------
+				schema 
+-----------------------------------------------------------------------------
+it is a collection of database objects including tables, views, triggers, stored procedures, indexes, etc. 
+-----------------------------------------------------------------------------
+it is associated with a username which is known as the schema owner, who is the owner of the logically related database objects
+-----------------------------------------------------------------------------
+it always belongs to one database
+-----------------------------------------------------------------------------
+on the other hand, a database may have one or multiple schemas
+-----------------------------------------------------------------------------
+an object within a schema is qualified using the schema_name.object_name format
+-----------------------------------------------------------------------------
+built-in schemas in SQL Server :
+-----------------------------------------------------------------------------
+SQL Server provides us with some pre-defined schemas which have the same names as the built-in database users and roles :
+-----------------------------------------------------------------------------
+	1.	dbo
+-----------------------------------------------------------------------------
+	2.	guest
+-----------------------------------------------------------------------------
+	3.	sys
+-----------------------------------------------------------------------------
+	4.	INFORMATION_SCHEMA.
+-----------------------------------------------------------------------------
+SQL Server reserves the sys and INFORMATION_SCHEMA schemas for system objects, therefore, you cannot create or drop any objects in these schemas
+-----------------------------------------------------------------------------
+the default schema for a newly created database is dbo, which is owned by the dbo user account
+-----------------------------------------------------------------------------
+by default, when you create a new user with the CREATE USER command, the user will take dbo as its default schema
+-----------------------------------------------------------------------------
+The create schema statement allows you to create a new schema in the current database
+-----------------------------------------------------------------------------
+create schema schema_name    [AUTHORIZATION owner_name]
+go;
+-----------------------------------------------------------------------------
+the GO command instructs the SQL Server Management Studio to send the SQL statements up to the GO statement to the server to be executed
+-----------------------------------------------------------------------------
+once you execute the statement, you can find the newly created schema under the Security > Schemas of the database name
+-----------------------------------------------------------------------------
+			schema alter 
+-----------------------------------------------------------------------------
+the alter schema statement allows you to transfer a securable from a 
+schema to another within the same database
+-----------------------------------------------------------------------------
+a securable is a resource to which the Database Engine authorization system controls access
+-----------------------------------------------------------------------------
+a table is a securable
+-----------------------------------------------------------------------------
+alter schema target_schema_name   transfer [ entity_type :: ] 									securable_name;
+-----------------------------------------------------------------------------
+target_schema_name is the name of a schema in the current database, into 
+which you want to move the object
+-----------------------------------------------------------------------------
+this cannot be SYS or INFORMATION_SCHEMA
+-----------------------------------------------------------------------------
+the entity_type can be Object, Type or XML Schema Collection
+-----------------------------------------------------------------------------
+by default, the entity_type is Object
+-----------------------------------------------------------------------------
+the entity_type represents the class of the entity for which the owner is being changed
+-----------------------------------------------------------------------------
+object_name is the name of the securable that you want to move into the target_schema_name
+-----------------------------------------------------------------------------
+if you move a stored procedure, function, view, or trigger, SQL Server will not change the schema name of these securable
+-----------------------------------------------------------------------------
+it is recommended that you drop and re-create these objects in the new schema instead of using the ALTER SCHEMA statement for moving
+-----------------------------------------------------------------------------
+if you move an object e.g., table or synonym, SQL Server will not update the references for these objects automatically. 
+-----------------------------------------------------------------------------
+you must manually modify the references to reflect the new schema name. 
+-----------------------------------------------------------------------------
+for example, if you move a table that is referenced in a stored procedure, 
+you must modify the stored procedure to reflect the new schema name.
+-----------------------------------------------------------------------------
+SQL Server ALTER SCHEMA example:
+-----------------------------------------------------------------------------
+First, create a new table named offices in the dbo schema:
+-----------------------------------------------------------------------------
+CREATE TABLE dbo.offices
+(
+    office_id      INT
+    PRIMARY KEY IDENTITY, 
+    office_name    NVARCHAR(40) NOT NULL, 
+    office_address NVARCHAR(255) NOT NULL, 
+    phone          VARCHAR(20),
+);
+-----------------------------------------------------------------------------
+Next, insert some rows into the dob.offices table:
+-----------------------------------------------------------------------------
+INSERT INTO 
+    dbo.offices(office_name, office_address)
+VALUES
+    ('Silicon Valley','400 North 1st Street, San Jose, CA 95130'),
+    ('Sacramento','1070 River Dr., Sacramento, CA 95820');
+-----------------------------------------------------------------------------
+Then, create a stored procedure that finds office by office id:
+-----------------------------------------------------------------------------
+CREATE PROC usp_get_office_by_id
+(
+    @id INT
+) 
+AS
+BEGIN
+    SELECT 
+        * 
+    FROM 
+        dbo.offices
+    WHERE 
+        office_id = @id;
+END;
+-----------------------------------------------------------------------------
+After that, transfer this dbo.offices table to the sales schema:
+-----------------------------------------------------------------------------
+ALTER SCHEMA sales TRANSFER OBJECT::dbo.offices;  
+-----------------------------------------------------------------------------
+If you execute the usp_get_office_by_id stored procedure, SQL Server will issue an error:
+-----------------------------------------------------------------------------
+Msg 208, Level 16, State 1, Procedure usp_get_office_by_id, Line 5 [Batch Start Line 30]
+Invalid object name 'dbo.offices'.
+-----------------------------------------------------------------------------
+Finally, manually modify the stored procedure to reflect the new schema:
+-----------------------------------------------------------------------------
+ALTER PROC usp_get_office_by_id
+(
+    @id INT
+) 
+AS
+BEGIN
+    SELECT 
+        * 
+    FROM 
+        sales.offices
+    WHERE 
+        office_id = @id;
+END;
+-----------------------------------------------------------------------------
+SQL Server DROP SCHEMA statement overview
+-----------------------------------------------------------------------------
+The DROP SCHEMA statement allows you to delete a schema from a database. 
+-----------------------------------------------------------------------------
+The following shows the syntax of the DROP SCHEMA statement:
+-----------------------------------------------------------------------------
+DROP SCHEMA [IF EXISTS] schema_name;
+-----------------------------------------------------------------------------
+First, specify the name of the schema that you want to drop. 
+-----------------------------------------------------------------------------
+If the schema contains any objects, the statement will fail. 
+-----------------------------------------------------------------------------
+Therefore, you must delete all objects in the schema before removing the schema.
+-----------------------------------------------------------------------------
+Second, use the IF EXISTS option to conditionally remove the schema only if the schema exists. 
+-----------------------------------------------------------------------------
+Attempting to drop a nonexisting schema without the IF EXISTS option will result in an error.
+-----------------------------------------------------------------------------
+SQL Server DROP SCHEMA statement example :
+-----------------------------------------------------------------------------
+First, create a new schema named logistics:
+-----------------------------------------------------------------------------
+CREATE SCHEMA logistics;
+GO
+-----------------------------------------------------------------------------
+Next, create a new table named deliveries inside the logistics schema:
+-----------------------------------------------------------------------------
+CREATE TABLE logistics.deliveries
+(
+    order_id        INT
+    PRIMARY KEY, 
+    delivery_date   DATE NOT NULL, 
+    delivery_status TINYINT NOT NULL
+);
+-----------------------------------------------------------------------------
+Then, drop the schema logistics:
+-----------------------------------------------------------------------------
+DROP SCHEMA logistics;
+-----------------------------------------------------------------------------
+SQL Server issued the following error because the schema is not empty.
+-----------------------------------------------------------------------------
+Msg 3729, Level 16, State 1, Line 1
+Cannot drop schema 'logistics' because it is being referenced by object 'deliveries'.
+-----------------------------------------------------------------------------
+After that, drop the table logistics.deliveries:
+-----------------------------------------------------------------------------
+DROP TABLE logistics.deliveries;
+-----------------------------------------------------------------------------
+Finally, issue the DROP SCHEMA again to drop the logistics schema:
+-----------------------------------------------------------------------------
+DROP SCHEMA IF EXISTS logistics;
+-----------------------------------------------------------------------------
+Now, you will find that the logistics schema has been deleted from the database.
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

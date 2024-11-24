@@ -1,0 +1,105 @@
+------------------------------------------------------------------------
+use db1;
+go
+------------------------------------------------------------------------
+CREATE TABLE db1.s1.m_emp  
+( 	id 		INT 		PRIMARY KEY,  
+  	last_name 	VARCHAR(50) 	NOT NULL,  
+  	first_name 	VARCHAR(50) 	NOT NULL,  
+  	salary 		MONEY  
+);   
+go
+------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.m_emp'; 
+go
+------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+------------------------------------------------------------------------
+id	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+last_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+first_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+salary	money	no	8	19   	4    	yes	(n/a)	(n/a)	NULL
+------------------------------------------------------------------------
+CREATE TABLE db1.s1.m_emp2  
+( 	id 		INT,  
+  	last_name 	VARCHAR(50) NOT NULL,  
+  	first_name 	VARCHAR(50) NOT NULL,  
+  	salary MONEY,
+  
+  	CONSTRAINT pk1 PRIMARY KEY (id)  
+); 
+go
+------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.m_emp2'; 
+go
+------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+------------------------------------------------------------------------
+id	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+last_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+first_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+salary	money	no	8	19   	4    	yes	(n/a)	(n/a)	NULL
+------------------------------------------------------------------------
+constraint_type	constraint_name	delete_action	update_action	status_enabled	status_for_replication	constraint_keys
+------------------------------------------------------------------------
+PRIMARY KEY (clustered)	pk1	(n/a)	(n/a)	(n/a)	(n/a)	id
+------------------------------------------------------------------------
+CREATE TABLE db1.s1.m_emp3  
+( 		last_name 	VARCHAR(50) NOT NULL,  
+  		first_name 	VARCHAR(50) NOT NULL,  
+  		salary MONEY,  
+  		
+		CONSTRAINT pk3 PRIMARY KEY (last_name, first_name)  
+);  
+go
+------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.m_emp2'; 
+go
+------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+------------------------------------------------------------------------
+last_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+first_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+salary	money	no	8	19   	4    	yes	(n/a)	(n/a)	NULL
+------------------------------------------------------------------------
+constraint_type	constraint_name	delete_action	update_action	status_enabled	status_for_replication	constraint_keys
+------------------------------------------------------------------------
+PRIMARY KEY (clustered)	pk3	(n/a)	(n/a)	(n/a)	(n/a)	last_name, first_name
+------------------------------------------------------------------------
+You can use an ALTER TABLE statement to create a primary key only on the column or columns that are already defined as NOT NULL.
+------------------------------------------------------------------------
+If a column of a table has NULL values, you cannot add a primary key without dropping and recreating the table.
+------------------------------------------------------------------------
+ALTER TABLE table_name  
+ADD CONSTRAINT constraint_name PRIMARY KEY (column_name);  
+------------------------------------------------------------------------
+Enable Primary Key
+------------------------------------------------------------------------
+ALTER INDEX statement is used to enable a primary key in SQL Server database.
+------------------------------------------------------------------------
+ALTER INDEX constraint_name ON table_name  
+REBUILD;   
+------------------------------------------------------------------------
+Disable Primary key
+------------------------------------------------------------------------
+ALTER INDEX statement is used to disable a primary key in SQL Server database.
+------------------------------------------------------------------------
+ALTER INDEX constraint_name ON table_name  
+DISABLE;   
+------------------------------------------------------------------------
+Drop Primary Key
+------------------------------------------------------------------------
+ALTER TABLE db1.s1.m_emp3  
+DROP CONSTRAINT pk3;
+go
+------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.m_emp3'; 
+go
+------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+------------------------------------------------------------------------
+last_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+first_name	varchar	no	50	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+salary	money	no	8	19   	4    	yes	(n/a)	(n/a)	NULL
+------------------------------------------------------------------------
+------------------------------------------------------------------------

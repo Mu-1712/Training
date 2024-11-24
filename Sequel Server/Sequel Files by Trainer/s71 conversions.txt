@@ -1,0 +1,147 @@
+-----------------------------------------------------------------------------
+			SQL Server CONVERT
+-----------------------------------------------------------------------------
+Data type conversion is a method used to convert the data type of a value 
+into the other type. 
+-----------------------------------------------------------------------------
+SQL Server performs implicit conversion for their internal needs. 
+-----------------------------------------------------------------------------
+In contrast, database administrators or programmers perform the explicit conversion with the help of data conversion functions. oft SQL Server.
+-----------------------------------------------------------------------------
+		1.	Convert FLOAT to INT
+-----------------------------------------------------------------------------
+--Declare float variable 
+DECLARE @floatvalue AS Float  
+
+--Assign value into a float variable 
+SET @floatvalue = 845.123456   
+
+--Use Convert function for conversion  
+SELECT CONVERT(INT, @floatvalue) AS Result
+  
+go
+-----------------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------------
+845
+-----------------------------------------------------------------------------
+		2.	Convert Float to Varchar
+-----------------------------------------------------------------------------
+DECLARE @fvalue AS Float 
+SET @fvalue = 345.1346 
+  
+--Conversion of float into varchar  
+SELECT CONVERT(varchar, @fvalue) AS Result 
+ 
+go
+-----------------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------------
+345.135
+-----------------------------------------------------------------------------
+		3.	Convert decimal to another decimal with different 			length
+-----------------------------------------------------------------------------
+DECLARE @decimalVal AS DECIMAL 
+SET @decimalVal = 9.956  
+
+SELECT CONVERT(DECIMAL(2, 0), @decimalVal) AS Result  
+
+go
+-----------------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------------
+10
+-----------------------------------------------------------------------------
+		4.	Convert String to DATETIME
+-----------------------------------------------------------------------------
+SELECT CONVERT(DATETIME, '2021-04-26') AS Result; 
+go
+-----------------------------------------------------------------------------
+ Result
+-----------------------------------------------------------------------------
+2021-04-26 00:00:00.000
+-----------------------------------------------------------------------------
+		5.	Convert DATETIME to Varchar
+-----------------------------------------------------------------------------
+SELECT CONVERT(VARCHAR, GETDATE(), 13) AS Result;
+go 
+-----------------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------------
+08 Oct 2024 16:08:36:447
+-----------------------------------------------------------------------------
+		6.	Convert function with table
+-----------------------------------------------------------------------------
+use db1;
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+CREATE TABLE db1.s1.orders (  
+    order_id 	INTEGER PRIMARY KEY IDENTITY,  
+    customer_id INTEGER,  
+    item 	TEXT,  
+    price 	FLOAT,  
+    purchase_date DATE  
+);  
+go
+-----------------------------------------------------------------------------
+Commands completed successfully.
+-----------------------------------------------------------------------------
+INSERT INTO db1.s1.orders (customer_id, item, price, purchase_date)  
+VALUES 
+	(1345, 	'Laptop', 	65000.00, 	'2021-04-26'),  
+    	(2432, 	'Mobile', 	25000.00, 	'2021-04-06'),  
+    	(1213, 	'Hard Disk', 	3000.00, 	'2021-04-16'),  
+    	(3213, 	'Mouse', 	1250.00, 	'2021-04-16'),  
+    	(4313, 	'Modem', 	3000.00, 	'2021-04-26'); 
+go 
+-----------------------------------------------------------------------------
+(5 rows affected)
+-----------------------------------------------------------------------------
+SELECT * FROM db1.s1.orders     
+WHERE purchase_date     
+BETWEEN CONVERT(DATETIME, '2021-04-10') AND CONVERT(DATETIME, '2021-04-20');
+go
+-----------------------------------------------------------------------------
+order_id	customer_id	item		price		purchase_date
+-----------------------------------------------------------------------------
+3		1213		Hard Disk	3000		2021-04-16
+4		3213		Mouse		1250		2021-04-16
+-----------------------------------------------------------------------------
+		7.	TRY_CONVERT Function
+-----------------------------------------------------------------------------
+It is the advanced form of the CONVERT function , handles errors. 
+-----------------------------------------------------------------------------
+SELECT CONVERT(INT, 'mba') AS Result;  
+go
+-----------------------------------------------------------------------------
+Conversion failed when converting the varchar value 'mba' to data type int.
+-----------------------------------------------------------------------------
+SELECT TRY_CONVERT(INT, 'mba') AS Result; 
+go
+ -----------------------------------------------------------------------------
+Result
+-----------------------------------------------------------------------------
+NULL
+-----------------------------------------------------------------------------
+		Difference between CAST and CONVERT Function
+-----------------------------------------------------------------------------
+	1.	CONVERT is not a part of the ANSI-SQL specification. 
+-----------------------------------------------------------------------------
+		It is, in reality, SQL implementation-specific. 
+-----------------------------------------------------------------------------
+	2.	CAST is purely part of ANSI-SQL specification.
+-----------------------------------------------------------------------------
+	3. 	CONVERT function can accept an optional style parameter that 		specifies the format of the data type after conversion, 		whereas CAST cannot.
+-----------------------------------------------------------------------------
+	4.	CAST uses the 'AS' clause to separate the parameter, whereas 		CONVERT uses the comma(,) operator for separating the 			parameter.
+-----------------------------------------------------------------------------
+	5.	The CAST function can preserve decimal values during the 		conversion of decimal values into integers. 
+-----------------------------------------------------------------------------
+		If necessary, it can also truncate the decimal value.
+-----------------------------------------------------------------------------
+ 	6.	This functionality cannot be achieved with the CONVERT 
+		function.
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

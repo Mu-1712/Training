@@ -1,0 +1,168 @@
+----------------------------------------------------------------------------
+			SQL Server CROSS JOIN
+----------------------------------------------------------------------------
+CROSS JOIN produces the result by combining all possibilities of the two or more tables that contain every row from all contributing tables. 
+----------------------------------------------------------------------------
+In other words, it returns the result by generating a paired combination of each row of all tables participating in the join operation. 
+----------------------------------------------------------------------------
+This join is sometimes also termed CARTESIAN JOIN, which provides the Cartesian product of all associated tables.
+----------------------------------------------------------------------------
+The Cartesian product can be explained as all rows present in the first table multiplied by all rows present in the second table. 
+----------------------------------------------------------------------------
+It is similar to the INNER JOIN, where the join condition is not available with this clause.
+----------------------------------------------------------------------------
+We can understand it with the following visual representation where CROSS JOIN returns all the records from table1 and table2, and each row of the first table combines with each row of the second table.
+----------------------------------------------------------------------------
+SELECT column_lists    
+FROM table1    
+CROSS JOIN table2;  
+----------------------------------------------------------------------------
+use db2;
+go
+----------------------------------------------------------------------------
+Commands completed successfully.
+----------------------------------------------------------------------------
+create table memp (
+			eid 	int 		identity,
+			ename	varchar(10)	not null,
+			eage	int,
+			ecity	varchar(10)
+		);
+go
+----------------------------------------------------------------------------
+Commands completed successfully.
+----------------------------------------------------------------------------
+insert into memp values
+		('anil',24,'pune'),
+		('sunil',22,'mumbai'),
+		('nilay',23,'chennai'),
+		('centhil',24,'banglore');
+go
+----------------------------------------------------------------------------
+(4 rows affected)
+----------------------------------------------------------------------------
+select * from memp;
+go
+----------------------------------------------------------------------------
+eid	ename		eage		ecity
+----------------------------------------------------------------------------
+1	anil		24		pune
+2	sunil		22		mumbai
+3	nilay		23		chennai
+4	centhil		24		banglore
+----------------------------------------------------------------------------
+create table dept (
+			did 		int 		identity,
+			dname		varchar(10)	not null,
+			dtotalemp	int,
+			dcity		varchar(10)
+		);
+go
+----------------------------------------------------------------------------
+Commands completed successfully.
+----------------------------------------------------------------------------
+insert into dept values
+		('sales',12,'hyderabad'),
+		('marketing',8,'hyderabad'),
+		('testing',15,'chennai'),
+		('hr',14,'banglore');
+go
+----------------------------------------------------------------------------
+(4 rows affected)
+----------------------------------------------------------------------------
+select * from dept;
+go
+----------------------------------------------------------------------------
+did	dname		dtotalemp	dcity
+----------------------------------------------------------------------------
+1	sales		12		hyderabad
+2	marketing	8		hyderabad
+3	testing		15		chennai
+4	hr		14		banglore
+----------------------------------------------------------------------------
+SELECT *    
+FROM memp    
+CROSS JOIN dept;  
+go
+----------------------------------------------------------------------------
+eid	ename	eage	ecity	did	dname	dtotalemp	dcity
+----------------------------------------------------------------------------
+1	anil	24	pune	1	sales	12	hyderabad
+2	sunil	22	mumbai	1	sales	12	hyderabad
+3	nilay	23	chennai	1	sales	12	hyderabad
+4	centhil	24	banglore	1	sales	12	hyderabad
+1	anil	24	pune	2	marketing	8	hyderabad
+2	sunil	22	mumbai	2	marketing	8	hyderabad
+3	nilay	23	chennai	2	marketing	8	hyderabad
+4	centhil	24	banglore	2	marketing	8	hyderabad
+1	anil	24	pune	3	testing	15	chennai
+2	sunil	22	mumbai	3	testing	15	chennai
+3	nilay	23	chennai	3	testing	15	chennai
+4	centhil	24	banglore	3	testing	15	chennai
+1	anil	24	pune	4	hr	14	banglore
+2	sunil	22	mumbai	4	hr	14	banglore
+3	nilay	23	chennai	4	hr	14	banglore
+4	centhil	24	banglore	4	hr	14	banglore
+----------------------------------------------------------------------------
+SELECT memp.eid, memp.ename, dept.did,dept.dcity   
+FROM memp    
+CROSS JOIN dept;  
+go
+----------------------------------------------------------------------------
+eid	ename	did	dcity
+----------------------------------------------------------------------------
+1	anil	1	hyderabad
+2	sunil	1	hyderabad
+3	nilay	1	hyderabad
+4	centhil	1	hyderabad
+1	anil	2	hyderabad
+2	sunil	2	hyderabad
+3	nilay	2	hyderabad
+4	centhil	2	hyderabad
+1	anil	3	chennai
+2	sunil	3	chennai
+3	nilay	3	chennai
+4	centhil	3	chennai
+1	anil	4	banglore
+2	sunil	4	banglore
+3	nilay	4	banglore
+4	centhil	4	banglore
+----------------------------------------------------------------------------
+SELECT memp.eid, memp.ename, dept.did,dept.dcity   
+FROM memp    
+CROSS JOIN dept
+where dept.did >= 3;  
+go
+----------------------------------------------------------------------------  
+eid	ename	did	dcity
+----------------------------------------------------------------------------
+1	anil	3	chennai
+2	sunil	3	chennai
+3	nilay	3	chennai
+4	centhil	3	chennai
+1	anil	4	banglore
+2	sunil	4	banglore
+3	nilay	4	banglore
+4	centhil	4	banglore
+----------------------------------------------------------------------------
+SELECT memp.eid, memp.ename, dept.did,dept.dcity   
+FROM memp    
+CROSS JOIN dept
+where dept.did >= 3
+order by dept.did desc;  
+go
+----------------------------------------------------------------------------
+eid	ename	did	dcity
+----------------------------------------------------------------------------
+1	anil	4	banglore
+2	sunil	4	banglore
+3	nilay	4	banglore
+4	centhil	4	banglore
+1	anil	3	chennai
+2	sunil	3	chennai
+3	nilay	3	chennai
+4	centhil	3	Chennai
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+

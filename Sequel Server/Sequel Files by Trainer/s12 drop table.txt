@@ -1,0 +1,39 @@
+------------------------------------------------------------------------------
+SQL Server allows DBA to remove a table, which is not relevant or obsolete in our database. 
+------------------------------------------------------------------------------
+When we remove a table, the complete data and the whole structure or definition are deleted permanently from the table. 
+------------------------------------------------------------------------------
+Therefore, we should have to be very careful while dropping a table from the specified database. 
+------------------------------------------------------------------------------
+If the SQL Server does not find the target database table, it will throw an error message.
+------------------------------------------------------------------------------
+SELECT TOP (1000) [id]
+      ,[fullname]
+  FROM [db1].[s1].[candidates]
+go
+------------------------------------------------------------------------------
+id	fullname
+------------------------------------------------------------------------------
+1	sachin pawar
+2	suresh patil
+3	prakash patil
+4	rajesh shinde
+------------------------------------------------------------------------------
+drop table if exists db1.s1.candidates;
+go
+------------------------------------------------------------------------------
+We must remember the following points before deleting a table:
+------------------------------------------------------------------------------
+The DROP TABLE query will delete the table, including its physical disc files.
+------------------------------------------------------------------------------
+Therefore, we must keep a backup if we need to recover it in the future.
+------------------------------------------------------------------------------
+If a foreign key constraint references the table, this query does not drop a table. 
+------------------------------------------------------------------------------
+If we want to do this, we will first remove the referencing foreign key constraint or the table. 
+------------------------------------------------------------------------------
+Also, we first list the referencing table in an event when the reference table and the primary key table are both being deleted in the same DROP TABLE statement.
+------------------------------------------------------------------------------
+This statement does not remove the data stored in the file system when the table has a varbinary (max) column with the FILESTREAM
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------

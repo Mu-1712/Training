@@ -1,0 +1,401 @@
+--------------------------------------------------------------------------
+ 			SQL Server Triggers
+--------------------------------------------------------------------------
+A trigger is a set of SQL statements that reside in system memory with 
+unique names. 
+--------------------------------------------------------------------------
+It is a specialized category of stored procedure that is called 
+automatically when a database server event occurs. 
+--------------------------------------------------------------------------
+Each trigger is always associated with a table.
+--------------------------------------------------------------------------
+A trigger is called a special procedure because it cannot be called 
+directly like a stored procedure. 
+--------------------------------------------------------------------------
+The key distinction between the trigger and procedure is that a trigger is called automatically when a data modification event occurs against a table. 
+--------------------------------------------------------------------------
+A stored procedure, on the other hand, must be invoked directly.
+--------------------------------------------------------------------------
+The following are the main characteristics that distinguish triggers from stored procedures:
+--------------------------------------------------------------------------
+	1.	We cannot manually execute/invoked triggers.
+--------------------------------------------------------------------------
+	2.	Triggers have no chance of receiving parameters.
+--------------------------------------------------------------------------
+	3.	A transaction cannot be committed or rolled back inside a 		trigger.
+--------------------------------------------------------------------------
+CREATE TRIGGER [schema].trigger_name  
+ON table_name  
+AFTER  	{INSERT, UPDATE, DELETE}  
+	[NOT FOR REPLICATION]  
+AS  
+	{SQL_Statements}  
+--------------------------------------------------------------------------
+Table name is a required parameter that defines the table name to which 
+the trigger applies. 
+--------------------------------------------------------------------------
+NOT FOR REPLICATION: 
+--------------------------------------------------------------------------
+	This option tells that SQL Server does not execute the trigger when 	data is modified as part of a replication process.
+--------------------------------------------------------------------------
+			When we use triggers?
+--------------------------------------------------------------------------
+Triggers will be helpful when we need to execute some events automatically 
+on certain desirable scenarios. 
+--------------------------------------------------------------------------
+use db1;
+go
+--------------------------------------------------------------------------
+Commands completed successfully.
+--------------------------------------------------------------------------
+CREATE TABLE db1.s1.Employee  
+(  
+  	Id 		INT PRIMARY KEY,  
+  	Name 		VARCHAR(45),  
+  	Salary 		INT,   	
+  	DepartmentId 	INT  
+) 
+go 
+--------------------------------------------------------------------------
+Commands completed successfully.
+--------------------------------------------------------------------------
+INSERT INTO db1.s1.Employee 
+VALUES 
+	(1,	'sunil', 	82000,  103),  
+	(2,	'anil', 	52000,  102),  
+	(3,	'centhil', 	25000,  101),  
+	(4,	'suresh', 	47000,  102),  
+	(5,	'ramesh', 	46000,  103) 
+go
+--------------------------------------------------------------------------
+(5 rows affected)
+--------------------------------------------------------------------------
+SELECT * FROM db1.s1.Employee;  
+go
+--------------------------------------------------------------------------
+Id	Name		Salary		DepartmentId
+--------------------------------------------------------------------------
+1	sunil		82000		103
+2	anil		52000		102
+3	centhil		25000		101
+4	suresh		47000		102
+5	ramesh		46000	103
+--------------------------------------------------------------------------
+Create another table named 'Employee_Record ' to 
+automatically store transaction records of each operation, such as INSERT, UPDATE, or DELETE on the Employee table:
+--------------------------------------------------------------------------
+CREATE TABLE db1.s1.Employee_Record  
+(    
+	Id int 		IDENTITY,   
+	Remark 		text   
+)  
+go
+--------------------------------------------------------------------------
+Commands completed successfully.
+--------------------------------------------------------------------------
+Now, we will create a trigger that stores transaction records of each 
+insert operation on the Employee table into the Employee_Audit_Test table. 
+--------------------------------------------------------------------------
+CREATE TRIGGER trInsertEmployee  
+ON db1.s1.Employee  
+FOR INSERT  
+AS  
+BEGIN  
+  Declare 	@Id int
+  SELECT 	@Id = Id from inserted 	-- from  db1.s1.Employee_Record 
+  INSERT INTO db1.s1.Employee_Record  
+  VALUES ('New employee with Id = ' + CAST(@Id AS VARCHAR(10)) + 
+  ' is added at ' + CAST(Getdate() AS VARCHAR(22)))  
+END  
+go
+--------------------------------------------------------------------------
+Commands completed successfully.
+--------------------------------------------------------------------------
+After creating a trigger, try to add the following record into the table:
+--------------------------------------------------------------------------
+INSERT INTO db1.s1.Employee VALUES (6,'prakash', 62000,  3)  
+go
+--------------------------------------------------------------------------
+(1 row affected)
+--------------------------------------------------------------------------
+If no error is found, execute the SELECT statement to check the record. 
+--------------------------------------------------------------------------
+SELECT * FROM db1.s1.Employee;  
+go
+--------------------------------------------------------------------------
+Id	Name		Salary		DepartmentId
+--------------------------------------------------------------------------
+1	sunil		82000		103
+2	anil		52000		102
+3	centhil		25000		101
+4	suresh		47000		102
+5	ramesh		46000		103
+6	prakash		62000		3
+--------------------------------------------------------------------------
+SELECT * FROM db1.s1.Employee_Record;  
+go
+--------------------------------------------------------------------------
+Id	Remark
+--------------------------------------------------------------------------
+1	New employee with Id = 6 is added at Oct  8 2024  1:42PM
+--------------------------------------------------------------------------
+INSERT INTO db1.s1.Employee VALUES (7,'prakash123', 62000,  3)  
+go
+--------------------------------------------------------------------------
+SELECT * FROM db1.s1.Employee;  
+go
+--------------------------------------------------------------------------
+Id	Name		Salary		DepartmentId
+--------------------------------------------------------------------------
+1	sunil		82000		103
+3	centhil		25000		101
+4	suresh		47000		102
+5	ramesh		46000		103
+6	prakash		62000		3
+7	prakash123	62000		3
+--------------------------------------------------------------------------
+SELECT * FROM db1.s1.Employee_Record;  
+go
+--------------------------------------------------------------------------
+Id	Remark
+--------------------------------------------------------------------------
+1	New employee with Id = 6 is added at Oct 10 2024 11:24AM
+2	New employee with Id = 7 is added at Oct 10 2024 11:28AM
+--------------------------------------------------------------------------
+We are going to create another trigger to store transaction records of each delete operation on the Employee table into the Employee_Delete table. 
+--------------------------------------------------------------------------
+CREATE TABLE db1.s1.Employee_Delete 
+(    
+	Id int 		IDENTITY,   
+	Remark 		text   
+)  
+go
+--------------------------------------------------------------------------
+Commands completed successfully.
+--------------------------------------------------------------------------
+CREATE TRIGGER trDeleteEmployee   
+ON db1.s1.Employee  
+FOR DELETE  
+AS  
+BEGIN  
+  Declare @Id int  
+  SELECT @Id = Id from db1.s1.Employee -- from deleted
+  INSERT INTO db1.s1.Employee_Delete  
+  VALUES 
+ ('An existing employee with Id = ' + CAST(@Id AS VARCHAR(10)) + ' is deleted        
+  at ' + CAST(Getdate() AS VARCHAR(22)))  
+END
+go  
+--------------------------------------------------------------------------
+Commands completed successfully.
+--------------------------------------------------------------------------
+After creating a trigger, we will delete a record from the Employee table:
+--------------------------------------------------------------------------
+DELETE FROM db1.s1.Employee WHERE Id = 2;  
+go
+--------------------------------------------------------------------------
+(1 row affected)
+--------------------------------------------------------------------------
+If no error is found, check the records.
+--------------------------------------------------------------------------
+SELECT * FROM db1.s1.Employee;  
+go
+--------------------------------------------------------------------------
+Id	Name	Salary	DepartmentId
+--------------------------------------------------------------------------
+1	sunil	82000	103
+3	centhil	25000	101
+4	suresh	47000	102
+5	ramesh	46000	103
+6	prakash	62000	3
+--------------------------------------------------------------------------
+SELECT * FROM db1.s1.Employee_Delete;  
+go
+--------------------------------------------------------------------------
+Id	Remark
+--------------------------------------------------------------------------
+1	An existing employee with Id = 2 is deleted  at Oct  8 2024  1:52PM
+--------------------------------------------------------------------------
+In both the triggers code, you will notice these lines:
+--------------------------------------------------------------------------
+SELECT @Id = Id from inserted  
+--------------------------------------------------------------------------
+SELECT @Id = Id from deleted  
+--------------------------------------------------------------------------
+The inserted table keeps the copy of the row when you insert a new row into the actual table. 
+--------------------------------------------------------------------------
+And the deleted table keeps the copy of the row you have just deleted from the actual table.
+--------------------------------------------------------------------------
+			Types of SQL Server Triggers
+--------------------------------------------------------------------------
+		1.	Data Definition Language (DDL) Triggers
+--------------------------------------------------------------------------
+		2.	Data Manipulation Language (DML) Triggers
+--------------------------------------------------------------------------
+		3.	Logon Triggers
+--------------------------------------------------------------------------
+			DDL Triggers
+--------------------------------------------------------------------------
+DDL triggers are fired in response to the DDL events, such as CREATE, ALTER, and DROP statements. 
+--------------------------------------------------------------------------
+We can create these triggers at the database level or server level, depending on the type of DDL events. 
+--------------------------------------------------------------------------
+It can also be executed in response to certain system-defined stored procedures that do DDL-like operations.
+--------------------------------------------------------------------------
+The DDL triggers are useful in the following scenario:
+--------------------------------------------------------------------------
+When we need to prevent the database schema from changing
+--------------------------------------------------------------------------
+When we need to audit changes made in the database schema
+--------------------------------------------------------------------------
+When we need to respond to a change made in the database schema
+--------------------------------------------------------------------------
+			DML Triggers
+--------------------------------------------------------------------------
+DML triggers are fired in response to DML events like INSERT, UPDATE, and DELETE statements in the user's table or view. 
+--------------------------------------------------------------------------
+It can also be executed in response to DML-like operations performed by system-defined stored procedures.
+--------------------------------------------------------------------------
+The DML triggers can be classified into two types:
+--------------------------------------------------------------------------
+		a.	After Triggers
+--------------------------------------------------------------------------
+		b.	Instead Of Triggers
+--------------------------------------------------------------------------
+			After Triggers
+--------------------------------------------------------------------------
+After trigger fires, when SQL Server completes the triggering action successfully, that fired it. 
+--------------------------------------------------------------------------
+Generally, this trigger is executed when a table completes an insert,
+ update or delete operations. 
+--------------------------------------------------------------------------
+It is not supported in views. 
+--------------------------------------------------------------------------
+Sometimes it is known as FOR triggers.
+--------------------------------------------------------------------------
+We can classify this trigger further into three types:
+--------------------------------------------------------------------------
+		a.	AFTER INSERT Trigger
+--------------------------------------------------------------------------
+		b.	AFTER UPDATE Trigger
+--------------------------------------------------------------------------
+		c.	AFTER DELETE Trigger
+--------------------------------------------------------------------------
+When we insert data into a table, the trigger associated with the insert operation on that table will not fire until the row has passed all constraints, such as the primary key constraint. 
+--------------------------------------------------------------------------
+SQL Server cannot fire the AFTER trigger when the data insertion failed.
+--------------------------------------------------------------------------
+CREATE TRIGGER schema_name.trigger_name  
+ON table_name  
+AFTER {INSERT | UPDATE | DELETE}  
+AS  
+   BEGIN  
+      -- Trigger Statements  
+      -- Insert, Update, Or Delete Statements  
+   END  
+--------------------------------------------------------------------------
+			Instead of Triggers
+--------------------------------------------------------------------------
+Instead of Trigger fires before SQL Server begins to execute the 
+triggering operation that triggered it. 
+--------------------------------------------------------------------------
+It means that no condition constraint check is needed before the trigger 
+runs. 
+--------------------------------------------------------------------------
+As a result, even if the constraint check fails, this trigger 
+will fire. 
+--------------------------------------------------------------------------
+It is the opposite of the AFTER trigger. 
+--------------------------------------------------------------------------
+We can create the INSTEAD OF triggers on a table that executes successfully but doesn't contain the table's actual insert, update, or delete operations.
+--------------------------------------------------------------------------
+We can classify this trigger further into three types:
+--------------------------------------------------------------------------
+		a.	INSTEAD OF UPDATE Trigger
+--------------------------------------------------------------------------
+		b.	INSTEAD OF DELETE Trigger
+--------------------------------------------------------------------------
+When we insert data into a table, the trigger associated with the insert operation on that table will fire before the data has passed all constraints, such as the primary key constraint. 
+--------------------------------------------------------------------------
+SQL Server also fires the Instead of Trigger if the data insertion fails.
+--------------------------------------------------------------------------
+CREATE TRIGGER schema_name.trigger_name  
+ON table_name  
+INSTEAD OF {INSERT | UPDATE | DELETE}  
+AS  
+   BEGIN  
+      -- trigger statements  
+      -- Insert, Update, or Delete commands  
+   END  
+--------------------------------------------------------------------------
+			Logon Triggers
+--------------------------------------------------------------------------
+Logon triggers are fires in response to a LOGON event. 
+--------------------------------------------------------------------------
+The LOGON event occurs when a user session is generated with an SQL Server instance, which is made after the authentication process of logging is completed but before establishing a user session. 
+--------------------------------------------------------------------------
+As a result, the SQL Server error log will display all messages created 
+by the trigger, including error messages and the PRINT statement messages. 
+--------------------------------------------------------------------------
+If authentication fails, logon triggers do not execute. 
+--------------------------------------------------------------------------
+These triggers may be used to audit and control server sessions, such as tracking login activity or limiting the number of sessions for a particular login.
+--------------------------------------------------------------------------
+		How to SHOW Triggers in SQL Server?
+--------------------------------------------------------------------------
+SELECT name, is_instead_of_trigger  
+FROM sys.triggers    
+WHERE type = 'TR';  
+--------------------------------------------------------------------------
+		How to UPDATE Triggers in SQL Server?
+--------------------------------------------------------------------------
+ALTER TRIGGER [dbo].[triggers_in_sql]   
+   ON  [dbo].[EmployeeTable]   
+   AFTER INSERT  
+AS   
+BEGIN  
+ -- Modify as per your needs  
+END   
+--------------------------------------------------------------------------
+		How to DELETE Triggers in SQL Server?
+--------------------------------------------------------------------------
+DROP TRIGGER [IF EXISTS] schema_name.trigger_name; 
+--------------------------------------------------------------------------
+DROP TRIGGER schema_name.trigger_name1, trigger_name2.....n;  
+--------------------------------------------------------------------------
+DROP TRIGGER [ IF EXISTS ] trigger_name1, trigger_name2.....n  
+ON { DATABASE | ALL SERVER }; 
+--------------------------------------------------------------------------
+DROP TRIGGER [ IF EXISTS ] trigger_name1, trigger_name2.....n    
+ON ALL SERVER;  
+--------------------------------------------------------------------------
+			Advantages of Triggers
+--------------------------------------------------------------------------
+Triggers set database object rules and roll back if any change does not satisfy those rules. 
+--------------------------------------------------------------------------
+The trigger will inspect the data and make changes if necessary.
+--------------------------------------------------------------------------
+Triggers help us to enforce data integrity.
+--------------------------------------------------------------------------
+Triggers help us to validate data before inserted or updated.
+--------------------------------------------------------------------------
+Triggers help us to keep a log of records.
+--------------------------------------------------------------------------
+Triggers increase SQL queries' performance because they do not need to 
+compile each time they are executed.
+--------------------------------------------------------------------------
+Triggers reduce the client-side code that saves time and effort.
+Triggers are easy to maintain.
+--------------------------------------------------------------------------
+			Disadvantages of Triggers
+--------------------------------------------------------------------------
+Triggers only allow using extended validations.
+--------------------------------------------------------------------------
+Triggers are invoked automatically, and their execution is invisible to 
+the user. 
+--------------------------------------------------------------------------
+It isn't easy to troubleshoot what happens in the database layer.
+--------------------------------------------------------------------------
+Triggers may increase the overhead of the database server.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------

@@ -1,0 +1,57 @@
+--------------------------------------------------------------------------
+tables :
+--------------------------------------------------------------------------
+specify the name of the database in which the table is created
+--------------------------------------------------------------------------
+database_name must be the name of an existing database
+--------------------------------------------------------------------------
+if you don’t specify it, the database_name defaults to the current database
+--------------------------------------------------------------------------
+specify the schema to which the new table belongs
+--------------------------------------------------------------------------
+specify the name of the new table
+--------------------------------------------------------------------------
+each table should have a primary key which consists of one or more columns.
+--------------------------------------------------------------------------
+list the primary key columns first and then other columns
+--------------------------------------------------------------------------
+if the primary key contains only one column, you can use the PRIMARY KEY keywords after the column name
+--------------------------------------------------------------------------
+if the primary key consists of two or more columns, you need to specify the PRIMARY KEY constraint as a table constraint
+--------------------------------------------------------------------------
+each column has an associated data type specified after its name in the statement
+--------------------------------------------------------------------------
+a column may have one or more column constraints such as NOT NULL and UNIQUE
+--------------------------------------------------------------------------
+a table may have some constraints specified in the table constraints section such as FOREIGN KEY, PRIMARY KEY, UNIQUE and CHECK
+--------------------------------------------------------------------------
+use db1;
+go
+
+create table s1.emp (
+    empid int primary key ,
+    empname varchar(10) not null,
+    empage int,
+    empcity varchar(10)
+);
+go
+--------------------------------------------------------------------------
+insert into s1.emp values(101,'anil',24,'pune');
+go
+--------------------------------------------------------------------------
+insert into s1.emp 
+values
+(102,'suresh',24,'mumbai'),
+(103,'rajesh',25,'banglore'),
+(104,'ramesh',25,'pune');
+go
+--------------------------------------------------------------------------
+select * from s1.emp;
+go
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+
+
+
+

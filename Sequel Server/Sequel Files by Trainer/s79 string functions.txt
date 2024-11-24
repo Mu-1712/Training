@@ -1,0 +1,203 @@
+-----------------------------------------------------------------------------
+			SQL Server String functions
+---------------------------------------------------------------------------
+				ASCII
+---------------------------------------------------------------------------
+This function displays the ASCII value of a character.
+---------------------------------------------------------------------------
+				CHAR
+---------------------------------------------------------------------------
+This function converts the specified integer code (ASCII) into a single-byte character.
+---------------------------------------------------------------------------
+				CHARINDEX
+---------------------------------------------------------------------------
+This function returns the first expression's starting position if a character expression is found inside a second character expression.
+---------------------------------------------------------------------------
+				CONCAT
+---------------------------------------------------------------------------
+This function returns a single string by joining two or more strings.
+---------------------------------------------------------------------------
+				CONCAT_WS
+---------------------------------------------------------------------------
+This function concatenates multiple strings into a single and spate them with a separator specified in the first position.
+---------------------------------------------------------------------------
+				DIFFERENCE
+---------------------------------------------------------------------------
+This function returns an integer value by comparing the two strings SOUNDEX() values.
+---------------------------------------------------------------------------
+				FORMAT
+---------------------------------------------------------------------------
+This function is used to change the text format of the string into any other format.
+---------------------------------------------------------------------------
+				LEFT
+---------------------------------------------------------------------------
+This function returns the substring from the left of the string to a specified number of characters.
+---------------------------------------------------------------------------
+				LEN
+---------------------------------------------------------------------------
+This function returns the number of characters in a string, including trailing spaces.
+---------------------------------------------------------------------------
+				LOWER
+---------------------------------------------------------------------------
+This function is used to convert the upper case character into lower case.
+---------------------------------------------------------------------------
+				LTRIM
+---------------------------------------------------------------------------
+This function returns a string from a given string after removing all leading spaces.
+---------------------------------------------------------------------------
+				NCHAR
+---------------------------------------------------------------------------
+This function is used to get the Unicode character with the provided integer code based on the UNICODE standard.
+---------------------------------------------------------------------------
+				PATINDEX
+---------------------------------------------------------------------------
+This function returns the first occurrence of a pattern in a string's starting place. 
+---------------------------------------------------------------------------
+If the string is not found, it returns zero.
+---------------------------------------------------------------------------
+				QUOTENAME
+---------------------------------------------------------------------------
+This function returns a Unicode string including the delimiters, converting the input string into a valid delimited identifier.
+---------------------------------------------------------------------------
+				REPLACE
+---------------------------------------------------------------------------
+This function is used to replace all occurrences of the substring in a specified string with another string value.
+---------------------------------------------------------------------------
+				REPLICATE
+---------------------------------------------------------------------------
+This function repeats the string with the specified number of times.
+---------------------------------------------------------------------------
+				REVERSE
+---------------------------------------------------------------------------
+This function displays the character string in reverse order.
+---------------------------------------------------------------------------
+				RIGHT
+---------------------------------------------------------------------------
+This function returns the substring from the right of the string to a specified number of characters.
+---------------------------------------------------------------------------
+				RTRIM
+---------------------------------------------------------------------------
+This function returns a string from a given string after removing all trailing spaces.
+---------------------------------------------------------------------------
+				SOUNDEX
+---------------------------------------------------------------------------
+It is used to calculate the similarity of two strings using a four-character (SOUNDEX) code.
+---------------------------------------------------------------------------
+				SPACE
+---------------------------------------------------------------------------
+This function is used to finds the string of repeated spaces.
+---------------------------------------------------------------------------
+				STR
+---------------------------------------------------------------------------
+This function is used to return the character data converted from numeric data.
+---------------------------------------------------------------------------
+				STRING_AGG
+---------------------------------------------------------------------------
+This function concatenates the values of string expressions and inserts separator values in between. 
+---------------------------------------------------------------------------
+It does not add a separator at the end of the string.
+---------------------------------------------------------------------------
+				STRING_ESCAPE
+---------------------------------------------------------------------------
+This function escapes special characters in a string and produces a new string containing the characters that were escaped.
+---------------------------------------------------------------------------
+				STRING_SPLIT
+---------------------------------------------------------------------------
+It is a table-valued function that divides a string into rows of substrings using a separator of your choice.
+---------------------------------------------------------------------------
+				STUFF
+---------------------------------------------------------------------------
+This function removes a portion of a string and replaces it with another substring beginning at a specified position.
+---------------------------------------------------------------------------
+				SUBSTRING
+---------------------------------------------------------------------------
+This function extracts a substring from a string that begins at a specific position and ends at a specific length.
+---------------------------------------------------------------------------
+				TRANSLATE
+---------------------------------------------------------------------------
+This function combines several one-to-one translations into a single operation.
+---------------------------------------------------------------------------
+				TRIM
+---------------------------------------------------------------------------
+This function returns a new string after removing all leading and trailing blanks from a given string.
+---------------------------------------------------------------------------
+				UNICODE
+---------------------------------------------------------------------------
+This function returns a character's integer value as defined by the Unicode standard.
+---------------------------------------------------------------------------
+				UPPER
+---------------------------------------------------------------------------
+This function converts the lower case character into the upper case.
+Let us see some of the most common string function examples.
+---------------------------------------------------------------------------
+SELECT ASCII('A'), ASCII('B');  
+go
+---------------------------------------------------------------------------
+(No column name)	(No column name)
+---------------------------------------------------------------------------
+65				66
+---------------------------------------------------------------------------
+SELECT CHARINDEX('man', 'management'), CHARINDEX('e', 'management', 6); 
+go 
+---------------------------------------------------------------------------
+(No column name)	(No column name)
+---------------------------------------------------------------------------
+1				6
+---------------------------------------------------------------------------
+SELECT CONCAT('mba', 'mca'); 
+go
+ ---------------------------------------------------------------------------
+(No column name)
+---------------------------------------------------------------------------
+mbamca
+---------------------------------------------------------------------------
+SELECT CONCAT('mba', 'mca','mcs'); 
+go
+---------------------------------------------------------------------------
+(No column name)
+---------------------------------------------------------------------------
+mbamcamcs
+---------------------------------------------------------------------------
+SOUNDEX() function  accepts a string as input and produces a four-character string based on how it is spoken. 
+---------------------------------------------------------------------------
+It converts the first character of the code into the upper case and becomes the input string's first character. 
+---------------------------------------------------------------------------
+The code's remaining characters are numbers that represent the expression's letters.
+---------------------------------------------------------------------------
+SELECT SOUNDEX('m'), SOUNDEX('mb'), SOUNDEX('management'), SOUNDEX('mcs');  
+go
+---------------------------------------------------------------------------
+(No column name)   (No column name)  (No column name)	(No column name)
+---------------------------------------------------------------------------
+M000			M100			M525	    M200
+---------------------------------------------------------------------------
+SELECT DIFFERENCE('mba', 'mca'), DIFFERENCE('mba', 'mbb');  
+go
+---------------------------------------------------------------------------
+(No column name)	(No column name)
+---------------------------------------------------------------------------
+3				4
+---------------------------------------------------------------------------
+SELECT LEFT('management', 5), RIGHT('management', 5);
+go
+---------------------------------------------------------------------------
+(No column name)	(No column name)
+---------------------------------------------------------------------------
+	manag			ement
+---------------------------------------------------------------------------
+SELECT LOWER('mBA'), UPPER('mbA'); 
+go
+---------------------------------------------------------------------------
+(No column name)	(No column name)
+---------------------------------------------------------------------------
+	mba		MBA 
+---------------------------------------------------------------------------
+SELECT REPLICATE('mba', 4) AS Result; 
+go 
+---------------------------------------------------------------------------
+Result
+---------------------------------------------------------------------------
+mbambambamba
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+

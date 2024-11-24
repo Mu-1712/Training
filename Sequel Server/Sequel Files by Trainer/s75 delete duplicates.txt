@@ -1,0 +1,160 @@
+----------------------------------------------------------------------------
+		Find and Delete Duplicates From a Table in SQL Server
+----------------------------------------------------------------------------
+	1.	Find the duplicate rows :
+----------------------------------------------------------------------------
+		 	a.	GROUP BY clause
+		 	b.	ROW_NUMBER() function.
+----------------------------------------------------------------------------
+	2.	Use the DELETE statement to remove the duplicate rows.
+----------------------------------------------------------------------------
+For finding the duplicate rows in a table:
+----------------------------------------------------------------------------
+		 Common Table Expression : CTE 
+----------------------------------------------------------------------------
+Using Common Table Expression  define a temporary named result set that will remain available till the execution of an SQL statement
+----------------------------------------------------------------------------
+WITH name_of_expression[(name_of_column [,...])]  
+AS  
+    (definition_of_CTE)  
+SQL_statement;  
+----------------------------------------------------------------------------
+Name_of_expression: 
+----------------------------------------------------------------------------
+The name_of_expression represents the name that we want to assign to our 
+Common Table Expression or CTE.
+----------------------------------------------------------------------------
+ And this name is referred to later in the SQL statement in order to use 
+this Common Table Expression or CTE.
+----------------------------------------------------------------------------
+Name_of_column: 
+----------------------------------------------------------------------------
+The name_of_column represents the column or columns on which the 
+Common Table Expression or CTE will be defined.
+----------------------------------------------------------------------------
+definition_of_CTE: 
+----------------------------------------------------------------------------
+The definition_of_CTE represents the part where the actual definition of the Common Table Expression or CTE will be written.
+----------------------------------------------------------------------------
+SQL_statement: 
+----------------------------------------------------------------------------
+The SQL_statement represents the SQL statement for which that particular Common Table Expression or CTE is written and that Common Table Expression or CTE will remain valid till the execution of this SQL statement, such as SELECT INSERT, UPDATE, DELETE, or MERGE.
+----------------------------------------------------------------------------
+use db2;
+go
+----------------------------------------------------------------------------
+Commands completed successfully.
+----------------------------------------------------------------------------
+CREATE TABLE students 	(  
+    					studID 	varchar(10),  
+    					rollNo int,  
+    					name 	varchar(30)  
+				); 
+go
+ ----------------------------------------------------------------------------
+Commands completed successfully.
+----------------------------------------------------------------------------
+INSERT INTO students(studID, rollNo, Name) VALUES(101, 87459, 'anil');  
+INSERT INTO students(studID, rollNo, Name) VALUES(102, 54771, 'sunil');  
+INSERT INTO students(studID, rollNo, Name) VALUES(103, 22100, 'centhil');  
+INSERT INTO students(studID, rollNo, Name) VALUES(104, 94365, 'rajesh');  
+INSERT INTO students(studID, rollNo, Name) VALUES(105, 35479, 'suresh');  
+INSERT INTO students(studID, rollNo, Name) VALUES(106, 74000, 'ramesh');  
+INSERT INTO students(studID, rollNo, Name) VALUES(107, 10211, 'anil');  
+INSERT INTO students(studID, rollNo, Name) VALUES(105, 35479, 'Romesh');  
+INSERT INTO students(studID, rollNo, Name) VALUES(103, 22100, 'rajesh');  
+INSERT INTO students(studID, rollNo, Name) VALUES(101, 87459, 'anil');  
+go
+----------------------------------------------------------------------------
+select * from students;
+go
+----------------------------------------------------------------------------
+studID		rollNo		name
+----------------------------------------------------------------------------
+101		87459		anil
+102		54771		sunil
+103		22100		centhil
+104		94365		rajesh
+105		35479		suresh
+106		74000		ramesh
+107		10211		anil
+105		35479		Romesh
+103		22100		rajesh
+101		87459		anil
+----------------------------------------------------------------------------
+Create CTE for displaying all the duplicate rows that are present in the students table.
+----------------------------------------------------------------------------
+WITH dup_cte AS ( 
+ 
+SELECT    
+                	studID,  
+                    	rollNo,  
+                	name,  
+        		COUNT(*) occurrences   
+FROM students  
+ 
+GROUP BY   
+        	studID,  
+        	rollNo,  
+        	Name   
+		HAVING COUNT(*) > 1  
+)  
+  
+SELECT    students.studID,  students.rollNo,  students.name   
+FROM students   
+INNER JOIN dup_cte   
+ON   
+dup_cte.studID= students.studID   
+AND   
+dup_cte.rollNo = students.rollNo   
+AND   
+dup_cte.name = students.name  
+  
+ORDER BY   
+	students.studID,  
+	students.rollNo,  
+	students.name;  
+go
+----------------------------------------------------------------------------
+studID		rollNo		name
+----------------------------------------------------------------------------
+101		87459		anil
+101		87459		anil
+----------------------------------------------------------------------------
+WITH dup_cte AS (  
+			SELECT 	studID,  rollNo,  Name,  
+				ROW_NUMBER() 
+				OVER(	PARTITION BY   
+            					studID,  
+            					rollNo,  
+            					Name   
+  
+            				ORDER BY   
+                				studID,  
+                				rollNo,  
+               					name  
+        				) row_num   
+			FROM students  
+		)  
+  
+DELETE FROM dup_cte WHERE row_num > 1;  
+go
+----------------------------------------------------------------------------
+(1 row affected)
+----------------------------------------------------------------------------
+SELECT * FROM students; 
+go 
+----------------------------------------------------------------------------
+studID		rollNo		name
+----------------------------------------------------------------------------
+101		87459		anil
+102		54771		sunil
+103		22100		centhil
+104		94365		rajesh
+105		35479		suresh
+106		74000		ramesh
+107		10211		anil
+105		35479		Romesh
+103		22100		rajesh
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

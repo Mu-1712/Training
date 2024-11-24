@@ -1,0 +1,77 @@
+--------------------------------------------------------------------------
+database :
+--------------------------------------------------------------------------
+create database db1;
+--------------------------------------------------------------------------
+drop database db1;
+--------------------------------------------------------------------------
+drop database if exists db1;
+--------------------------------------------------------------------------
+schema :
+--------------------------------------------------------------------------
+it is a collection of database objects including tables, views, triggers, stored procedures, indexes, etc
+--------------------------------------------------------------------------
+it is associated with a username which is known as the schema owner, who is the owner of the logically related database objects
+--------------------------------------------------------------------------
+it always belongs to one database
+--------------------------------------------------------------------------
+but a database may have one or multiple schemas
+--------------------------------------------------------------------------
+pre-defined schemas :
+--------------------------------------------------------------------------
+	1.	dbo
+--------------------------------------------------------------------------
+	2.	guest
+--------------------------------------------------------------------------
+	3.	sys
+--------------------------------------------------------------------------
+	4.	INFORMATION_SCHEMA
+--------------------------------------------------------------------------
+create schema employee;
+--------------------------------------------------------------------------
+drop schema if exists employee;
+--------------------------------------------------------------------------
+tables :
+--------------------------------------------------------------------------
+specify the name of the database in which the table is created
+--------------------------------------------------------------------------
+database_name must be the name of an existing database
+--------------------------------------------------------------------------
+if you don’t specify it, the database_name defaults to the current database
+--------------------------------------------------------------------------
+specify the schema to which the new table belongs
+--------------------------------------------------------------------------
+specify the name of the new table
+--------------------------------------------------------------------------
+each table should have a primary key which consists of one or more columns.
+--------------------------------------------------------------------------
+list the primary key columns first and then other columns
+--------------------------------------------------------------------------
+if the primary key contains only one column, you can use the PRIMARY KEY keywords after the column name
+--------------------------------------------------------------------------
+if the primary key consists of two or more columns, you need to specify the PRIMARY KEY constraint as a table constraint
+--------------------------------------------------------------------------
+each column has an associated data type specified after its name in the statement
+--------------------------------------------------------------------------
+a column may have one or more column constraints such as NOT NULL and UNIQUE
+--------------------------------------------------------------------------
+a table may have some constraints specified in the table constraints section such as FOREIGN KEY, PRIMARY KEY, UNIQUE and CHECK
+--------------------------------------------------------------------------
+create table employee.emp 
+(
+    empid int primary key ,
+    empname varchar(1) not null,
+    empage int,
+    empcity varchar(10)
+);
+--------------------------------------------------------------------------
+insert into employee.emp values(101,'anil',24,'pune');
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+
+
+
+
+
+

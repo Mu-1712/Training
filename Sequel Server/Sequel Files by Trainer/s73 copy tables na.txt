@@ -1,0 +1,160 @@
+-----------------------------------------------------------------------------
+			SQL Server Copy Tables
+-----------------------------------------------------------------------------
+A copy table means making the clone or duplicate table of an existing table. 
+-----------------------------------------------------------------------------
+The copy table must include the same table structure, indexes, constraints, and default values as of original table. 
+-----------------------------------------------------------------------------
+Copying data of an existing table into a new table is very useful in a situation like backing up data in table failure. 
+-----------------------------------------------------------------------------
+It's also useful in situations like maintenance, testing, demonstration, and moving to a new instance without affecting the original table.
+-----------------------------------------------------------------------------
+		1.	Using SQL Query
+-----------------------------------------------------------------------------
+		2.	Using SQL Server Management Studio (SSMS)
+-----------------------------------------------------------------------------
+		3.	Using Generate Scripts
+-----------------------------------------------------------------------------
+			Using SQL Query
+-----------------------------------------------------------------------------
+We may use the SELECT INTO statement to copy the table from one database to another or within the same database. 
+-----------------------------------------------------------------------------
+This statement will first create a new table before copying the data to them. 
+-----------------------------------------------------------------------------
+If we successfully copy database objects like indexes and constraints, we must create a query for each one and then add the query to the destination database.
+-----------------------------------------------------------------------------
+The following are the syntax that illustrates the SELECT INTO statement:
+-----------------------------------------------------------------------------
+SELECT columns_list INTO new_table_name  
+FROM source_table_name WHERE conditions; 
+ -----------------------------------------------------------------------------
+			Using SQL Server Management Studio
+-----------------------------------------------------------------------------
+We can also use the Management Studio to make a clone table or copy source table data into the destination table. 
+-----------------------------------------------------------------------------
+We can do this by using the SQL Server Management Studio's Export and Import wizard. 
+-----------------------------------------------------------------------------
+To transfer/copy data, the user may choose to export from the source database or import from the destination database using this wizard.
+-----------------------------------------------------------------------------
+The following are the steps used to make clone tables from one database to another:
+-----------------------------------------------------------------------------
+Step 1: 	Open SQL Server Management Studio and navigate to the object 		explorer.
+-----------------------------------------------------------------------------
+Step 2: 	Inside the object explorer, select Databases and expand it to 		see the available database.
+-----------------------------------------------------------------------------
+Step 3: 	Select the desired database, right-click on it. 
+-----------------------------------------------------------------------------
+ 		select the Export Data option
+-----------------------------------------------------------------------------
+Step 4: 	 "Welcome to SQL Server Import and Export Wizard"
+			click on the Next button.
+-----------------------------------------------------------------------------
+Step 5: 	'Choose a Data Source' window. 
+-----------------------------------------------------------------------------
+		specify the source Server Name
+-----------------------------------------------------------------------------
+		an Authentication method that connects to the source server
+-----------------------------------------------------------------------------
+		the source database name
+-----------------------------------------------------------------------------
+		click the Next button. 
+-----------------------------------------------------------------------------
+Step 6: 	'Choose a Destination' wizard. 
+-----------------------------------------------------------------------------
+		specify the destination Server name
+-----------------------------------------------------------------------------
+		Authentication method to connect with the destination server
+-----------------------------------------------------------------------------
+		the destination Database name
+-----------------------------------------------------------------------------
+		click the Next button. 
+-----------------------------------------------------------------------------
+		NOTE: We are going to use the same source and destination 		database and server.
+-----------------------------------------------------------------------------
+Step 7: 	Specify Table Copy or Query wizard will open.
+-----------------------------------------------------------------------------
+		Select the Copy data from one or more tables or views option
+-----------------------------------------------------------------------------
+ 		 Next button
+-----------------------------------------------------------------------------
+Step 8: 	Select Source Tables and Views wizard. 
+-----------------------------------------------------------------------------
+		Choose the tables you want to copy from the source to the 		destination one 
+-----------------------------------------------------------------------------
+		click the Next button.
+-----------------------------------------------------------------------------
+Step 9: 	Click on the Edit Mapping button 
+-----------------------------------------------------------------------------
+		Tick the Create destination table option to ensure that the 		selected tables will be created in the destination database. 
+-----------------------------------------------------------------------------
+		If any of the selected tables have an identity column, we must 		also tick the Enable identity insert option before clicking 		the OK button. 
+-----------------------------------------------------------------------------
+		If we selected multiple tables to copy to the destination 		database, we should click on the Edit Mappings option again 		and check each table one by one.
+-----------------------------------------------------------------------------
+ 		Next button when all tables are checked via the Edit Mappings.
+-----------------------------------------------------------------------------
+Step 10: 	Save and Run Package wizard. 
+-----------------------------------------------------------------------------
+		Click the Next button.
+-----------------------------------------------------------------------------
+Step 11: 	Complete the Wizard step. 
+-----------------------------------------------------------------------------
+		Click the Finish button.
+-----------------------------------------------------------------------------
+This method is the fastest way to make a clone table, but it will fail to transfer or copy the table's indexes and keys. 
+-----------------------------------------------------------------------------
+If we want to make a clone table with indexes and keys, we are required to use the Generate Scripts method for these database objects. 
+-----------------------------------------------------------------------------
+If the tables we are going to make clone are foreign key connecting, we must export the data in the correct order. 
+-----------------------------------------------------------------------------
+If we do not do this, the export wizard will fail.
+-----------------------------------------------------------------------------
+			Using Generate Scripts
+-----------------------------------------------------------------------------
+The Generate Scripts method is another way provided by the SQL Server. 
+-----------------------------------------------------------------------------
+This method is used when we want to not only copy the table schema and data from the source database to destination one but also objects, indexes, triggers, constraints, keys, etc.
+-----------------------------------------------------------------------------
+We can use the following steps to generate a script to make clone tables from one database to another:
+-----------------------------------------------------------------------------
+Step 1: Open SQL Server Management Studio and navigate to the object explorer.
+-----------------------------------------------------------------------------
+Step 2: Inside the object explorer, select Databases and expand it to see the available database.
+-----------------------------------------------------------------------------
+Step 3: Select the desired database, right-click on it.
+-----------------------------------------------------------------------------
+ A context menu will open, click on the Tasks option and select the Generate Scripts command as shown below:
+-----------------------------------------------------------------------------
+Step 4: The next step will open the Choose Objects wizard. 
+-----------------------------------------------------------------------------
+Here, we will choose the Select specific database objects option that displays the tables for which we will generate the script. 
+-----------------------------------------------------------------------------
+Select the desired tables by marking corresponding to each one and then click the Next button:
+-----------------------------------------------------------------------------
+Step 5: This step will open the Set Scripting Options page. 
+-----------------------------------------------------------------------------
+Here we will specify the path where we want to save the generated script file and then click the Advanced button:
+-----------------------------------------------------------------------------
+When we click the 'Advanced' option, we will see the Advanced Scripting Options page. Here we will choose the Types of data to script and specify 'Schema and data' as shown below:
+-----------------------------------------------------------------------------
+This page also enables us to decide to script the indexes and keys in our tables. 
+-----------------------------------------------------------------------------
+After filling necessary details on this page, click on the OK button. We will again navigate back to the Advanced Scripting Options page, click the Next button.
+-----------------------------------------------------------------------------
+Step 6: This step will open the Summary page, where we will review the entire process step and click the Next button:
+-----------------------------------------------------------------------------
+Step 7: The next step will open the Save Scripts page, where we can monitor the progress of the entire process. If everything is correct, click on the Finish button. 
+-----------------------------------------------------------------------------
+Now, we can find the script at the specified location and execute it in the desired database.
+-----------------------------------------------------------------------------
+The Scripting method in SQL Server is helpful for generating a single script for the schema and data of the tables and indexes, and keys.
+-----------------------------------------------------------------------------
+ However, if there are relationships between the tables, this method does not correctly produce the tables' creation script.
+-----------------------------------------------------------------------------
+What to do when the database file is corrupted or damaged?
+-----------------------------------------------------------------------------
+When we start any process or task that involves a SQL Server database, there might be a chance that data will be lost or the SQL Server database file will be corrupted due to wrong or incorrect execution or poor database file handling. 
+-----------------------------------------------------------------------------
+Kernel for SQL Database Recovery is a SQL recovery tool that can be used when the SQL Server database file is corrupted or damaged. It can easily restore corrupted, damaged, or inactive MDF & NDF files while maintaining the original file structure and properties.
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

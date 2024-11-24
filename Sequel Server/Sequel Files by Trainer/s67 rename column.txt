@@ -1,0 +1,48 @@
+-----------------------------------------------------------------------------
+			SQL Server Rename a column
+-----------------------------------------------------------------------------
+SQL Server has some restrictions while changing the column name because when we rename a column, it does not imply that all references to that column 
+will be renamed as well.
+-----------------------------------------------------------------------------
+We must manually modify all objects that belong to the renamed column.
+-----------------------------------------------------------------------------
+SQL Server provides a standard stored procedure called SP_RENAME for 
+changing the name of a user-created object in the current database. 
+-----------------------------------------------------------------------------
+The user-created object can be a table, column, index, alias data type, etc.
+-----------------------------------------------------------------------------
+Scripts and stored procedures may be broken when we change some portion of 
+an object's name. 
+-----------------------------------------------------------------------------
+Better to drop the object and re-create it with the new name rather than 
+using this statement to change the name of stored procedures, triggers, 
+user-defined functions or views.
+-----------------------------------------------------------------------------
+use db1;
+go
+-----------------------------------------------------------------------------
+select * from s1.emp12;
+go
+-----------------------------------------------------------------------------
+empid	empname		empage
+-----------------------------------------------------------------------------
+101	anil		34
+102	sunil		30
+103	suesh		29
+-----------------------------------------------------------------------------
+EXEC SP_RENAME 'db1.s1.emp12.empname', 'name','COLUMN' 
+go
+-----------------------------------------------------------------------------
+Caution: Changing any part of an object name could break scripts and stored procedures.
+-----------------------------------------------------------------------------
+select * from s1.emp12;
+go
+-----------------------------------------------------------------------------
+empid	name		empage
+-----------------------------------------------------------------------------
+101	anil		34
+102	sunil		30
+103	suesh		29
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+

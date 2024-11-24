@@ -1,0 +1,69 @@
+-----------------------------------------------------------------------------
+A foreign key can be created using either a CREATE TABLE statement or an 
+ALTER TABLE statement.
+-----------------------------------------------------------------------------
+CREATE TABLE products  
+( 	product_id 	INT 		PRIMARY KEY,  
+  	product_name 	VARCHAR(50) 	NOT NULL,  
+  	category 	VARCHAR(25)  
+);  
+-----------------------------------------------------------------------------
+CREATE TABLE inventory  
+( 	inventory_id INT 	PRIMARY KEY,  
+  	product_id INT 	NOT NULL,  
+  	quantity INT,  
+  	min_level INT,  
+  	max_level INT,  
+
+  	CONSTRAINT fk_inv_product_id  
+    	FOREIGN KEY (product_id)  
+    	REFERENCES products (product_id)  
+);  
+-----------------------------------------------------------------------------
+CREATE TABLE products2  
+( 	product_name 	VARCHAR(50) NOT NULL,  
+  	location 	VARCHAR(50) NOT NULL,  
+  	category 	VARCHAR(25)  
+  	CONSTRAINT products_pk PRIMARY KEY (product_name, location)  
+);  
+-----------------------------------------------------------------------------
+CREATE TABLE inventory2  
+( 	inventory_id 	INT 		PRIMARY KEY,  
+  	product_name 	VARCHAR(50) 	NOT NULL,  
+  	location 	VARCHAR(50) 	NOT NULL,  
+  	quantity 	INT,  
+  	min_level 	INT,  
+  	max_level 	INT,  
+  	
+	CONSTRAINT fk_inv_product  
+    	FOREIGN KEY (product_name, location)  
+    	REFERENCES products2 (product_name, location)  
+);  
+-----------------------------------------------------------------------------
+			Enable a Foreign Key
+-----------------------------------------------------------------------------
+ALTER TABLE statement is used to enable a foreign key in SQL Server.
+-----------------------------------------------------------------------------
+ALTER TABLE table_name  
+CHECK CONSTRAINT fk_name;   
+-----------------------------------------------------------------------------
+ALTER TABLE inventory  
+CHECK CONSTRAINT fk_inv_product_id;   
+-----------------------------------------------------------------------------
+			Disable Foreign Key
+-----------------------------------------------------------------------------
+ALTER TABLE statement is used to disable a foreign key.
+-----------------------------------------------------------------------------
+ALTER TABLE table_name  
+NOCHECK CONSTRAINT fk_name
+-----------------------------------------------------------------------------			Drop a Foreign Key
+-----------------------------------------------------------------------------
+ALTER TABLE statement is used to drop a foreign key from a table once it has been created.
+-----------------------------------------------------------------------------
+ALTER TABLE table_name  
+DROP CONSTRAINT fk_name;   
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+
+

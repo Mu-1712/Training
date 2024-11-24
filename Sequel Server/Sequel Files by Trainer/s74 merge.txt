@@ -1,0 +1,320 @@
+----------------------------------------------------------------------------
+			SQL Server MERGE
+----------------------------------------------------------------------------
+ The MERGE statement combines INSERT, UPDATE, and DELETE operations into a single statement, eliminating the need to write separate logic for each. 
+----------------------------------------------------------------------------
+It essentially updates an existing table using a key field comparison 
+with the other table.
+----------------------------------------------------------------------------
+	1.	Some rows in the "source table" are not found in the "target 		table." 
+----------------------------------------------------------------------------
+		In this situation, it is required to add rows from the source 		to the target table.
+----------------------------------------------------------------------------
+	2.	Some rows in the "target table" are not found in the "source 		table." 
+----------------------------------------------------------------------------
+		In this situation, it is required to delete rows from the 		target table.
+----------------------------------------------------------------------------
+	3.	Some rows in the "source and target table" have the same keys.
+----------------------------------------------------------------------------
+		However, they have distinct values in the non-key columns. 
+----------------------------------------------------------------------------
+		In this case, it's necessary to update the rows in the "target 		table" with data from the "source table."
+----------------------------------------------------------------------------
+	4.	Before introducing the merge statement, we must first generate 		three independent statements (INSERT, UPDATE, and DELETE) to 		update the data in the target table to match the rows in the 		source table. 
+----------------------------------------------------------------------------
+MERGE target_table USING source_table  
+ON merge_condition  
+WHEN MATCHED  
+    THEN update_statement  
+WHEN NOT MATCHED  
+    THEN insert_statement  
+WHEN NOT MATCHED BY SOURCE  
+    THEN DELETE;  
+----------------------------------------------------------------------------
+			MATCHED: 
+----------------------------------------------------------------------------
+It indicates the rows that match the merge criterion. 
+----------------------------------------------------------------------------
+In this form, we will update the fields in the "target table" with data given in the "source table."
+----------------------------------------------------------------------------
+			NOT MATCHED: 
+----------------------------------------------------------------------------
+It indicates the rows that are not matched in both table tables (source table and target table). 
+----------------------------------------------------------------------------
+In this form, the rows from the source table must be added to the target table. 
+----------------------------------------------------------------------------
+This form is often referred to as NOT MATCHED BY TARGET.
+----------------------------------------------------------------------------
+			NOT MATCHED BY SOURCE: 
+----------------------------------------------------------------------------
+It indicates the records in the target table and no matching records found in the source table. 
+----------------------------------------------------------------------------
+In this form, we will delete records from the target table when we want to synchronize the target table with the source table data.
+----------------------------------------------------------------------------
+use db1;
+go
+----------------------------------------------------------------------------
+Commands completed successfully.
+----------------------------------------------------------------------------
+CREATE TABLE db1.s1.Products	(  
+    					ID 		INT,  
+    					Product_Name 	VARCHAR(65),  
+    					Price 		DECIMAL(9,2)  
+				)  
+go
+---------------------------------------------------------------------------- 
+Commands completed successfully.
+---------------------------------------------------------------------------- 
+INSERT INTO db1.s1.Products(ID, Product_Name, Price) 
+VALUES   
+		(1, 'Table', 150), 
+		(2, 'Desk', 100),  
+		(3, 'Chair', 75), 
+		(4, 'Computer', 225);  
+go
+----------------------------------------------------------------------------
+(4 rows affected)
+----------------------------------------------------------------------------
+CREATE TABLE db1.s1.TargetProducts	(  
+    					ID 		INT,  
+    					Product_Name 	VARCHAR(65),  
+    					Price 		DECIMAL(9,2)  
+				)  
+go
+----------------------------------------------------------------------------
+Commands completed successfully.
+----------------------------------------------------------------------------
+INSERT INTO db1.s1.TargetProducts(ID, Product_Name, Price) 
+VALUES  
+		(1, 'Table', 150),  
+		(2, 'Desk', 150),  
+		(5, 'Bed', 100),  
+		(6, 'Cupboard', 350); 
+go 
+----------------------------------------------------------------------------
+(4 rows affected)
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.Products 
+go 
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		100.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.TargetProducts 
+go
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		150.00
+5	Bed		100.00
+6	Cupboard	350.00
+----------------------------------------------------------------------------
+Insert : 
+----------------------------------------------------------------------------
+MERGE db1.s1.TargetProducts AS Target  
+USING db1.s1.Products  AS Source  
+ON Source.ID = Target.ID 
+ 
+WHEN NOT MATCHED BY Target THEN  
+    	INSERT (ID, Product_Name, Price)   
+    	VALUES (Source.ID, Source.Product_Name, Source.Price); 
+go
+----------------------------------------------------------------------------
+(2 rows affected)
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.Products 
+go 
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		100.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.TargetProducts 
+go
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		150.00
+5	Bed		100.00
+6	Cupboard	350.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+Update :
+----------------------------------------------------------------------------
+MERGE db1.s1.TargetProducts AS Target  
+USING db1.s1.Products AS Source  
+ON Source.ID = Target.ID 
+ 
+WHEN NOT MATCHED BY Target THEN  
+    	-- It will insert records  
+    	INSERT (ID, Product_Name, Price)   
+    	VALUES (Source.ID, Source.Product_Name, Source.Price)
+  
+WHEN MATCHED THEN UPDATE SET
+	-- It will update records   
+    	Target.Product_Name = Source.Product_Name,  
+    	Target.Price = Source.Price;  
+go
+----------------------------------------------------------------------------
+(4 rows affected)
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.Products 
+go 
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		100.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.TargetProducts 
+go
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		100.00
+5	Bed		100.00
+6	Cupboard	350.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+Delete :
+----------------------------------------------------------------------------
+MERGE db1.s1.TargetProducts AS Target  
+USING db1.s1.Products  AS Source  
+ON Source.ID = Target.ID  
+
+    	-- It will insert records  
+WHEN NOT MATCHED BY Target THEN  
+    	INSERT (ID, Product_Name, Price)   
+    	VALUES (Source.ID, Source.Product_Name, Source.Price) 
+ 
+    	-- It will update records  
+WHEN MATCHED THEN UPDATE SET  
+    	Target.Product_Name = Source.Product_Name,  
+    	Target.Price = Source.Price
+  
+    	-- It will delete records  
+WHEN NOT MATCHED BY Source THEN  
+    	DELETE;  
+go
+----------------------------------------------------------------------------
+(6 rows affected)
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.Products 
+go 
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		100.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.TargetProducts 
+go
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		100.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+delete db1.s1.TargetProducts;
+go
+----------------------------------------------------------------------------
+(4 rows affected)
+----------------------------------------------------------------------------
+INSERT INTO db1.s1.TargetProducts(ID, Product_Name, Price) 
+VALUES  
+		(1, 'Table', 150),  
+		(2, 'Desk', 150),  
+		(5, 'Bed', 100),  
+		(6, 'Cupboard', 350); 
+go 
+----------------------------------------------------------------------------
+(4 rows affected)
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.TargetProducts; 
+go
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		150.00
+5	Bed		100.00
+6	Cupboard	350.00
+----------------------------------------------------------------------------
+SELECT * FROM db1.s1.Products 
+go 
+----------------------------------------------------------------------------
+ID	Product_Name	Price
+----------------------------------------------------------------------------
+1	Table		150.00
+2	Desk		100.00
+3	Chair		75.00
+4	Computer	225.00
+----------------------------------------------------------------------------
+			Logging MERGE Changes using OUTPUT
+----------------------------------------------------------------------------
+SQL Server also allows us to log any changes by MERGE statement using the OUTPUT clause. 
+----------------------------------------------------------------------------
+MERGE db1.s1.TargetProducts AS Target  
+USING db1.s1.Products AS Source  
+ON Source.ID = Target.ID  
+    	-- For Insert  
+
+WHEN NOT MATCHED BY Target THEN  
+    	INSERT (ID, Product_Name, Price)   
+    	VALUES (Source.ID, Source.Product_Name, Source.Price)  
+    	-- For Updates  
+
+WHEN MATCHED THEN UPDATE SET  
+    	Target.Product_Name = Source.Product_Name,  
+    	Target.Price = Source.Price  
+    	-- For Deletes  
+
+WHEN NOT MATCHED BY Source THEN  
+    	DELETE 
+ 
+-- Summarize the actions performed by MERGE query  
+	OUTPUT $action,   
+	DELETED.ID AS Target_ID,   
+	DELETED.Product_Name AS Target_Product_Name,   
+	DELETED.Price AS Target_Price,   
+	INSERTED.ID AS Source_ID,   
+	INSERTED.Product_Name AS Source_Product_Name,   
+	INSERTED.Price AS SourcePrice;  
+go
+----------------------------------------------------------------------------
+$action	Target_ID	Target_Product_Name	Target_Price	Source_ID	Source_Product_Name	SourcePrice
+----------------------------------------------------------------------------
+INSERT	NULL	NULL	NULL	3	Chair	75.00
+INSERT	NULL	NULL	NULL	4	Computer	225.00
+UPDATE	1	Table	150.00	1	Table	150.00
+UPDATE	2	Desk	150.00	2	Desk	100.00
+DELETE	5	Bed	100.00	NULL	NULL	NULL
+DELETE	6	Cupboard	350.00	NULL	NULL	NULL
+----------------------------------------------------------------------------
+After writing the MERGE statement, we can also use the SELECT @@RowCount to see the number of records updated.
+----------------------------------------------------------------------------
+At least one MATCHED clause needs to specify for the MERGE statement to get the result.
+----------------------------------------------------------------------------
+It is mandatory to have SELECT permission on the source table and INSERT, UPDATE, and DELETE permission on the target table for performing the MERGE statement.
+----------------------------------------------------------------------------
+SQL Server does not allow us to update the same variable twice in the same matched clause.
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

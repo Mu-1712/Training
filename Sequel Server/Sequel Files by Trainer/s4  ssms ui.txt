@@ -1,0 +1,58 @@
+-----------------------------------------------------------------------------
+			1. Query Editor
+-----------------------------------------------------------------------------
+This section is used to write all of our queries. 
+-----------------------------------------------------------------------------
+MS SQL Server offers interactive recommendations for tables, columns, and other items for easy queries creations and a variety of other features.
+-----------------------------------------------------------------------------
+			2. Object Explorer
+-----------------------------------------------------------------------------
+The Object Explorer shows the database objects contained on the server in a tree format. 
+-----------------------------------------------------------------------------
+For quick reference, this section lists all of the Databases, Security, and Server Objects. We can see each object's components by simply pressing the + icon to the left of the object to expand it.
+-----------------------------------------------------------------------------
+			3. Databases Selection Dropdown
+-----------------------------------------------------------------------------
+It is a dropdown option that allows the user to choose the database to run 
+our queries.
+-----------------------------------------------------------------------------
+			4. Execute button
+-----------------------------------------------------------------------------
+It is an execution button that allows the user to execute the query and 
+return the results.
+-----------------------------------------------------------------------------
+			5. Cancel Executing Query
+-----------------------------------------------------------------------------
+It is a button that is used to stop the execution of the query.
+-----------------------------------------------------------------------------
+			6. Parse
+-----------------------------------------------------------------------------
+It is a button used to validate the query's syntax but doesn't check the database objects.
+-----------------------------------------------------------------------------
+			7. Changing query result destination
+-----------------------------------------------------------------------------
+This button group allows us to set the query result's destination. 
+-----------------------------------------------------------------------------
+There are three options available:
+-----------------------------------------------------------------------------
+	a.	Results to Grid
+-----------------------------------------------------------------------------
+	b.	Results to Text
+-----------------------------------------------------------------------------
+	c.	Results to File
+-----------------------------------------------------------------------------
+			8. Comment/Uncomment out the Selected Lines
+-----------------------------------------------------------------------------
+These buttons allow us to comment or uncomment the lines of code we have chosen. 
+-----------------------------------------------------------------------------
+For example, to see the line numbers of the code in the query editor.
+-----------------------------------------------------------------------------
+A sudden shutdown or a device failure may result in data loss. 
+-----------------------------------------------------------------------------
+We can minimize the data loss by setting the 'AutoRecover' option checked. 
+-----------------------------------------------------------------------------
+We can also configure the AutoRecover data time-period and the number of days this information is stored before being deleted. We can set the AutoRecover option as below:
+-----------------------------------------------------------------------------
+Tools	-> Options	-> Environment	-> AutoRecover
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

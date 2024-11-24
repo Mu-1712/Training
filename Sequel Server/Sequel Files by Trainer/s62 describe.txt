@@ -1,0 +1,66 @@
+------------------------------------------------------------------------------
+			SQL Server Describe Table
+------------------------------------------------------------------------------
+				Permissions
+------------------------------------------------------------------------------
+We can display the table structure or properties for a table only when we 
+have either owned the table or granted permissions to that table.
+------------------------------------------------------------------------------
+SQL Server has extremely useful command or built-in system stored procedure 	"sp_help" which is similar to a 'help' command. 
+------------------------------------------------------------------------------
+This command only returns information for objects that can be referenced 
+inside the current database. 
+------------------------------------------------------------------------------
+use db1;
+go
+------------------------------------------------------------------------------
+select * from db1.s1.emp1;
+go
+------------------------------------------------------------------------------
+empid	empname		empage	deptid
+------------------------------------------------------------------------------
+101	anil		24	901
+102	suresh		24	901
+103	rajesh		25	903
+104	ramesh		25	904
+------------------------------------------------------------------------------
+EXEC sp_help 'db1.s1.emp'; 
+go
+------------------------------------------------------------------------------
+Column_name	Type	Computed	Length	Prec	Scale	Nullable	TrimTrailingBlanks	FixedLenNullInSource	Collation
+------------------------------------------------------------------------------
+empid	int	no	4	10   	0    	no	(n/a)	(n/a)	NULL
+------------------------------------------------------------------------------
+empname	varchar	no	10	     	     	no	no	no	SQL_Latin1_General_CP1_CI_AS
+------------------------------------------------------------------------------
+empage	int	no	4	10   	0    	yes	(n/a)	(n/a)	NULL
+------------------------------------------------------------------------------
+empcity	varchar	no	10	     	     	yes	no	yes	SQL_Latin1_General_CP1_CI_AS
+------------------------------------------------------------------------------
+SQL Server can also use sp_columns stored procedure to show the structure 
+of a SQL Server table.
+------------------------------------------------------------------------------
+EXEC sp_columns emp1; 
+go
+------------------------------------------------------------------------------
+TABLE_QUALIFIER	TABLE_OWNER	TABLE_NAME	COLUMN_NAME	DATA_TYPE	TYPE_NAME	PRECISION	LENGTH	SCALE	RADIX	NULLABLE	REMARKS	COLUMN_DEF	SQL_DATA_TYPE	SQL_DATETIME_SUB	CHAR_OCTET_LENGTH	ORDINAL_POSITION	IS_NULLABLE	SS_DATA_TYPE
+------------------------------------------------------------------------------
+db1	s1	emp1	empid	4	int	10	4	0	10	0	NULL	NULL	4	NULL	NULL	1	NO	56
+db1	s1	emp1	empname	12	varchar	10	10	NULL	NULL	0	NULL	NULL	12	NULL	10	2	NO	39
+db1	s1	emp1	empage	4	int	10	4	0	10	1	NULL	NULL	4	NULL	NULL	3	YES	38
+db1	s1	emp1	deptid	4	int	10	4	0	10	0	NULL	NULL	4	NULL	NULL	4	NO	56 
+------------------------------------------------------------------------------
+If we do not want to use the stored procedure to describe the table structure, SQL Server also allows a query to accomplish this task.
+------------------------------------------------------------------------------
+SELECT * FROM information_schema.columns   
+WHERE table_name = 'emp1';  
+go
+------------------------------------------------------------------------------
+TABLE_CATALOG	TABLE_SCHEMA	TABLE_NAME	COLUMN_NAME	ORDINAL_POSITION	COLUMN_DEFAULT	IS_NULLABLE	DATA_TYPE	CHARACTER_MAXIMUM_LENGTH	CHARACTER_OCTET_LENGTH	NUMERIC_PRECISION	NUMERIC_PRECISION_RADIX	NUMERIC_SCALE	DATETIME_PRECISION	CHARACTER_SET_CATALOG	CHARACTER_SET_SCHEMA	CHARACTER_SET_NAME	COLLATION_CATALOG	COLLATION_SCHEMA	COLLATION_NAME	DOMAIN_CATALOG	DOMAIN_SCHEMA	DOMAIN_NAME
+------------------------------------------------------------------------------
+db1	s1	emp1	empid	1	NULL	NO	int	NULL	NULL	10	10	0	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL
+db1	s1	emp1	empname	2	NULL	NO	varchar	10	10	NULL	NULL	NULL	NULL	NULL	NULL	iso_1	NULL	NULL	SQL_Latin1_General_CP1_CI_AS	NULL	NULL	NULL
+db1	s1	emp1	empage	3	NULL	YES	int	NULL	NULL	10	10	0	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL
+db1	s1	emp1	deptid	4	NULL	NO	int	NULL	NULL	10	10	0	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
