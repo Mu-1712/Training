@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+Between
+---------------------------------------------------------------------------
+The BETWEEN operator selects values within a given range. 
+---------------------------------------------------------------------------
+The values can be numbers, text, or dates.
+---------------------------------------------------------------------------
+The BETWEEN operator is inclusive: begin and end values are included.
+---------------------------------------------------------------------------
+SQL statement selects all products with a price BETWEEN 10 and 20:
+---------------------------------------------------------------------------
+1.	SELECT * FROM Products
+	WHERE Price BETWEEN 10 and 20 ;
+---------------------------------------------------------------------------
+To display the products outside the range of the previous example, use NOT BETWEEN:
+---------------------------------------------------------------------------
+2.	SELECT * FROM Products
+	WHERE Price NOT BETWEEN 10 AND 20;
+---------------------------------------------------------------------------
+SQL statement selects all products with a price BETWEEN 10 and 20. In addition; 
+do not show products with a CategoryID of 1,2, or 3:
+---------------------------------------------------------------------------
+3.	SELECT * FROM Products
+	WHERE (Price BETWEEN 10 AND 20)
+	AND NOT CategoryID IN (1,2,3);
+---------------------------------------------------------------------------
+SQL statement selects all products with a ProductName BETWEEN 'brittiana' and 'marie':
+---------------------------------------------------------------------------
+4.	SELECT * FROM Products
+	WHERE ProductName BETWEEN 'brittiana' AND 'marie'
+	ORDER BY ProductName;
+---------------------------------------------------------------------------
+SQL statement selects all products with a ProductName NOT BETWEEN 'brittiana' and 'marie':
+---------------------------------------------------------------------------
+5.	SELECT * FROM Products
+	WHERE ProductName NOT BETWEEN 'brittiana' AND 'marie'
+	ORDER BY ProductName;
+---------------------------------------------------------------------------
+SQL statement selects all orders with an OrderDate BETWEEN '04-July-2016' and '09-July-2016':
+---------------------------------------------------------------------------
+6.	SELECT * FROM Orders
+	WHERE OrderDate BETWEEN #07/04/2016# AND #07/09/2016#;		..........not supported mysql
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+
+
+
+

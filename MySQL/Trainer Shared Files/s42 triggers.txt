@@ -1,0 +1,417 @@
+--------------------------------------------------------------------------
+Trigger
+--------------------------------------------------------------------------
+	1.	Row-Level Trigger
+--------------------------------------------------------------------------
+	2.	Statement-Level Trigger		Not supported by MySQL
+--------------------------------------------------------------------------
+Trigger Activation Time	: BEFORE | AFTER
+--------------------------------------------------------------------------
+Trigger Event		: INSERT | UPDATE | DELETE
+--------------------------------------------------------------------------
+CREATE TRIGGER trigger_name    
+    (AFTER | BEFORE) (INSERT | UPDATE | DELETE)  
+         ON table_name FOR EACH ROW    
+         BEGIN    
+        	--variable declarations    
+        	--trigger code    
+        END;    
+--------------------------------------------------------------------------
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test1              |
++--------------------+
+5 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> use test1;
+Database changed
+mysql>
+--------------------------------------------------------------------------
+mysql> show tables;
++-----------------+
+| Tables_in_test1 |
++-----------------+
+| t1              |
+| t2              |
+| t3              |
++-----------------+
+3 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> desc t2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| age   | int(2)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+ select * from t2;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | anil   |   22 |
+| 102 | sunil  |   26 |
+| 103 | sanjay |   25 |
+| 104 | suresh |   25 |
+| 105 | ramesh |   32 |
+| 106 | rajesh |   18 |
+| 107 | naresh |   28 |
++-----+--------+------+
+7 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> DELIMITER //
+mysql>
+--------------------------------------------------------------------------
+mysql> Create Trigger trig1
+    -> BEFORE INSERT ON t2 FOR EACH ROW
+    -> BEGIN
+    -> IF NEW.age < 18 THEN SET NEW.age = 18;
+    -> END IF;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> DELIMITER ;
+mysql>
+--------------------------------------------------------------------------
+mysql> show triggers;
++---------+--------+-------+-----------------------------------------------
+| Trigger | Event  | Table | Statement                                                      | Timing | Created                | sql_mode                                                                                      | Definer        | character_set_client | collation_connection | Database Collation |
++---------+--------+-------+-----------------------------------------------
+| trig1   | INSERT | t2    | BEGIN
+IF NEW.age < 18 THEN SET NEW.age = 18;
+END IF;
+END | BEFORE | 2023-07-09 11:20:55.76 | STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER | root@localhost | cp850                | cp850_general_ci     | latin1_swedish_ci  |
++---------+--------+-------+-----------------------------------------------
+1 row in set (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> insert into t2 values(108,'kamlesh',15);
+Query OK, 1 row affected (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t2;
++-----+---------+------+
+| id  | name    | age  |
++-----+---------+------+
+| 101 | anil    |   22 |
+| 102 | sunil   |   26 |
+| 103 | sanjay  |   25 |
+| 104 | suresh  |   25 |
+| 105 | ramesh  |   32 |
+| 106 | rajesh  |   18 |
+| 107 | naresh  |   28 |
+| 108 | kamlesh |   18 |
++-----+---------+------+
+8 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> show triggers in test1;
++---------+--------+-------+-----------------------------------------------
+| Trigger | Event  | Table | Statement                                                      | Timing | Created                | sql_mode                                                                                      | Definer        | character_set_client | collation_connection | Database Collation |
++---------+--------+-------+-----------------------------------------------
+| trig1   | INSERT | t2    | BEGIN
+IF NEW.age < 18 THEN SET NEW.age = 18;
+END IF;
+END | BEFORE | 2023-07-09 11:20:55.76 | STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER | root@localhost | cp850                | cp850_general_ci     | latin1_swedish_ci  |
++---------+--------+-------+-----------------------------------------------
+1 row in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> drop trigger trig1;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> show triggers;
+Empty set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> desc t3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| roll   | int(11)     | NO   | PRI | NULL    |       |
+| name   | varchar(10) | YES  |     | NULL    |       |
+| java   | int(2)      | YES  |     | NULL    |       |
+| linux  | int(2)      | YES  |     | NULL    |       |
+| dotnet | int(2)      | YES  |     | NULL    |       |
+| python | int(2)      | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t3;
++------+--------+------+-------+--------+--------+
+| roll | name   | java | linux | dotnet | python |
++------+--------+------+-------+--------+--------+
+|  101 | anil   |   82 |    90 |     65 |     85 |
+|  102 | sunil  |   80 |    90 |     60 |     80 |
+|  103 | suresh |   81 |    91 |     61 |     83 |
+|  104 | ramesh |   91 |    95 |     96 |     89 |
++------+--------+------+-------+--------+--------+
+4 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> alter table t3 add column total int(3);
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+mysql>
+--------------------------------------------------------------------------
+mysql> desc t3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| roll   | int(11)     | NO   | PRI | NULL    |       |
+| name   | varchar(10) | YES  |     | NULL    |       |
+| java   | int(2)      | YES  |     | NULL    |       |
+| linux  | int(2)      | YES  |     | NULL    |       |
+| dotnet | int(2)      | YES  |     | NULL    |       |
+| python | int(2)      | YES  |     | NULL    |       |
+| total  | int(3)      | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t3;
++------+--------+------+-------+--------+--------+-------+
+| roll | name   | java | linux | dotnet | python | total |
++------+--------+------+-------+--------+--------+-------+
+|  101 | anil   |   82 |    90 |     65 |     85 |  NULL |
+|  102 | sunil  |   80 |    90 |     60 |     80 |  NULL |
+|  103 | suresh |   81 |    91 |     61 |     83 |  NULL |
+|  104 | ramesh |   91 |    95 |     96 |     89 |  NULL |
++------+--------+------+-------+--------+--------+-------+
+4 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> DELIMITER //
+mysql>
+--------------------------------------------------------------------------
+mysql> CREATE TRIGGER trig2
+    -> BEFORE INSERT ON t3 FOR EACH ROW
+    -> BEGIN
+    -> SET NEW.TOTAL = NEW.java + NEW.dotnet + NEW.python + NEW.linux;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> DELIMITER ;
+mysql>
+--------------------------------------------------------------------------
+mysql> show triggers;
++---------+--------+-------+-----------------------------------------------
+| Trigger | Event  | Table | Statement                                                                 | Timing | Created                | sql_mode                                                                                      | Definer        | character_set_client | collation_connection | Database Collation |
++---------+--------+-------+-----------------------------------------------
+| trig2   | INSERT | t3    | BEGIN
+SET NEW.TOTAL = NEW.java + NEW.dotnet + NEW.python + NEW.linux;
+END | BEFORE | 2023-07-09 11:49:51.73 | STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER | root@localhost | cp850                | cp850_general_ci     | latin1_swedish_ci  |
++---------+--------+-------+-----------------------------------------------
+1 row in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> INSERT INTO T3 (ROLL,NAME,JAVA,LINUX,DOTNET,PYTHON)VALUES(105,'rajesh',80,80,80,80);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t3;
++------+--------+------+-------+--------+--------+-------+
+| roll | name   | java | linux | dotnet | python | total |
++------+--------+------+-------+--------+--------+-------+
+|  101 | anil   |   82 |    90 |     65 |     85 |  NULL |
+|  102 | sunil  |   80 |    90 |     60 |     80 |  NULL |
+|  103 | suresh |   81 |    91 |     61 |     83 |  NULL |
+|  104 | ramesh |   91 |    95 |     96 |     89 |  NULL |
+|  105 | rajesh |   80 |    80 |     80 |     80 |   320 |
++------+--------+------+-------+--------+--------+-------+
+5 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> desc t1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  | UNI | NULL    |       |
+| age   | int(11)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t1;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | suresh |   24 |
+| 102 | ramesh |   28 |
+| 103 | naresh |   25 |
++-----+--------+------+
+3 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> create table t11(id int primary key, name varchar(10), age int);
+Query OK, 0 rows affected (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> desc t11;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| age   | int(11)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t11;
+Empty set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> DELIMITER $$
+mysql>
+--------------------------------------------------------------------------
+mysql> CREATE TRIGGER trig3
+    -> AFTER UPDATE
+    -> ON t1 FOR EACH ROW
+    -> BEGIN
+    ->     INSERT into t11 VALUES (OLD.id, OLD.name,OLD.age);
+    -> END $$
+Query OK, 0 rows affected (0.01 sec)
+mysql> 
+--------------------------------------------------------------------------
+mysql> DELIMITER ;
+mysql>
+--------------------------------------------------------------------------
+mysql> update t1 set name = 'rajesh' where id = 103;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t1;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | suresh |   24 |
+| 102 | ramesh |   28 |
+| 103 | rajesh |   25 |
++-----+--------+------+
+3 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t11;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 103 | naresh |   25 |
++-----+--------+------+
+1 row in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> desc t2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| age   | int(2)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t2;
++-----+---------+------+
+| id  | name    | age  |
++-----+---------+------+
+| 101 | anil    |   22 |
+| 102 | sunil   |   26 |
+| 103 | sanjay  |   25 |
+| 104 | suresh  |   25 |
+| 105 | ramesh  |   32 |
+| 106 | rajesh  |   18 |
+| 107 | naresh  |   28 |
+| 108 | kamlesh |   18 |
++-----+---------+------+
+8 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> create table t22(id int primary key,name varchar(10), age int(2), resign timestamp default now());
+Query OK, 0 rows affected (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> desc t22;
++--------+-------------+------+-----+-------------------+-------+
+| Field  | Type        | Null | Key | Default           | Extra |
++--------+-------------+------+-----+-------------------+-------+
+| id     | int(11)     | NO   | PRI | NULL              |       |
+| name   | varchar(10) | YES  |     | NULL              |       |
+| age    | int(2)      | YES  |     | NULL              |       |
+| resign | timestamp   | YES  |     | CURRENT_TIMESTAMP |       |
++--------+-------------+------+-----+-------------------+-------+
+4 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select * from t22;
+Empty set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> DELIMITER $$
+mysql>
+--------------------------------------------------------------------------
+mysql> CREATE TRIGGER trig4
+    -> BEFORE DELETE
+    -> ON t2 FOR EACH ROW
+    -> BEGIN
+    ->     INSERT INTO t22 (id,name,age)
+    ->     VALUES(OLD.id, OLD.name, OLD.age);
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> delete from t2 where id = 102;
+Query OK, 1 row affected (0.01 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select  * from t2;
++-----+---------+------+
+| id  | name    | age  |
++-----+---------+------+
+| 101 | anil    |   22 |
+| 103 | sanjay  |   25 |
+| 104 | suresh  |   25 |
+| 105 | ramesh  |   32 |
+| 106 | rajesh  |   18 |
+| 107 | naresh  |   28 |
+| 108 | kamlesh |   18 |
++-----+---------+------+
+7 rows in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+mysql> select  * from t22;
++-----+-------+------+---------------------+
+| id  | name  | age  | resign              |
++-----+-------+------+---------------------+
+| 102 | sunil |   26 | 2023-07-09 12:16:41 |
++-----+-------+------+---------------------+
+1 row in set (0.00 sec)
+mysql>
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+
+
+
+
+
+

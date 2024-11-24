@@ -1,0 +1,21 @@
+Top 5 Power BI Questions Every Data Analyst with 2-4 Years of Experience Should Be Ready For!
+
+If you’re in the 2-4 year experience bracket, chances are you’ve encountered these questions in interviews or while working on projects. Let’s dive in:
+
+1. How do you optimize Power BI reports for performance?
+- It’s not just about creating visually appealing dashboards; it's about making them efficient. Know your DAX measures, minimize calculated columns, optimize model size, and avoid too many visuals in a single report.
+
+2. Can you explain the difference between DirectQuery and Import Mode?
+- This is fundamental! Import Mode is all about speed with in-memory data, while DirectQuery connects directly to the source for real-time insights but at the cost of performance.
+
+3. How do you handle complex relationships in a data model?
+- Handling many-to-many relationships or circular dependencies is a classic challenge. Using bridge tables, calculated columns, or properly defined relationships can save the day.
+
+4. What are the key differences between Power BI Service and Power BI Desktop?
+- Power BI Desktop is where you create the magic, and Power BI Service is where you share and collaborate on it. 
+Bonus: Mention the importance of security roles in the service!
+
+5. How do you ensure data security and RLS (Row-Level Security)?
+For professionals managing sensitive data, RLS is a must-know. Explaining how you use security roles to filter data for different users shows you’re detail-oriented.
+
+These questions not only test your technical skills but also your understanding of Power BI's practical application.

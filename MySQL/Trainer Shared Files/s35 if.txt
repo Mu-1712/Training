@@ -1,0 +1,97 @@
+-------------------------------------------------------------------------
+mysql> SELECT IF(150>155,'ok','not ok');
++---------------------------+
+| IF(150>155,'ok','not ok') |
++---------------------------+
+| not ok                    |
++---------------------------+
+1 row in set (0.00 sec)
+mysql> -- in the above statement, first expression is the condition
+mysql> -- if the condition is true, then the second statement is executed
+mysql> -- if the condition is false, then the third statement is executed
+mysql>
+-------------------------------------------------------------------------
+mysql> SELECT IF(STRCMP('Anil','anil')=0, 'same', 'not same');
++-------------------------------------------------+
+| IF(STRCMP('Anil','anil')=0, 'same', 'not same') |
++-------------------------------------------------+
+| same                                            |
++-------------------------------------------------+
+1 row in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test1              |
++--------------------+
+5 rows in set (0.01 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> use test1;
+Database changed
+mysql>
+-------------------------------------------------------------------------
+mysql> show tables;
++-----------------+
+| Tables_in_test1 |
++-----------------+
+| t1              |
++-----------------+
+1 row in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> desc t1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  | UNI | NULL    |       |
+| age   | int(11)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t1;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | suresh |   24 |
+| 102 | ramesh |   28 |
+| 103 | naresh |   25 |
+| 104 | rajesh |   22 |
+| 105 | sunil  |   23 |
+| 106 | anil   |   23 |
++-----+--------+------+
+6 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select name, if(age>25,'senior','junior') as level from t1;
++--------+--------+
+| name   | level  |
++--------+--------+
+| suresh | junior |
+| ramesh | senior |
+| naresh | junior |
+| rajesh | junior |
+| sunil  | junior |
+| anil   | junior |
++--------+--------+
+6 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

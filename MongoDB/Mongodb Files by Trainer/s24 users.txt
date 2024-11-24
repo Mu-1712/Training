@@ -1,0 +1,165 @@
+-----------------------------------------------------------------------
+			MongoDB User Management Commands
+-----------------------------------------------------------------------
+			MongoDB createUser command
+-----------------------------------------------------------------------
+The MongoDB createUser command creates a new user for the database from where we run the command. 
+-----------------------------------------------------------------------
+If the user already exists, it will return the duplicate user error.
+-----------------------------------------------------------------------
+{  
+ createUser: "<user_name>",  
+ pwd: "<cleartext password>"  
+ customData: { <any info.> },  
+ roles: [  
+   { role: "<role>", db: "<database>" } | "<role>",  
+   ...  
+ ],  
+ writeConcern: { <write concern> },  
+ authenticationRestrictions: [  
+    { clientSource: [ "<IP|CIDR range>", ... ], serverAddress: [ "<IP|CIDR range>", ... ] },  
+    ...  
+ ],  
+ mechanisms: [ "<scram-mechanism>", ...],   
+ digestPassword: <boolean>  
+-----------------------------------------------------------------------
+			createUser
+-----------------------------------------------------------------------
+string
+-----------------------------------------------------------------------
+This field contains the name of the new user.
+-----------------------------------------------------------------------
+			pwd
+-----------------------------------------------------------------------
+string
+-----------------------------------------------------------------------
+This field contains the user's password. 
+-----------------------------------------------------------------------
+The value can be either the user's password in cleartext string or passwordPrompt() to prompt for the user's password.
+-----------------------------------------------------------------------
+			customData
+-----------------------------------------------------------------------
+document
+-----------------------------------------------------------------------
+This field contains the data that an admin wishes to associate with the particular user.
+-----------------------------------------------------------------------
+			roles
+-----------------------------------------------------------------------
+array
+-----------------------------------------------------------------------
+The field grants any role to the user.
+-----------------------------------------------------------------------
+			digestPassword
+-----------------------------------------------------------------------
+Boolean
+-----------------------------------------------------------------------
+The digestPassword indicates that it is a server or a client who digests the password.
+-----------------------------------------------------------------------
+			writeConcern
+-----------------------------------------------------------------------
+document
+-----------------------------------------------------------------------
+This field contains the write concern for the creation operation.
+-----------------------------------------------------------------------
+			authentication
+-----------------------------------------------------------------------
+array
+-----------------------------------------------------------------------
+It enforces the authentication rules on the created user. 
+-----------------------------------------------------------------------
+It provides a list of IP addresses and CIDR ranges from which the user is allowed to connect.
+-----------------------------------------------------------------------
+			mechanism
+-----------------------------------------------------------------------
+array
+-----------------------------------------------------------------------
+This field specifies the SCRAM mechanisms. The valid SCRAM values are 
+SCRAM-SHA-1 and SCRAM-SHA-256. 
+-----------------------------------------------------------------------
+Salted Challenge-Response Authentication Mechanism- Secure Hash Algorithm
+-----------------------------------------------------------------------
+db.getSiblingDB("test").runCommand( 
+	{  
+       		createUser	: "admin@emphasis",  
+       		pwd		: passwordPrompt(),  
+       		customData	: { empId: 101 },  
+       		roles		: [  
+                { role: "clusterAdmin", 	db: "admin" },  
+                { role: "readAnyDatabase", 	db: "admin" },  
+                "readWrite"  
+              			  ],  
+       		writeConcern: { w: "majority" , wtimeout: 5000 }  
+	} )  
+
+-----------------------------------------------------------------------
+			MongoDB dropUser command
+-----------------------------------------------------------------------
+The MongoDB dropUser command deletes the user from the database on which we are running the command.
+-----------------------------------------------------------------------
+{  
+  dropUser: "<user>",  
+  writeConcern: { <write concern> }  
+} 
+-----------------------------------------------------------------------
+use test  
+-----------------------------------------------------------------------
+db.runCommand	( {  
+   			dropUser: " admin@mphasis ",  
+   			writeConcern: { w: "majority", wtimeout: 5000 }  
+		} )  
+-----------------------------------------------------------------------
+			MongoDB updateUser command
+-----------------------------------------------------------------------
+The MongoDB updateUser command updates the users details in the database on which we run the command. 
+-----------------------------------------------------------------------
+It will completely replace the previous field's values when we use the command, including the roles that are assigned and the authenticationRestrictions arrays.
+
+-----------------------------------------------------------------------
+{  
+  updateUser: "<user_name>",  
+  pwd: "<cleartext password>"  
+  customData: { <any information> },  
+  roles: [  
+    { role: "<role>", db: "<database>" } | "<role>",  
+    ...  
+  ],  
+  authenticationRestrictions: [  
+     {  
+       clientSource: ["<IP>" | "<CIDR range>", ...],  
+       serverAddress: ["<IP>", | "<CIDR range>", ...]  
+     },  
+     ...  
+  ],  
+  mechanisms: [ "<scram-mechanism>", ... ],  
+  digestPassword: <boolean>,  
+  writeConcern: { <write concern> }  
+}  
+-----------------------------------------------------------------------
+{  
+   	"_id" : "test.appClient01",  
+   	"userId" : UUID("c5d88855-3f1e-46cb-9c8b-269bef957986"), 
+	// Starting in MongoDB 4.0.9  
+   	"user" : "appClient01",  
+   	"db" : "test",  
+   	"customData" : { "empID" : "12345", "badge" : "9156" },  
+   	"roles" : [  
+       			{ 	"role" : "readWrite",  
+         			"db" : "products"  
+       			},  
+       			{ 	"role" : "read",  
+         			"db" : "inventory"  
+       			}  
+   		],  
+   	"mechanisms" : [ "SCRAM-SHA-1",  "SCRAM-SHA-256"  ]  
+}  
+-----------------------------------------------------------------------
+The following update user command completely replaces the user's customData and roles data:
+-----------------------------------------------------------------------
+use test  
+db.runCommand( {  
+   updateUser : "appClient01",  
+   customData : { employeeId : "0x3039" },  
+   roles : [ { role : "read", db : "assets" } ]  
+} )  
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------

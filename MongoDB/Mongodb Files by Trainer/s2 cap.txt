@@ -1,0 +1,242 @@
+----------------------------------------------------------------------------
+			The CAP theorem 
+----------------------------------------------------------------------------
+In the event of a network failure on a distributed database, it is possible 
+to provide either consistency or availability — but not both.
+----------------------------------------------------------------------------
+The CAP theorem states that a distributed system can provide only two of three desired properties
+----------------------------------------------------------------------------
+			What is the CAP theorem?
+----------------------------------------------------------------------------
+The CAP Theorem is comprised of three components (hence its name) as they relate to distributed data stores:
+----------------------------------------------------------------------------
+			1.	Consistency 
+----------------------------------------------------------------------------
+			2.	Availability
+----------------------------------------------------------------------------
+			3.	Partition tolerance
+----------------------------------------------------------------------------
+			Consistency
+----------------------------------------------------------------------------
+All reads receive the most recent write or an error.
+----------------------------------------------------------------------------
+Every client sees the same data. 
+----------------------------------------------------------------------------
+Every read receives the data from the most recent write. 
+----------------------------------------------------------------------------
+			Availability
+----------------------------------------------------------------------------
+All reads contain data, but it might not be the most recent.
+----------------------------------------------------------------------------
+Every request gets a non-error response, but the response may not contain the most recent data.
+----------------------------------------------------------------------------
+			Partition tolerance
+----------------------------------------------------------------------------
+The system continues to operate despite network failures :
+----------------------------------------------------------------------------
+			1.	dropped partitions
+----------------------------------------------------------------------------
+			2.	slow network connections 
+----------------------------------------------------------------------------
+			3.	unavailable network connections between nodes
+----------------------------------------------------------------------------
+The system continues to operate despite one or more breaks in inter-node communication caused by a network or node failure. 
+----------------------------------------------------------------------------
+Because a distributed system must be partition tolerant, the only choices are deciding between availability and consistency. 
+----------------------------------------------------------------------------
+In normal operations, your data store provides all three functions. 
+----------------------------------------------------------------------------
+But the CAP theorem maintains that when a distributed database experiences a network failure, you can provide either consistency or availability.
+----------------------------------------------------------------------------
+It’s a tradeoff.
+----------------------------------------------------------------------------
+All other times, all three can be provided. 
+----------------------------------------------------------------------------
+But, in the event of a network failure, a choice must be made.
+----------------------------------------------------------------------------
+In the theorem, partition tolerance is a MUST. 
+----------------------------------------------------------------------------
+The assumption is that the system operates on a distributed data store so the system, by nature, operates with network partitions. 
+----------------------------------------------------------------------------
+Network failures will happen, so to offer any kind of reliable service, partition tolerance is necessary — the P of CAP.
+----------------------------------------------------------------------------
+That leaves a decision between the other two, C and A. 
+----------------------------------------------------------------------------
+When a network failure happens, one can choose to guarantee consistency or availability:
+----------------------------------------------------------------------------
+	a.	High consistency comes at the cost of lower availability.
+----------------------------------------------------------------------------
+	b.	High availability comes at the cost of lower consistency.
+----------------------------------------------------------------------------
+Consistency in CAP is different than that of ACID. 
+----------------------------------------------------------------------------
+Consistency in CAP means having the most up-to-date information. 
+----------------------------------------------------------------------------
+ACID refers to a different database event. 
+----------------------------------------------------------------------------
+In ACID, consistency means any new transaction to the database won’t corrupt the database.
+----------------------------------------------------------------------------
+	User queries: consistent or available?
+----------------------------------------------------------------------------
+The moment in question is the user query. 
+----------------------------------------------------------------------------
+We assume that a user makes a query to a database and the networked database is to return a value.
+----------------------------------------------------------------------------
+Whichever value is returned from the database depends on our choice to provide consistency or availability.
+----------------------------------------------------------------------------
+On a query, we can respond to the user with the current value on the server, offering a highly available service. 
+----------------------------------------------------------------------------
+If we do this, there is no guarantee that the value is the most recent value submitted to the database. 
+----------------------------------------------------------------------------
+It is possible a recent write could be stuck in transit somewhere.
+----------------------------------------------------------------------------
+If we want to guarantee high consistency, then we have to wait for the new write or return an error to the query. 
+----------------------------------------------------------------------------
+Thus, we sacrifice availability to ensure the data returned by the query is consistent.
+----------------------------------------------------------------------------
+			Eric Brewer
+----------------------------------------------------------------------------
+“The modern CAP goal should be to maximize combinations of consistency and availability that make sense for the specific application. Such an approach incorporates plans for operation during a partition and for recovery afterward, thus helping designers think about CAP beyond its historically perceived limitations.”
+----------------------------------------------------------------------------
+Choosing consistency and availability comes when choosing which database type to go with, such as SQL vs NoSQL. 
+----------------------------------------------------------------------------
+NoSQL databases can be classified based on whether they support high availability or high consistency.
+----------------------------------------------------------------------------
+			CP Systems
+----------------------------------------------------------------------------
+Safeguard data consistency by canceling the request even if it decreases the availability of the system. 
+----------------------------------------------------------------------------
+Such systems are called CP systems.
+---------------------------------------------------------------------------- 
+refer : image : mongodb cap 
+----------------------------------------------------------------------------
+According to the CAP theorem, MongoDB is a CP system.
+----------------------------------------------------------------------------
+CAP theorem provides an overly simplified view of today’s distributed systems such as MongoDB and Cassandra. 
+----------------------------------------------------------------------------
+Under normal operations, availability and consistency are adjustable and can be configured to meet specific requirements. 
+----------------------------------------------------------------------------
+However, in keeping with CAP, increasing one state decreases the other. 
+----------------------------------------------------------------------------
+Hence, it would be more correct to describe the default behavior of MongDB CP. 
+----------------------------------------------------------------------------
+			PACELC Theorem
+----------------------------------------------------------------------------
+The PACELC theorem was proposed by Daniel J. Abadi in 2010 to address two major oversights of CAP:
+----------------------------------------------------------------------------
+It considers the behavior of a distributed system only during a failure condition (the network partition)
+----------------------------------------------------------------------------
+It fails to consider that in normal operations, there is always a tradeoff between consistency and latency
+----------------------------------------------------------------------------
+			PACELC is summarized as follows: 
+----------------------------------------------------------------------------
+In the event of a Partition failure(P), a distributed system must choose between Availability (A) and Consistency(C), else (E) when running normally it must choose between latency (L) or consistency (C).
+----------------------------------------------------------------------------
+MongoDB is classified as a PC+EC system. 
+----------------------------------------------------------------------------
+During normal operations and during partition failures, it emphasizes consistency. 
+----------------------------------------------------------------------------
+MongoDB is a NoSQL document database. 
+----------------------------------------------------------------------------
+It is a single-master distributed system that uses asynchronous replication 
+to distribute multiple copies of the data for high availability. 
+----------------------------------------------------------------------------
+A MongoDB is a group of instances running mongod and maintaining the same data. 
+----------------------------------------------------------------------------
+The MongoDB documentation refers to this grouping as a replica set. 
+----------------------------------------------------------------------------
+But, for simplicity, let us use the MongoDB cluster. 
+----------------------------------------------------------------------------
+A MongoDB cluster is composed of two types of data-bearing members: 
+----------------------------------------------------------------------------
+			Primary: 
+----------------------------------------------------------------------------
+The primary is the master node and receives all write operations. 
+----------------------------------------------------------------------------
+			Secondaries: 
+----------------------------------------------------------------------------
+The secondaries receive replicated data from the primary to maintain an identical data set. 
+----------------------------------------------------------------------------
+By default, the primary member handles all reads and writes. 
+----------------------------------------------------------------------------
+Optionally, a MongoDB client can route some or all reads to the secondary members. 
+----------------------------------------------------------------------------
+Writes must be sent to the primary. 
+----------------------------------------------------------------------------
+If the primary member fails, all writes are suspended until a new primary is selected from one of the secondary members. 
+----------------------------------------------------------------------------
+According to the MongoDB documentation, this process requires up to 12 seconds to complete. 
+----------------------------------------------------------------------------
+To increase availability, a cluster can be distributed across geographically distinct data centers. 
+----------------------------------------------------------------------------
+The maximum size of a MongoDB replicaset is 50 members. 
+----------------------------------------------------------------------------
+refer : image : mongodb cluster
+----------------------------------------------------------------------------
+			Consistency
+----------------------------------------------------------------------------
+By default, MongoDB is a strongly consistent system. 
+----------------------------------------------------------------------------
+Once a write completes, any subsequent read will return the most recent value.
+----------------------------------------------------------------------------
+It is important to keep in mind that MongoDB becomes an eventually consistent system when read operations are done on the secondary members. 
+----------------------------------------------------------------------------
+This happens because of replication lag (the delay between when the data is written to the primary and when that data is available on the secondary). 
+----------------------------------------------------------------------------
+The larger the lag, the greater chance that reads will return inconsistent data.
+----------------------------------------------------------------------------
+			Tunable Consistency
+----------------------------------------------------------------------------
+MongoDB has “tunable consistency.” 
+----------------------------------------------------------------------------
+That is, the levels of consistency and availability are adjustable to meet certain requirements. 
+----------------------------------------------------------------------------
+Individual read and write operations define the number of members or replicas that must acknowledge a request in order for that request to succeed. 
+----------------------------------------------------------------------------
+In MongoDB, this level is called read concern or write concern. 
+----------------------------------------------------------------------------
+One important limitation is that no combination of read and write concerns 
+can make MongoDB strongly consistent once reads are permitted on the secondary members.
+----------------------------------------------------------------------------
+When MongoDB secondary members become inconsistent with the primary due to replication lag, the only solution is waiting for the secondaries to catch up. 
+----------------------------------------------------------------------------
+		Loss of Consistency During a Failure
+----------------------------------------------------------------------------
+If the primary member fails, MongoDB preserves consistency by suspending writes until a new primary is elected. 
+----------------------------------------------------------------------------
+Any writes to the failed primary that have not been replicated are rolled back when it returns to the cluster as a secondary.
+----------------------------------------------------------------------------
+			Availability
+----------------------------------------------------------------------------
+MongoDB has high availability by replicating multiple copies of the data.
+----------------------------------------------------------------------------
+The more copies, the higher the availability. 
+----------------------------------------------------------------------------
+Clusters can be distributed across geographically distinct data centers to further enhance availability.
+----------------------------------------------------------------------------
+The maximum size MongoDB cluster is 50 members with no more than seven voting members.
+----------------------------------------------------------------------------
+A typical replication factor is three for most clusters or five when there are very high availability requirements. 
+----------------------------------------------------------------------------
+Conversely, when data availability is less critical, say with data that can easily be recreated, the replication factor can be lowered to save space and to improve performance.
+----------------------------------------------------------------------------
+			Fault Tolerance
+----------------------------------------------------------------------------
+If the primary member of a MongoDB cluster becomes unavailable for longer than electionTimeoutMillis (10 seconds by default), the secondary members hold an election to determine a new primary as long as a majority of members are reachable.
+----------------------------------------------------------------------------
+During the election, which can take up to 12 seconds, a MongoDB cluster is only partially available:
+----------------------------------------------------------------------------
+No writes are allowed until a new primary is elected.
+----------------------------------------------------------------------------
+Data can be read from the secondary if a majority of the secondary members 
+are online and reads from the secondary members have been enabled
+----------------------------------------------------------------------------
+With the CAP or PACELC theorems, MongoDB is categorized as a distributed system that guarantees consistency over availability 
+----------------------------------------------------------------------------
+MongoDB remains strongly consistent only as long as all reads are directed to the primary member. 
+----------------------------------------------------------------------------
+Even when reads are limited to the primary member, consistency can be 
+loosened by read and write concerns. 
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+

@@ -1,0 +1,394 @@
+----------------------------------------------------------------------------
+			MongoDB Shell Collection Methods
+----------------------------------------------------------------------------
+		1.	db.collection.aggregate(pipeline, option)
+----------------------------------------------------------------------------
+The aggregate method calculates mass values for the data in a 
+collection/table or in a view.
+----------------------------------------------------------------------------
+			Pipeline
+----------------------------------------------------------------------------
+It is an array of mass data operations or stages. 
+----------------------------------------------------------------------------
+It can accept the pipeline as a separate argument, not as an element in an array. 
+----------------------------------------------------------------------------
+If the pipeline is not specified as an array, then the second parameter will not be specified.
+----------------------------------------------------------------------------
+			Option
+----------------------------------------------------------------------------
+A document that passes the aggregate command. 
+----------------------------------------------------------------------------
+It will be available only when you specify the pipeline as an array.
+----------------------------------------------------------------------------
+			1.	explain
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------
+The explain field specifies to return the information on the processing 
+of the pipeline.
+----------------------------------------------------------------------------
+			2.	allowDiskUse
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------The allow disk use field enables you to write to temporary files.
+----------------------------------------------------------------------------
+			3.	cursor
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+The initial batch size for the cursor is specified with this field. 
+----------------------------------------------------------------------------
+The value inside this field is the document with the batchSize field.
+----------------------------------------------------------------------------
+			4.	maxTimeMS
+----------------------------------------------------------------------------
+non-negative integer
+----------------------------------------------------------------------------
+Use the time limit for the processing operations on a cursor is specified using this field.
+----------------------------------------------------------------------------
+			5.	bypassDocument
+----------------------------------------------------------------------------
+Validation
+----------------------------------------------------------------------------
+boolean 
+----------------------------------------------------------------------------
+The $out or $merge aggregation stages can be specified using this field. 
+----------------------------------------------------------------------------
+It allows the aggregate collection method to bypass the document validation during the operation.
+----------------------------------------------------------------------------
+			6.	readConcern
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+You can specify the read concern level using this field.
+----------------------------------------------------------------------------
+collation
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+The collation field specifies the language specific rules for string comparison.
+----------------------------------------------------------------------------
+> show dbs
+----------------------------------------------------------------------------
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+pfizer  0.000GB
+test    0.000GB
+----------------------------------------------------------------------------
+> use test
+----------------------------------------------------------------------------
+switched to db test
+----------------------------------------------------------------------------
+> show collections
+----------------------------------------------------------------------------
+customers
+emp2
+emp3
+test
+----------------------------------------------------------------------------
+> db.library.insert({ _id: 1, book_id: "Java", ord_date: ISODate("2012-11-02T17:04:11.102Z"), status: "A", amount: 50 })
+----------------------------------------------------------------------------
+> show collections
+----------------------------------------------------------------------------
+customers
+emp2
+emp3
+library
+test
+tmpuser
+----------------------------------------------------------------------------
+> db.library.find()
+----------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+----------------------------------------------------------------------------
+> db.library.insert({ _id: 0, book_id: "MongoDB", ord_date: ISODate("2013-10-01T17:04:11.102Z"), status: "A", amount: 100 })
+----------------------------------------------------------------------------
+> db.library.insert({ _id: 2, book_id: "Python", ord_date: ISODate("2013-10-11T17:04:11.102Z"), status: "D", amount: 125 })
+----------------------------------------------------------------------------
+> db.library.insert({ _id: 0.02, book_id: "SQL", ord_date: ISODate("2013-11-12T17:04:11.102Z"), status: "A", amount: 25 })
+----------------------------------------------------------------------------
+> db.library.find()
+----------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0, "book_id" : "MongoDB", "ord_date" : ISODate("2013-10-01T17:04:11.102Z"), "status" : "A", "amount" : 100 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+>
+---------------------------------------------------------------------------- 
+			Calculating the sum
+----------------------------------------------------------------------------
+db.library.aggregate([  
+                     { 	$match: { status: "A" } },  
+                     { 	$group: { _id: "$book_id", 
+			total: { $count: "$amount" } } },  
+                     { 	$sort: { total: -1 } }  
+                   ])  
+----------------------------------------------------------------------------			Specifying the collation
+----------------------------------------------------------------------------
+db.library.aggregate(  
+   			[ 	{ $match: { status: "A" } }, 
+				{ $group: { _id: "$ord_date", 
+					count: { $count: 1 } } 
+				} 
+			],  
+   			{ library: { locale: "fr", strength: 1 } }
+		    );  
+----------------------------------------------------------------------------
+			db.collection.bulkWrite()
+----------------------------------------------------------------------------
+The bulkWrite() method performs multiple write operations with the 
+order of execution control. 
+----------------------------------------------------------------------------
+Array of write operations are executed by this operation. 
+----------------------------------------------------------------------------
+Operations are executed in a specific order by default.
+----------------------------------------------------------------------------
+db.collection.bulkWrite(  
+   [ <op. 1>, <op. 2>, .. ],  
+   {  
+      writeConcern : <document>,  
+      ordered: <boolean>  
+   }  
+)  
+----------------------------------------------------------------------------
+			Execution of Operations
+----------------------------------------------------------------------------
+				insertOne: 
+----------------------------------------------------------------------------
+It inserts only one document into the collection.
+----------------------------------------------------------------------------
+db.collection.bulkWrite( [  
+   				{ insertOne : { "document" : <document> } }  
+			] )  
+----------------------------------------------------------------------------
+				Update one: 
+----------------------------------------------------------------------------
+It updates only one document that matches the filter in the collection.
+----------------------------------------------------------------------------
+db.collection.bulkWrite( [  
+   			{ updateOne :  
+      				{  	"filter": <document>,  
+        				"update": <document or pipeline>,  
+         				"upsert": <boolean>,  
+         				"collation": <document>,  
+         			"arrayFilters": [ <filterdocument1>, ... ],  
+         				"hint": <document|string>  
+      				}  
+   			}  
+			] )  
+----------------------------------------------------------------------------				Update Many: 
+----------------------------------------------------------------------------
+It updates all the filter matched documents in the collection.
+----------------------------------------------------------------------------
+db.collection.bulkWrite( [  
+   			{ updateMany :
+				{  
+         				"filter" : <doc.>,  
+         				"update" : <document or pipeline>,            
+         				"upsert" : <Boolean>,  
+         				"collation": <document>,             
+         			"arrayFilters": [ <filterdocument1>, ... ],   
+         				"hint": <document|string>                  
+ 					// Available starting in 4.2.1  
+      				}  
+   			}  
+			] )  
+----------------------------------------------------------------------------
+				replaceOne: 
+----------------------------------------------------------------------------
+It replaces a single document in the collection that matches the filter.
+----------------------------------------------------------------------------
+db.collection.bulkWrite([  
+			{ replaceOne :  
+ 				{  
+    					"filter" : <doc.>,  
+     					"replacement" : <doc.>,  
+     					"upsert" : <boolean>,  
+     					"collation": <document>,  
+     					"hint": <document|string>  
+   				}  
+ 			}  
+			] )  
+----------------------------------------------------------------------------
+			db.collection.count(query, option)
+----------------------------------------------------------------------------
+The count() method return the number of documents that would match a find method query for the collection or view.
+----------------------------------------------------------------------------
+We will count all the document in the library collection using the following operation:
+----------------------------------------------------------------------------
+			db.library.count()  
+----------------------------------------------------------------------------
+> db.library.find()
+----------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0, "book_id" : "MongoDB", "ord_date" : ISODate("2013-10-01T17:04:11.102Z"), "status" : "A", "amount" : 100 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+----------------------------------------------------------------------------
+> db.library.count()
+5
+>
+----------------------------------------------------------------------------
+Now, we will count all the documents that Match a Query in the library collection with the field ord_date greater than new Date ('10/01/2013')
+----------------------------------------------------------------------------
+> db.library.count( { ord_date: { $gt: new Date("10/10/2013") } } )
+3
+>
+----------------------------------------------------------------------------
+			db.collection.countDocuments(query, options)
+----------------------------------------------------------------------------
+The countDocument() method return the number of documents that match the 
+query for a collection or view. 
+----------------------------------------------------------------------------
+it does not use the metadata to return the count.
+----------------------------------------------------------------------------
+		db.collection.countDocuments( <query>, <options> ) 
+----------------------------------------------------------------------------
+Below example will count the number of all the documents in the library collection.
+----------------------------------------------------------------------------		db.library.countDocuments({})  
+----------------------------------------------------------------------------
+> db.library.countDocuments({})
+5
+>
+----------------------------------------------------------------------------
+		db.collection.estimatedDocumentCount()
+----------------------------------------------------------------------------
+The estimateddocumentCount() method counts all documents in a collection or view. 
+----------------------------------------------------------------------------
+This method wraps the count command.
+----------------------------------------------------------------------------		db.collection.estimatedDocumentCount( <options> )  
+----------------------------------------------------------------------------
+> db.library.estimatedDocumentCount( )
+5
+>
+----------------------------------------------------------------------------
+			db.collection.createIndex()
+----------------------------------------------------------------------------
+It can create the indexes on collections
+----------------------------------------------------------------------------
+		db.collection.createIndex(keys, options) 
+----------------------------------------------------------------------------For an ascending index on a field we need to specify a value of 1 and 
+for the descending index we need to specify a value of -1.
+----------------------------------------------------------------------------
+The example below creates an ascending index on the field tut_Date.
+----------------------------------------------------------------------------
+		db.library.createIndex( { ord_date: 1 } )  
+----------------------------------------------------------------------------
+> db.library.createIndex( { ord_date: 1 } )
+{
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+>
+----------------------------------------------------------------------------
+The following example shows a compound index created on the ord_date 
+field and the book_id field.
+----------------------------------------------------------------------------
+	db.library.createIndex( { ord_date: 1, book_id: -1 } ) 
+----------------------------------------------------------------------------
+> db.library.createIndex( { ord_date: 1, book_id: -1 } )
+{
+        "numIndexesBefore" : 2,
+        "numIndexesAfter" : 3,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+----------------------------------------------------------------------------
+ The example below will create an index named as category_book. 
+----------------------------------------------------------------------------
+The example creates the index with the collation that specifies the 
+locale fr and comparison strength.
+----------------------------------------------------------------------------
+db.collection.createIndex(  
+   { category: 1 },  
+   { name: "category_book", collation: { locale: "fr", strength: 2 } }  
+)  
+----------------------------------------------------------------------------
+> db.collection.createIndex(
+...    { category: 1 },
+...    { name: "category_book", collation: { locale: "fr", strength: 2 } }
+... )
+{
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "createdCollectionAutomatically" : true,
+        "ok" : 1
+}
+>
+----------------------------------------------------------------------------
+		db.collection.createIndexes()
+----------------------------------------------------------------------------
+The createIndexes() method creates one or more indexes on a collection.
+----------------------------------------------------------------------------
+		db.collection.createIndexes( [keyPatterns, ]options)  
+----------------------------------------------------------------------------
+Keypatterns: 
+----------------------------------------------------------------------------
+It is an array that contains the index specific documents. 
+----------------------------------------------------------------------------
+All the document have field-value pairs. 
+----------------------------------------------------------------------------
+For an ascending index on a field we need to specify a value of 1 
+and for the descending index we need to specify a value of -1
+----------------------------------------------------------------------------
+			db.collection.dataSize()
+----------------------------------------------------------------------------
+The data size method have a cover around the output of the collStats (i.e. db.collection.stats() ) command.
+----------------------------------------------------------------------------
+> db.library.dataSize()
+424
+>
+----------------------------------------------------------------------------
+			db.collection.deleteOne()
+----------------------------------------------------------------------------
+The deleteOne() method deletes one document from the collection. 
+----------------------------------------------------------------------------
+It replaces the first document that is similar to the filter. 
+----------------------------------------------------------------------------
+You need to use a field that is related to a unique index such as id for perfect deletions.
+----------------------------------------------------------------------------
+db.collection.deleteOne(  
+   <filter>,  
+   {  
+      writeConcern: <document>,  
+      collation: <document>  
+   }  
+)  
+----------------------------------------------------------------------------
+> db.library.find()
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0, "book_id" : "MongoDB", "ord_date" : ISODate("2013-10-01T17:04:11.102Z"), "status" : "A", "amount" : 100 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+>
+----------------------------------------------------------------------------
+> try {
+...    db.library.deleteOne( { "_id" : objectId("563237a41a4d68582da") } );
+... } catch (e) {
+...    print(e);
+... }
+ReferenceError: objectId is not defined
+>
+----------------------------------------------------------------------------
+> try {
+...    db.library.deleteOne( { "_id" : 0 } );
+... } catch (e) {
+...    print(e);
+... }
+{ "acknowledged" : true, "deletedCount" : 1 }
+----------------------------------------------------------------------------
+> db.library.find()
+----------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+>
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

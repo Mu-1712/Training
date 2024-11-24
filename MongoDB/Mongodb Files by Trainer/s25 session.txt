@@ -1,0 +1,104 @@
+-----------------------------------------------------------------------------
+			MongoDB Session Commands
+-----------------------------------------------------------------------------
+			1.	abortTransaction command
+-----------------------------------------------------------------------------
+The command rolls back any data changes made by the operations within the transaction that terminates the multi-document transaction. i.e., the 
+changes made by the process in the transaction has not been saved.
+-----------------------------------------------------------------------------
+The abortTransaction command must be run within a session and run against 
+the admin database.
+-----------------------------------------------------------------------------
+All data changes in the transaction are rejected without ever appearing 
+when the transaction ends.
+-----------------------------------------------------------------------------
+{  
+  abortTransaction: 1,  
+  txnNumber: <long>,  
+  writeConcern: <document>,  
+  autocommit: false  
+}  
+-----------------------------------------------------------------------------
+			2.	commitTransaction command
+-----------------------------------------------------------------------------
+The command is used to save the changes made by the operations.
+-----------------------------------------------------------------------------
+To run commitTransaction command, it must be run within a session and run against the admin database.
+-----------------------------------------------------------------------------
+You can use instead session.commitTransaction().
+-----------------------------------------------------------------------------
+At the start of the transaction all data changes made in a transaction are appear and saved out of the transaction.
+-----------------------------------------------------------------------------
+{  
+  commitTransaction: 1,  
+  txnNumber: <long>,  
+  writeConcern: <document>,  
+  autocommit: false  
+ }  
+-----------------------------------------------------------------------------
+			3.	endSessions command
+-----------------------------------------------------------------------------
+The command is used to end the specified sessions. 
+-----------------------------------------------------------------------------
+It overrides the timeout period that sessions wait before expiring.
+-----------------------------------------------------------------------------
+To identify the user session to end, MongoDB concatenates each of the specified UUIDs.
+-----------------------------------------------------------------------------
+		db.runCommand( { endSessions: [ { id : <UUID> }, ... ] } ) 
+-----------------------------------------------------------------------------
+			4.	killALLSessions command
+-----------------------------------------------------------------------------
+The command killAllSession aborts all the running session for the specified users. 
+-----------------------------------------------------------------------------
+It takes an array of documents where each document specifies the user and the user's authentication database.
+-----------------------------------------------------------------------------
+db.runCommand( { killAllSessions: [ { user: <user>, db: <dbname> }, ... ]  } )
+-----------------------------------------------------------------------------
+			5.	killAllSessionByPattern command
+-----------------------------------------------------------------------------
+The command terminates all the running sessions that match any specified pattern in the argument.
+-----------------------------------------------------------------------------
+When you kill session, it terminates any ongoing operation in the session and closes any open cursors.
+-----------------------------------------------------------------------------
+	db.runCommand( { killAllSessionsByPattern: [ <pattern>, ... ] } )  
+-----------------------------------------------------------------------------
+Pattern
+-----------------------------------------------------------------------------
+		{ lsid: { id : <UUID> } }
+-----------------------------------------------------------------------------
+It defines the UUID part of the session id to kill.
+-----------------------------------------------------------------------------
+		{ uid: <BinData> }
+-----------------------------------------------------------------------------
+It defines the hash of the owner of the sessions to be killed.
+-----------------------------------------------------------------------------
+		{ users: [ { user: <user>, db: <dbname> }, ... ] }
+-----------------------------------------------------------------------------
+This defines the owners of the sessions to kill, and requires additional privileges.
+-----------------------------------------------------------------------------
+		{ roles: [ { role: <role>, db: <dbname> }, ... ] }
+-----------------------------------------------------------------------------
+This defines the roles allowed to kill the owners of the sessions.
+-----------------------------------------------------------------------------
+			6.	refreshSessions command
+-----------------------------------------------------------------------------
+The command is used to update the end-use time for the specified sessions by extending the active state of the session.
+-----------------------------------------------------------------------------
+The authenticated user credentials is used to refresh the identified user's session.
+-----------------------------------------------------------------------------
+	{ refreshSessions: [ { id : <UUID> }, ... ] } ) 
+ -----------------------------------------------------------------------------
+Use the db.runCommand( { <command> } ) method, this command is used to run refreshSessions.
+-----------------------------------------------------------------------------
+db.runCommand( { refreshSessions: [ { id : <UUID> }, ... ] } ) 
+-----------------------------------------------------------------------------
+			7.	startSession command
+-----------------------------------------------------------------------------
+The startSession command is used to start a new logical session for a 
+sequence of operations.
+-----------------------------------------------------------------------------
+You must be authenticated to run the command, if the deployment does not enforce authentication or authorization, a created has no owner and can be used by any user over any connection.
+-----------------------------------------------------------------------------
+db.runCommand( { startSession: 1 } )  
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

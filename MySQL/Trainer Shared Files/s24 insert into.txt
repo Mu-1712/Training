@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+Insert Into
+---------------------------------------------------------------------------
+The INSERT INTO SELECT statement copies data from one table and inserts it into another table.
+---------------------------------------------------------------------------
+INSERT INTO SELECT requires that data types in source and target tables match
+---------------------------------------------------------------------------
+The existing records in the target table are unaffected
+---------------------------------------------------------------------------
+INSERT INTO SELECT Syntax
+---------------------------------------------------------------------------
+Copy all columns from one table to another table:
+---------------------------------------------------------------------------
+INSERT INTO table2
+SELECT * FROM table1
+WHERE condition;
+---------------------------------------------------------------------------
+Copy only some columns from one table into another table:
+---------------------------------------------------------------------------
+INSERT INTO table2 (column1, column2)
+SELECT column1, column6
+FROM table1
+WHERE condition;
+---------------------------------------------------------------------------
+SQL statement copies "Suppliers" into "Customers" (the columns that are not filled with data, will contain NULL):
+---------------------------------------------------------------------------1.	INSERT INTO Customers (CustomerName, City, Country)
+	SELECT SupplierName, City, Country FROM Suppliers;
+---------------------------------------------------------------------------SQL statement copies "Suppliers" into "Customers" (fill all columns):
+---------------------------------------------------------------------------2.	INSERT INTO Customers (CustomerName, ContactName, Address, City, 	PostalCode, Country)
+	SELECT SupplierName, ContactName, Address, City, PostalCode, 	Country FROM Suppliers;
+---------------------------------------------------------------------------SQL statement copies only the German suppliers into "Customers":
+---------------------------------------------------------------------------3.	SELECT SupplierName, City, Country FROM Suppliers
+	WHERE Country='Germany';
+------------------------------------------------------------------------------------------------------------------------------------------------------
+

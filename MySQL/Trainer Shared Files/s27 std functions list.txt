@@ -1,0 +1,166 @@
+MySQL Functions
+---------------------------------------------------------------------------
+MySQL has many built-in functions.
+---------------------------------------------------------------------------
+This reference contains the string, numeric, and date functions in MySQL.
+---------------------------------------------------------------------------
+MySQL String Functions
+---------------------------------------------------------------------------
+Function				Description
+---------------------------------------------------------------------------
+1.	ASCII			Returns the number code that represents the 				specific character
+---------------------------------------------------------------------------
+2.	CHAR_LENGTH		Returns the length of the specified string 				(in characters)
+---------------------------------------------------------------------------
+3.	CHARACTER_LENGTH	Returns the length of the specified string 				(in characters)
+---------------------------------------------------------------------------
+4.	CONCAT			Concatenates two or more expressions 					together
+---------------------------------------------------------------------------
+5.	CONCAT_WS		Concatenates two or more expressions 					together and adds a separator 
+				between them
+---------------------------------------------------------------------------
+6.	FIELD			Returns the position of a value in a list 				of values
+---------------------------------------------------------------------------
+7.	FIND_IN_SET		Returns the position of a string in a 					string list
+---------------------------------------------------------------------------
+8.	FORMAT			Formats a number as a format of "#,###.##", 				rounding it to a certain number of decimal 				places
+---------------------------------------------------------------------------
+9.	INSERT			Inserts a substring into a string at a 					specified position for a certain number of 				characters
+---------------------------------------------------------------------------
+10.	INSTR			Returns the position of the first 					occurrence of a string in 
+				another string
+---------------------------------------------------------------------------
+11.	LCASE			Converts a string to lower-case
+---------------------------------------------------------------------------
+12.	LEFT			Extracts a substring from a string 					(starting from left)
+---------------------------------------------------------------------------
+13.	LENGTH			Returns the length of the specified string 				(in bytes)
+---------------------------------------------------------------------------
+14.	LOCATE			Returns the position of the first 					occurrence of a substring in a string
+---------------------------------------------------------------------------
+15.	LOWER			Converts a string to lower-case
+---------------------------------------------------------------------------
+16.	LPAD			Returns a string that is left-padded with a 				specified string to a certain length
+---------------------------------------------------------------------------
+17.	LTRIM			Removes leading spaces from a string
+---------------------------------------------------------------------------
+18.	MID			Extracts a substring from a string 					(starting at any position)
+---------------------------------------------------------------------------
+19.	POSITION		Returns the position of the first 					occurrence of a substring in a string
+---------------------------------------------------------------------------
+20.	REPEAT			Repeats a string a specified number of 					times
+---------------------------------------------------------------------------
+21.	REPLACE			Replaces all occurrences of a specified 				string
+---------------------------------------------------------------------------
+22.	REVERSE			Returns a string with the characters in 				reverse order
+---------------------------------------------------------------------------
+23.	RIGHT			Extracts a substring from a string 					(starting from right)
+---------------------------------------------------------------------------
+23.	RPAD			Returns a string that is right-padded with 				a specified string to a certain length
+---------------------------------------------------------------------------
+24.	RTRIM			Removes trailing spaces from a string
+---------------------------------------------------------------------------
+25.	SPACE			Returns a string with a specified number of 				spaces
+---------------------------------------------------------------------------
+26.	STRCMP			Returns an integer value representing the 				result of a string comparison
+---------------------------------------------------------------------------
+27.	SUBSTR			Extracts a substring from a string
+---------------------------------------------------------------------------
+28.	SUBSTRING		Extracts a substring from a string
+---------------------------------------------------------------------------
+29.	SUBSTRING_INDEX		Returns the substring of  string before 				number of occurrences of delimiter
+---------------------------------------------------------------------------30.	TRIM			Removes leading and trailing spaces from a 				string
+---------------------------------------------------------------------------31.	UCASE			Converts a string to upper-case
+---------------------------------------------------------------------------32.	UPPER			Converts a string to upper-case
+---------------------------------------------------------------------------MySQL 			Numeric Functions
+---------------------------------------------------------------------------Function				Description
+---------------------------------------------------------------------------1.	ABS		Returns the absolute value of a number
+---------------------------------------------------------------------------2.	ACOS		Returns the arc cosine of a number
+---------------------------------------------------------------------------
+3.	ASIN		Returns the arc sine of a number
+---------------------------------------------------------------------------4.	ATAN		Returns the arc tangent of a number or returns the 			arc tangent of n and m
+---------------------------------------------------------------------------5.	ATAN2		Returns the arc tangent of n and m
+---------------------------------------------------------------------------6.	AVG		Returns the average value of an expression
+---------------------------------------------------------------------------7.	CEIL		Returns the smallest integer value that is greater 			than or equal to a number
+---------------------------------------------------------------------------8.	CEILING		Returns the smallest integer value that is greater 			than or equal to a number
+---------------------------------------------------------------------------9.	COS		Returns the cosine of a number
+---------------------------------------------------------------------------10.	COT		Returns the cotangent of a number
+---------------------------------------------------------------------------11.	COUNT		Returns the count of an expression
+---------------------------------------------------------------------------12.	DEGREES		Converts a radian value into degrees
+---------------------------------------------------------------------------13.	DIV		Used for integer division where n is divided by m 			and an integer value is returned
+---------------------------------------------------------------------------14.	EXP		Returns e raised to the power of number
+---------------------------------------------------------------------------15.	FLOOR		Returns the largest integer value that is equal to 			or less than a number
+---------------------------------------------------------------------------16.	GREATEST	Returns the greatest value in a list of expressions
+---------------------------------------------------------------------------17.	LEAST		Returns the smallest value in a list of expressions
+---------------------------------------------------------------------------18.	LN		Returns the natural logarithm of a number
+---------------------------------------------------------------------------19.	LOG		Returns the natural logarithm of a number or the 			logarithm of a number to a specified base
+---------------------------------------------------------------------------20.	LOG10		Returns the base-10 logarithm of a number
+---------------------------------------------------------------------------21.	LOG2		Returns the base-2 logarithm of a number
+---------------------------------------------------------------------------22.	MAX		Returns the maximum value of an expression
+---------------------------------------------------------------------------23.	MIN		Returns the minimum value of an expression
+---------------------------------------------------------------------------24.	MOD		Returns the remainder of n divided by m
+---------------------------------------------------------------------------25.	PI		Returns the value of PI displayed with 6 decimal 			places
+---------------------------------------------------------------------------26.	POW		Returns m raised to the nth power
+---------------------------------------------------------------------------27.	POWER		Returns m raised to the nth power
+---------------------------------------------------------------------------28.	RADIANS		Converts a value in degrees to radians
+---------------------------------------------------------------------------29.	RAND		Returns a random number or a random number within a 			range
+---------------------------------------------------------------------------30.	ROUND		Returns a number rounded to a certain number of 			decimal places
+---------------------------------------------------------------------------31.	SIGN		Returns a value indicating the sign of a number
+---------------------------------------------------------------------------32.	SIN		Returns the sine of a number
+---------------------------------------------------------------------------33.	SQRT		Returns the square root of a number
+---------------------------------------------------------------------------34.	SUM		Returns the summed value of an expression
+---------------------------------------------------------------------------35.	TAN		Returns the tangent of a number
+---------------------------------------------------------------------------36.	TRUNCATE	Returns a number truncated to a certain number of 			decimal places
+---------------------------------------------------------------------------MySQL Date Functions
+---------------------------------------------------------------------------Function			Description
+---------------------------------------------------------------------------1.	ADDDATE		Returns a date after which a certain time/date 				interval has been added
+---------------------------------------------------------------------------2.	ADDTIME		Returns a time/datetime value after which a certain 			time interval has been added
+---------------------------------------------------------------------------3.	CURDATE			Returns the current date
+---------------------------------------------------------------------------4.	CURRENT_DATE		Returns the current date
+---------------------------------------------------------------------------5.	CURRENT_TIME		Returns the current time
+---------------------------------------------------------------------------6.	CURRENT_TIMESTAMP	Returns the current date and time
+---------------------------------------------------------------------------7.	CURTIME			Returns the current time
+---------------------------------------------------------------------------8.	DATE		Extracts the date value from a date or datetime 			expression
+---------------------------------------------------------------------------9.	DATEDIFF	Returns a date after which a certain time/date 				interval has been added
+---------------------------------------------------------------------------10.	DATE_ADD	Formats a date as specified by a format mask
+---------------------------------------------------------------------------11.	DATE_FORMAT	Returns a date after which a certain time/date 				interval has been subtracted
+---------------------------------------------------------------------------12.	DATE_SUB	Returns the difference in days between two date 			values
+---------------------------------------------------------------------------13.	DAY		Returns the day portion of a date value
+---------------------------------------------------------------------------14.	DAYNAME		Returns the weekday name for a date
+---------------------------------------------------------------------------15.	DAYOFMONTH	Returns the day portion of a date value
+---------------------------------------------------------------------------16.	DAYOFWEEK	Returns the weekday index for a date value
+---------------------------------------------------------------------------17.	DAYOFYEAR	Returns day of the year for a date value
+---------------------------------------------------------------------------18.	EXTRACT		Extracts parts from a date
+---------------------------------------------------------------------------19.	FROM_DAYS	Takes a numeric representation of the day and 				returns a date value
+---------------------------------------------------------------------------20.	HOUR		Returns the hour portion of a date value
+---------------------------------------------------------------------------21.	LAST_DAY	Returns the last day of the month for a given date
+---------------------------------------------------------------------------22.	LOCALTIME	Returns the current date and time
+---------------------------------------------------------------------------23.	LOCALTIMESTAMP	Returns the current date and time
+---------------------------------------------------------------------------24.	MAKEDATE	Returns the date for a certain year and day-of-year 			value
+---------------------------------------------------------------------------25.	MAKETIME	Returns the time for a certain hour, minute, second 			combination
+---------------------------------------------------------------------------26.	MICROSECOND	Returns the microsecond portion of a date value
+---------------------------------------------------------------------------27.	MINUTE		Returns the minute portion of a date value
+---------------------------------------------------------------------------28.	MONTH		Returns the month portion of a date value
+---------------------------------------------------------------------------29.	MONTHNAME	Returns the full month name for a date
+---------------------------------------------------------------------------30.	NOW		Returns the current date and time
+---------------------------------------------------------------------------31.	PERIOD_ADD	Takes a period (formatted as YYMM or YYYYMM) and 			adds a specified number of months to it
+---------------------------------------------------------------------------31.	PERIOD_DIFF	Returns the difference in months between two 				periods (formatted as YYMM or YYYYMM)
+---------------------------------------------------------------------------32.	QUARTER		Returns the quarter portion of a date value
+---------------------------------------------------------------------------33.	SECOND		Converts numeric seconds into a time value
+---------------------------------------------------------------------------34.	SEC_TO_TIME	Returns the second portion of a date value
+---------------------------------------------------------------------------35.	STR_TO_DATE	Takes a string and returns a date specified by a 			format mask
+---------------------------------------------------------------------------36.	SUBDATE		Returns a date after which a certain time/date 				interval has been subtracted
+---------------------------------------------------------------------------37.	SUBTIME		Returns a time/datetime value after which a certain 			time interval has been subtracted
+---------------------------------------------------------------------------38.	SYSDATE		Returns the current date and time
+---------------------------------------------------------------------------39.	TIME		Extracts the time value from a time/datetime 				expression
+---------------------------------------------------------------------------40.	TIME_FORMAT	Formats a time as specified by a format mask
+---------------------------------------------------------------------------41.	TIME_TO_SEC	Converts a time value into numeric seconds
+---------------------------------------------------------------------------42.	TIMEDIFF	Returns the difference (expressed as a time value) 			between two time/datetime values
+---------------------------------------------------------------------------43.	TIMESTAMP	Converts an expression to a datetime value and if 			specified adds an optional time interval to the 			value
+---------------------------------------------------------------------------44.	TO_DAYS		Converts a date into numeric days
+---------------------------------------------------------------------------45.	WEEK		Returns the week portion of a date value
+---------------------------------------------------------------------------46.	WEEKDAY		Returns the weekday index for a date
+---------------------------------------------------------------------------47.	WEEKOFYEAR	Returns week of the year for a date value
+---------------------------------------------------------------------------48.	YEAR		Returns the year portion of a date value
+---------------------------------------------------------------------------49.	YEARWEEK	Returns the year and week for a date value
+------------------------------------------------------------------------------------------------------------------------------------------------------

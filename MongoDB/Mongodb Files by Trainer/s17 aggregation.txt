@@ -1,0 +1,434 @@
+----------------------------------------------------------------------------
+				Aggregation Commands
+----------------------------------------------------------------------------
+The aggregate command does the aggregation operation using the aggregation pipeline. 
+----------------------------------------------------------------------------
+The aggregation pipeline allows the user to perform data processing from a record or other source using a stage-based application sequence.
+----------------------------------------------------------------------------
+{  
+  	aggregate	: "<collection>" || 1, pipeline: [ <stage>, <...>],  
+  	explain		: <boolean>, allowDiskUse: <boolean>,  
+  	cursor		: <doc>,  
+  	maxTimeMS	: <int>,  
+  	bypassDocumentValidation: <boolean>,  
+  	readConcern	: <doc>,  
+  	collation	: <doc>,  
+  	hint		: <string or doc>,  
+  	comment		: <string>,  
+  	writeConcern	: <doc>  
+}  
+----------------------------------------------------------------------------
+		1.	aggregate
+----------------------------------------------------------------------------
+string
+----------------------------------------------------------------------------
+It contains the name of the aggregation pipeline
+----------------------------------------------------------------------------
+		2.	pipeline
+----------------------------------------------------------------------------
+array
+----------------------------------------------------------------------------
+The array that transforms the list of documents as a part of the 
+aggregation pipeline.
+----------------------------------------------------------------------------
+		3.	explain
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------
+The explain field is optional that is used to return the information on 
+the processing of the pipeline.
+----------------------------------------------------------------------------
+		4.	allowDiskUse
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------
+It enables the command to write to the temporary files.
+----------------------------------------------------------------------------
+		5.	cursor
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It addresses the documents that contains the control option for the 
+creation of the cursor object.
+----------------------------------------------------------------------------
+		6.	maxTimeMS
+----------------------------------------------------------------------------
+non-negative integer
+----------------------------------------------------------------------------
+It defines a time limit for the processing operations on a cursor.
+----------------------------------------------------------------------------
+		7.	bypassDocumentValidation
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------
+It is applicable only in case if you specify the out or merge aggregation stages.
+----------------------------------------------------------------------------
+		8.	readConcern
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It specifies the read concern. 
+----------------------------------------------------------------------------
+		a.	local
+----------------------------------------------------------------------------
+		b.	available
+----------------------------------------------------------------------------
+		c.	majority
+----------------------------------------------------------------------------
+		d.	linearizable
+----------------------------------------------------------------------------
+		9.	collation
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+We can specify language-specific rules for string comparison using collation.
+----------------------------------------------------------------------------
+Rules for case and accent marks.
+----------------------------------------------------------------------------
+collation:
+	{ 	locale		: <string>,
+		caseLevel	: <boolean>,
+		caseFirst	: <string>,
+		strength	: <int>,
+		numericOrdering	: <boolean>,
+		alternate	: <string>,
+		maxVariable	: <string>,
+		backwards	: <boolean>}
+----------------------------------------------------------------------------
+		10.	hint
+----------------------------------------------------------------------------
+string or document
+----------------------------------------------------------------------------
+It declares the index either by the index name or by the index specification document.
+----------------------------------------------------------------------------
+		11.	comment
+----------------------------------------------------------------------------
+string
+----------------------------------------------------------------------------
+We can declare an arbitrary string to help trace the operation through the database profiler, currentOp, and logs.
+----------------------------------------------------------------------------
+		12.	writeConcern
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It is set to use the default write concern with the $out or $merge pipeline stages.
+----------------------------------------------------------------------------
+{  
+   	_id	: ObjectId("52769ea0f3dc6ead47c9a1b2"),  
+   	author	: "anil",  
+   	title	: "mphasis",  
+   	tags	: [ "java", "sql", "mongodb"]  
+}  
+----------------------------------------------------------------------------
+To calculate the count of every distinct element within the tags array that appears within the collection.
+----------------------------------------------------------------------------
+db.runCommand( 	{ 	aggregate	: "articles",  
+   			pipeline	: 	[  
+      						{ $project: { tags: 1 } },  
+      						{ $unwind: "$tags" },  
+      			{ $group: { _id: "$tags", count: { $sum : 1 } } }  
+   						],  
+   			cursor		: { }  
+		} )  
+----------------------------------------------------------------------------
+			MongoDB Count command
+----------------------------------------------------------------------------
+The MongoDB count command counts the number of documents in a collection or a view. 
+----------------------------------------------------------------------------
+It returns a document that contains the count and command status.
+----------------------------------------------------------------------------
+{  
+  	count		: <collection or view>,  
+  	query		: <document>,  
+  	limit		: <integer>,  
+  	skip		: <integer>,  
+  	hint		: <hint>,  
+  	readConcern	: <document>,  
+  	collation	: <document>  
+}  
+----------------------------------------------------------------------------
+		1.	count
+----------------------------------------------------------------------------
+string
+----------------------------------------------------------------------------
+It is the name of the collection or view to count.
+----------------------------------------------------------------------------
+		2.	query
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It is optional and used to select the document to count in the collection or view.
+----------------------------------------------------------------------------
+		3.	limit
+----------------------------------------------------------------------------
+integer
+----------------------------------------------------------------------------
+It is optional and used to limit the maximum number of matching documents 
+to return.
+----------------------------------------------------------------------------
+		4.	skip
+----------------------------------------------------------------------------
+integer
+----------------------------------------------------------------------------
+It is optional and is used for matching documents to skip before returning results.
+----------------------------------------------------------------------------
+		5.	hint
+----------------------------------------------------------------------------
+string
+----------------------------------------------------------------------------
+It is used to define either the index name as a string or the index specification document.
+----------------------------------------------------------------------------
+		6.	readConcern document
+----------------------------------------------------------------------------
+It specifies the read concern.
+----------------------------------------------------------------------------
+		readConcern: { level: <value> }
+----------------------------------------------------------------------------
+		7.	collation
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It allows us to define language-specific rules for string comparison.
+----------------------------------------------------------------------------
+	collation: 	{
+				locale		: <string>,
+				caseLevel	: <boolean>,
+				caseFirst	: <string>,
+				strength	: <int>,
+				numericOrdering	: <boolean>,
+				alternate	: <string>,
+				maxVariable	: <string>,
+				backwards	: <boolean>
+			}
+----------------------------------------------------------------------------
+To count the number of all the documents in the collection:
+----------------------------------------------------------------------------
+		db.runCommand( { count: 'library' } )  
+----------------------------------------------------------------------------
+> db.runCommand( { count: 'library' } )
+{ "n" : 6, "ok" : 1 }
+>
+----------------------------------------------------------------------------
+> db.library.find()
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 525 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+{ "_id" : 102, "book_id" : "b1", "status" : "F", "amount" : 185 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+----------------------------------------------------------------------------
+> db.library.count()
+6
+>
+----------------------------------------------------------------------------
+			MongoDB Distinct Command
+----------------------------------------------------------------------------
+This command finds the distinct values for the given field across a single collection. 
+----------------------------------------------------------------------------
+It returns a document that contains an array of different values. 
+----------------------------------------------------------------------------
+The return document contains an embedded record with query statistics and the query plan.
+----------------------------------------------------------------------------
+{
+	distinct	: "<collection>",  
+	key		: "<field>",  
+	query		: <query>,  
+	readConcern	: <read concern document>,  
+	collation	: <collation document>  
+}  
+----------------------------------------------------------------------------
+		1.	distinct
+----------------------------------------------------------------------------
+string
+----------------------------------------------------------------------------
+It is the name of the collection to query for different values
+----------------------------------------------------------------------------
+		2.	key	
+----------------------------------------------------------------------------
+string
+----------------------------------------------------------------------------
+This is the field for which the command returns the distinct value.
+----------------------------------------------------------------------------
+		3.	query
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It specifies the documents from where the distinct value will be retrieved.
+----------------------------------------------------------------------------
+		4.	readConcern 
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It specifies the read concern.
+----------------------------------------------------------------------------
+		readConcern	: 	{ level: <value> }
+----------------------------------------------------------------------------
+		5.	collation
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It allows us to define language-specific rules for string comparison.
+----------------------------------------------------------------------------
+	collation	: 	
+			{
+				locale		: <string>,
+				caseLevel	: <boolean>,
+				caseFirst	: <string>,
+				strength	: <int>,
+				numericOrdering	: <boolean>,
+				alternate	: <string>,
+				maxVariable	: <string>,
+				backwards	: <boolean>
+			}
+----------------------------------------------------------------------------
+The following example returns different values for the field books from all documents in the library collection:
+----------------------------------------------------------------------------
+	db.runCommand ( { distinct: "library", key: "book_id" } )
+----------------------------------------------------------------------------
+> db.runCommand ( { distinct: "library", key: "book_id" } )
+{
+        "values" : [
+                101,
+                "DBMS",
+                "Python",
+                "SQL",
+                "b1",
+                "b2"
+        ],
+        "ok" : 1
+}
+>
+----------------------------------------------------------------------------
+			MongoDB MapReduce command
+----------------------------------------------------------------------------
+The MapReduce command allows us to run the map-reduce aggregation operations over a collection.
+----------------------------------------------------------------------------
+	db.runCommand(  
+              		{  
+                		mapReduce	: <collection>,  
+                		map		: <function>,  
+                		reduce		: <function>,  
+                		finalize	: <function>,  
+                		out		: <output>,  
+                		query		: <document>,  
+                		sort		: <document>,  
+                		limit		: <number>,  
+                		scope		: <document>,  
+                		jsMode		: <boolean>,  
+                		verbose		: <boolean>,  
+                		bypassDocumentValidation: <boolean>,  
+                		collation	: <document>,  
+                		writeConcern	: <document>  
+              }  
+            )  
+----------------------------------------------------------------------------
+		1.	MapReduce
+----------------------------------------------------------------------------
+collection
+----------------------------------------------------------------------------
+It is the name of the collection on which we want to perform the map-reduce operation.
+----------------------------------------------------------------------------
+		2.	map
+----------------------------------------------------------------------------
+function
+----------------------------------------------------------------------------
+It is a JavaScript function that associates or maps the key-value pair.
+----------------------------------------------------------------------------
+		3.	reduce
+----------------------------------------------------------------------------
+function
+----------------------------------------------------------------------------
+It is a JavaScript function that reduces to a single object all the values associated with a particular key.
+----------------------------------------------------------------------------
+		4.	out
+----------------------------------------------------------------------------
+string
+----------------------------------------------------------------------------
+It specifies where to store the output.
+----------------------------------------------------------------------------
+		5.	query
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It specifies the selection criteria to determine the documents input to the map function.
+----------------------------------------------------------------------------
+		6.	sort
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It sorts the input document.
+----------------------------------------------------------------------------
+		7.	limit
+----------------------------------------------------------------------------
+number
+----------------------------------------------------------------------------
+It specifies a maximum number of documents for the input into the map function.
+----------------------------------------------------------------------------
+		8.	finalize
+----------------------------------------------------------------------------
+function
+----------------------------------------------------------------------------
+It follows the reduce method to modify the output.
+----------------------------------------------------------------------------
+		9.	scope
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It is an option and declares the global variables that are accessible on the map.
+----------------------------------------------------------------------------
+		10.	jsMode
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------
+The jsMode specifies whether to convert intermediate data into BSON format.
+----------------------------------------------------------------------------
+		11.	verbose
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------
+It specifies whether to include the timing information in the result or not.
+----------------------------------------------------------------------------
+		12	bypassDocumentValidation
+----------------------------------------------------------------------------
+Boolean
+----------------------------------------------------------------------------
+It enables map-reduce to bypass document validation during the operation.
+----------------------------------------------------------------------------
+		13.	collation
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It allows us to specify language-specific rules for string comparison.
+----------------------------------------------------------------------------
+collation	: 	{
+				locale		: <string>,
+				caseLevel	: <boolean>,
+				caseFirst	: <string>,
+				strength	: <int>,
+				numericOrdering	: <boolean>,
+				alternate	: <string>,
+				maxVariable	: <string>,
+				backwards	: <boolean>
+			}
+----------------------------------------------------------------------------
+		14.	writeConcern
+----------------------------------------------------------------------------
+document
+----------------------------------------------------------------------------
+It is a document that expresses the write concern to use when outputting 
+to a collection.
+----------------------------------------------------------------------------
+var mapFunction = function() { ... };  
+var reduceFunction = function(key, values) { ... };  
+  
+db.runCommand(  
+               {  
+                 	mapReduce	: <input-collection>,  
+                 	map		: mapFunction,  
+                 	reduce		: reduceFunction,  
+                 	out		: { merge: <output-collection> },  
+                 	query		: <query>  
+               }  
+             )  
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

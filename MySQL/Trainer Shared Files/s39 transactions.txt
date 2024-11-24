@@ -1,0 +1,262 @@
+-------------------------------------------------------------------------
+acid : atomicity : consistency : isolation : durability
+-------------------------------------------------------------------------
+commit : rollback : auto-commit
+-------------------------------------------------------------------------
+start transaction : begin : begin work
+-------------------------------------------------------------------------
+mysql> set autocommit = off;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> set autocommit = on;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> set autocommit = 0;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> set autocommit = 1;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> desc t1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  | UNI | NULL    |       |
+| age   | int(11)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t1;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | suresh |   24 |
+| 102 | ramesh |   28 |
+| 103 | naresh |   25 |
+| 104 | rajesh |   22 |
+| 105 | sunil  |   23 |
+| 106 | anil   |   23 |
+| 108 | sujay  | NULL |
+| 107 | sanjay | NULL |
++-----+--------+------+
+8 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> set autocommit = off;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> delete from t1 where id > 106;
+Query OK, 2 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t1;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | suresh |   24 |
+| 102 | ramesh |   28 |
+| 103 | naresh |   25 |
+| 104 | rajesh |   22 |
+| 105 | sunil  |   23 |
+| 106 | anil   |   23 |
++-----+--------+------+
+6 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql>commit;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t1;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | suresh |   24 |
+| 102 | ramesh |   28 |
+| 103 | naresh |   25 |
+| 104 | rajesh |   22 |
+| 105 | sunil  |   23 |
+| 106 | anil   |   23 |
++-----+--------+------+
+6 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> show engines;
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+| Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+| InnoDB             | YES     | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |
+| MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |
+| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |
+| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |
+| MyISAM             | DEFAULT | MyISAM storage engine                                          | NO           | NO   | NO         |
+| CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |
+| ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |
+| PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |
+| FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+9 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> create table t2 (id int primary key, name varchar(10), age int(2)) engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> desc t2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| age   | int(2)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+mysql> insert into t2 values(101,'anil',22),(102,'sunil',26),(103,'sanjay',25);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t1;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | suresh |   24 |
+| 102 | ramesh |   28 |
+| 103 | naresh |   25 |
++-----+--------+------+
+3 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES where TABLE_SCHEMA = 'test1';
++------------+--------+
+| TABLE_NAME | ENGINE |
++------------+--------+
+| t1         | MyISAM |
+| t2         | InnoDB |
++------------+--------+
+2 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> set autocommit=off;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> delete from t2 where id=103;
+Query OK, 1 row affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t2;
++-----+-------+------+
+| id  | name  | age  |
++-----+-------+------+
+| 101 | anil  |   22 |
+| 102 | sunil |   26 |
++-----+-------+------+
+2 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t2;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | anil   |   22 |
+| 102 | sunil  |   26 |
+| 103 | sanjay |   25 |
++-----+--------+------+
+3 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> desc t2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| age   | int(2)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t2;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | anil   |   22 |
+| 102 | sunil  |   26 |
+| 103 | sanjay |   25 |
++-----+--------+------+
+3 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> insert into t2 values(104,'suresh',25);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> savepoint sp1;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> insert into t2 values(105,'ramesh',25);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> savepoint sp2;
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t2;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | anil   |   22 |
+| 102 | sunil  |   26 |
+| 103 | sanjay |   25 |
+| 104 | suresh |   25 |
+| 105 | ramesh |   25 |
++-----+--------+------+
+5 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql>
+Query OK, 0 rows affected (0.00 sec)
+mysql> rollback to savepoint sp1;
+-------------------------------------------------------------------------
+mysql> select * from t2;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | anil   |   22 |
+| 102 | sunil  |   26 |
+| 103 | sanjay |   25 |
+| 104 | suresh |   25 |
++-----+--------+------+
+4 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+InnoDB is a general-purpose storage engine that balances high reliability and high performance.
+-------------------------------------------------------------------------
+InnoDB is a transaction storage type that automatically rollbacks the writes if they are not completed.
+-------------------------------------------------------------------------
+MyISAM is a non-transactional storage type, and any write option needs to be rolled back manually (if needed). 
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------

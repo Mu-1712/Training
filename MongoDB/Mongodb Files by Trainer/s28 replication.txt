@@ -1,0 +1,108 @@
+----------------------------------------------------------------------------
+			Replication
+----------------------------------------------------------------------------
+Replication is the process of synchronizing data across multiple servers.
+---------------------------------------------------------------------------- Replication provides redundancy and increases data availability with multiple copies of data on different database servers, replication protects a database
+from the loss of a single server. 
+----------------------------------------------------------------------------
+Replication also allows you to recover from hardware failure and service interruptions.
+----------------------------------------------------------------------------
+With additional copies of the data, you can dedicate one to disaster recovery, reporting, or backup.
+----------------------------------------------------------------------------
+			Why Replication?
+----------------------------------------------------------------------------
+		1. 	To keep your data safe
+----------------------------------------------------------------------------
+		2.	High (24*7) availability of data
+----------------------------------------------------------------------------
+		3.	Disaster Recovery
+----------------------------------------------------------------------------
+		4.	No downtime for maintenance 
+				like backups, index rebuilds, compaction
+----------------------------------------------------------------------------
+		5.	Read scaling (extra copies to read from)
+----------------------------------------------------------------------------
+		6.	Replica set is transparent to the application
+----------------------------------------------------------------------------
+			How replication works in MongoDB ?
+----------------------------------------------------------------------------
+MongoDB achieves replication by the use of replica set. 
+----------------------------------------------------------------------------
+A replica set is a group of mongod instances that host the
+same data set. 
+----------------------------------------------------------------------------
+In a replica one node is primary node that receives all write operations. 
+----------------------------------------------------------------------------
+All other instances, secondaries, apply operations from the primary so that they have the same data set. 
+----------------------------------------------------------------------------
+Replica set has only one primary node.
+----------------------------------------------------------------------------
+1. Replica set is a group of two or more nodes 
+	generally minimum 3 nodes are required
+----------------------------------------------------------------------------
+2. In a replica set one node is primary node and remaining nodes are 	secondary.
+----------------------------------------------------------------------------
+3. All data replicates from primary to secondary node.
+----------------------------------------------------------------------------
+4. At the time of automatic failover or maintenance, election establishes 
+	for primary and a new primary node is elected.
+----------------------------------------------------------------------------
+5. After the recovery of failed node, it again join the replica set and works 	as a secondary node.
+----------------------------------------------------------------------------
+			Replica set features
+----------------------------------------------------------------------------
+		1.	A cluster of N nodes
+----------------------------------------------------------------------------
+		2.	Any one node can be primary
+----------------------------------------------------------------------------
+		3.	All write operations goes to primary
+----------------------------------------------------------------------------
+		4.	Automatic failover
+----------------------------------------------------------------------------
+		5.	Automatic Recovery
+----------------------------------------------------------------------------
+		6.	Consensus election of primary
+----------------------------------------------------------------------------
+			Setting up a replica set
+----------------------------------------------------------------------------
+	1.	 Shutdown already running mongodb server.
+----------------------------------------------------------------------------
+	2.	Now start the mongodb server by specifying --replSet option. 
+----------------------------------------------------------------------------
+		mongod --port "PORT" --dbpath "YOUR_DB_DATA_PATH" 
+				--replSet "REPLICA_SET_INSTANCE_NAME"
+----------------------------------------------------------------------------
+		mongod --port 27017 --dbpath "C:\mongodb\data" --replSet rs0
+----------------------------------------------------------------------------
+	3.	It will start a mongod instance with the name rs0, 
+		on port 27017. 
+----------------------------------------------------------------------------
+	4.	Now start the command prompt and connect to this mongod 
+		instance.
+----------------------------------------------------------------------------
+ 	5.	In mongo client issue the command rs.initiate() to initiate 
+		a new replica set. 
+----------------------------------------------------------------------------
+	6.	To check the replica
+----------------------------------------------------------------------------
+	7.	set configuration issue the command rs.conf(). 
+----------------------------------------------------------------------------
+	8.	To check the status of replica set issue the command 			rs.status().
+----------------------------------------------------------------------------
+	9.	Add members to replica set
+----------------------------------------------------------------------------
+	10	To add members to replica set, start mongod instances on 		multiple machines.
+----------------------------------------------------------------------------
+	11.	Now start a mongo client and issue a command rs.add().
+----------------------------------------------------------------------------
+	12.	>rs.add(HOST_NAME:PORT)
+----------------------------------------------------------------------------
+		>rs.add("mongod1.net:27017")
+		>
+----------------------------------------------------------------------------
+	13.	You can add mongod instance to replica set only when you are 		connected to primary node. 
+----------------------------------------------------------------------------
+	14.	To check whether you are connected to primary or not issue 
+		the command db.isMaster() in mongo client.
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

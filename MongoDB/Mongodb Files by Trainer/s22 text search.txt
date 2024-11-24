@@ -1,0 +1,102 @@
+----------------------------------------------------------------------------
+			MongoDB text search
+----------------------------------------------------------------------------
+MongoDB performs a text search of string content using the query operation. 
+----------------------------------------------------------------------------
+It uses a text index and operator to perform the text search.
+----------------------------------------------------------------------------
+				Text Index
+----------------------------------------------------------------------------
+In MongoDB we have text indexes to support text search queries on string content. 
+----------------------------------------------------------------------------
+The field that have any string value or an array of string elements may include by text indexes
+----------------------------------------------------------------------------
+We must have a text index in our collection to perform text search queries. 
+----------------------------------------------------------------------------
+In a table/collection, we can have only one text search index. 
+----------------------------------------------------------------------------
+But multiple fields can be covered by a single index.
+----------------------------------------------------------------------------
+	db.library.createIndex( { name: "text", description: "text" } ) 
+---------------------------------------------------------------------------- 
+				$text Operator
+----------------------------------------------------------------------------
+We can use the $text operator to perform text searches on a collection with a 
+text index. 
+----------------------------------------------------------------------------
+The $text operator will flag the search string which uses the whitespaces 
+and also most of the punctuation as delimiters. 
+----------------------------------------------------------------------------
+The $text operator performs a logical OR operation for all such tokens in 
+the search string.
+----------------------------------------------------------------------------
+> show dbs
+----------------------------------------------------------------------------
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+pfizer  0.000GB
+test    0.000GB
+----------------------------------------------------------------------------
+> use test
+----------------------------------------------------------------------------
+switched to db test
+----------------------------------------------------------------------------
+> show collections
+----------------------------------------------------------------------------
+customers
+emp2
+emp3
+items
+library
+test
+tmpuser
+users
+----------------------------------------------------------------------------
+> db.library.find()
+----------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+>
+----------------------------------------------------------------------------
+> db.library.find( { $text: { $search: "Java" } } )
+----------------------------------------------------------------------------
+Error: error: {
+        "ok" : 0,
+        "errmsg" : "text index required for $text query",
+        "code" : 27,
+        "codeName" : "IndexNotFound"
+}
+----------------------------------------------------------------------------
+> db.library.createIndex({book_id:"text"})
+{
+        "numIndexesBefore" : 4,
+        "numIndexesAfter" : 5,
+        "createdCollectionAutomatically" : false,
+        "ok" : 1
+}
+----------------------------------------------------------------------------
+> db.library.find( { $text: { $search: "Java" } } )
+----------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+>
+----------------------------------------------------------------------------
+Using the $text operator, we can also search for exact phrases by wrapping them in double-quotes. Only those documents will be matched that include the phrases.
+----------------------------------------------------------------------------
+db.library.find( { $text: { $search: "\"Java Book\"" } } )  
+----------------------------------------------------------------------------
+> db.library.find( { $text: { $search: "\"Java Book\"" } } )
+>
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+

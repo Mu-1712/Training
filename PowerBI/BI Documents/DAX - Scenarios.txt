@@ -1,0 +1,102 @@
+Data Analysis in Power BI
+Convert Local Image to URL: Google "image to base64 online" / 
+
+https://www.base64-image.de/
+
+1. Import Data
+2. Data Cleansing - use Power Query
+	2a. Replace "Jan Morforth\" with "Jan Morforth"
+	2b. Replace "United States" with "US"
+	2c. Change DataType of Amount and Boxes
+	2d. Remove Spaces by Transform - Trim
+	2e. Replace 'null' with 'Special'
+
+3. Table View - Create Table dim_Date = Calendar(Date(2022,1,1),Date(2023,12,1))
+4. Build Data Model - Star Schema
+5. DAX:
+	5a. New Measure on Sales Table:  Total Amount = Sum(Sales[Amount])
+	5b. 'Card' Visualization and Use Measure "TotalAmount"
+ 	5c. Add Table Visual - Add Geography and "Total Amount"
+	5d. Format Measure
+
+Calculate Total Boxes
+	6. New Measure: Total Boxes = Sum(Sales[Boxes])
+
+Calculate Total Shipments:
+	7. New Measure: Shipment Count = CountRows(Sales) / SQL Query : SELECT COUNT(*) AS ShipmentCount FROM Fact_Sales
+	8. Add Slizer - Category
+Evaluation Context
+
+Measures are Reusable:
+Calculate Amount per Shipment - Normal way (Lazy Way)
+	9. New Measure: Amount Per Shipment = Sum(Sales[Amount])/CountRows(Sales)
+Calculate APS 2 - Reuseability ( Faster and More Optimized way)
+	10. New Measure: ApS 2 = [Total Amount]  / [Shipment Count]
+Calculate Amount Per Box
+	11. New Measures: ApB = [Total Amount]  / [Total Boxes] - Best Practice
+Calculate APB 2 - Div/0 Error & Divide() Function
+	12. #Div Error: New Measure: ApB 2 = divide([Total Amount],[Total Boxes],"No Boxes")
+	13. Page 2 - Drag Table - Sales Person, ApB2, ApS2
+
+If() function in DAX
+14. Met Target: New Measure: ApS Target Achieved? = if([ApS 2] > 4800,"Yes","No")
+	14.1 Measures are Aggregates - Single Value(number/text)
+	
+FUN DAX Trick - Visual Indicator
+- Emoji "Windows Key" + "."
+
+	15. Fun Trick: New Measure: ApS Target Achieved 2 = if([ApS 2] > 4800,Windows+. ":)",":(")
+
+	16. Add Slizer - Geography
+
+- Next level of understanding DAX Language
+Calculate Products sales by Sales Person
+	17. Page 3 - Drag Table Which Sales Person Sells Which Products ? New Measure Count of Products = countrows(Products)
+	18. New Measure: Count of Products (right) = [_Shipment Count]
+	19. New Measure: Min, Max, Average
+	20. New Page 4- Drag Table - Product/Sales Person, Shipment Count
+
+Calculate Low Box Shipment Box (count of # Box below 50)
+	21. New Measure: # Boxes under 50 Low Box Shipment Count = Calculate(CountRows(Sales),sales [Boxes]<50)
+				MySQL: SELECT COUNT(*) FROM Sales WHERE Boxes < 50
+Calculate LBS %
+	22. New Measure: LBS % = Divide([Low Box Shipment Count],[Shipment Count])
+Calculate Bar Shipment & % 
+	23. New Measure: Bar Shipments = Calculate([Shipment Count],Product[Category]="Bars")
+				MySQL = SELECT p.Product,COUNT(*) from sales s
+					INNER JOIN Product p ON s.Product = p.Product
+					WHERE p.Category = "Bars"
+					GROUP BY p.Product
+				Order of Execution: FROM > Where > Group By > Having > Select > Order By
+
+	24. New Measure: Bar Shipment % = Divide([Bar Shipments],[Shipment Count])
+
+Page level filter -- To verify for "Bars"
+
+Power of Calculate() function: 
+Calculate Americas Shipment - Overrides Page filter
+	25. Page Filter for APAC
+	26. Power of Calculate New Shipments: Americas Shipments = Calculate([Shipment Count], locations[Region]="North America")
+
+28. Row Context - In Sales Table - New Column: Weekday = Weekday(sales[Date])
+	27. Page 5- Drag Table - Product, TotalAmount, Friday Amount
+	28. New Measure: Friday Amount = Calculate([Total Amount], Sales[Weekday]=6)
+	29. New Measure: Friday Amount 2 = [Total Amount](Sales[Weekday]=6)
+
+Variables in DAX:
+	30. New Measure: NZAU Sales Amount = 
+			var nzAmount = Calculate([Total Amount],KeepFilters(locations[Geo] = "New Zealand"))
+			var auAmount = Calculate([Total Amount],KeepFilters(locations[Geo] = "Australia"))
+			return
+				nzAmount + auAmount
+	31. New Page 5 - Column Chart - Total Amount by Geo
+Using Or Condition:
+	32. New Measure: NZAU Sales Amount 2 =  Calculate([Total Amount], location in {"New Zealand","Australia"})
+
+		SQL Query: Select Sum(Amount) FROM Fact_Sales AS t1
+				INNER JOIN Dim_Geo AS t2 On t1.Country = t2.Country
+			   WHERE t2.Country IN ('Australia','New Zealand')
+
+	
+
+	

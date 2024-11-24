@@ -1,0 +1,37 @@
+Create a Table "Customers"
+---------------------------------------------------------------------------
+The fields in the Customers table are:
+---------------------------------------------------------------------------
+CustomerID, CustomerName, ContactName, Address, City , PostalCode, Country
+---------------------------------------------------------------------------
+1.	To display all columns/fields data
+---------------------------------------------------------------------------
+		SELECT * FROM Customers;
+---------------------------------------------------------------------------
+2.	To select the "CustomerName" and "City" columns from the "Customers" table:
+---------------------------------------------------------------------------
+		SELECT CustomerName, City FROM Customers;
+---------------------------------------------------------------------------
+3. 	The SELECT DISTINCT statement is used to return only distinct (different) values.
+---------------------------------------------------------------------------
+	Inside a table, a column often contains many duplicate values; and 	sometimes you only want to list the different (distinct) values.
+---------------------------------------------------------------------------
+		SELECT Country FROM Customers;
+---------------------------------------------------------------------------
+		SELECT DISTINCT City FROM Customers;
+---------------------------------------------------------------------------
+4.	To find the total count of different (distinct) customer cities:
+---------------------------------------------------------------------------
+	SELECT COUNT(DISTINCT City) FROM Customers;
+---------------------------------------------------------------------------
+5.	WHERE clause is used to extract only those records that fulfill a 	specified condition.
+---------------------------------------------------------------------------
+	WHERE clause is not only used in SELECT statement, it is also used 	in UPDATE, DELETE 
+---------------------------------------------------------------------------
+		SELECT * FROM Customers
+		WHERE City='pune';
+---------------------------------------------------------------------------
+		SELECT * FROM Customers
+		WHERE CustomerID=1;
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------

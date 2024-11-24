@@ -1,0 +1,40 @@
+----------------------------------------------------------------------------
+			MongoDB Authentication Commands
+----------------------------------------------------------------------------
+The authentication command is using the authentication mechanism known as x.509. 
+----------------------------------------------------------------------------
+When we use the mongo shell, we can use the db.auth() helper as follows:
+----------------------------------------------------------------------------		db.auth( "userID", passwordPrompt() ) 
+----------------------------------------------------------------------------
+Starting with version 4.2, we can use the passwordPrompt() method with 
+various user authentication or management methods/ command to prompt 
+for the password without specifying the password directly.
+----------------------------------------------------------------------------
+In the earlier version we will use db.auth() method as:
+----------------------------------------------------------------------------
+		db.auth( "username", "password" ) 
+ ----------------------------------------------------------------------------
+			MongoDB getnone command
+----------------------------------------------------------------------------
+The getnone command is used to generate the one-time password for authentication. 
+----------------------------------------------------------------------------
+The client gets disconnected before the operation completes if the client 
+has been issued the getnone.
+----------------------------------------------------------------------------
+			MongoDB logout command
+----------------------------------------------------------------------------
+The logout command terminates the current authenticated running session when used as follows:
+----------------------------------------------------------------------------
+			{ logout: 1 }  
+----------------------------------------------------------------------------
+MongoDB allows users to have access to another database, and we must call logout while using the same database context that we are authenticated to.
+----------------------------------------------------------------------------
+If you are verified to any database, you must issue a log out for that database to successfully logout from there.
+----------------------------------------------------------------------------
+		dbdb= db.getSiblingDB ( '<database-name>' )  
+----------------------------------------------------------------------------
+when we set the database context and database object, we can use the logout command to log out from the database as follows:
+----------------------------------------------------------------------------
+		db.runCommand ( { logout: 1 } )  
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

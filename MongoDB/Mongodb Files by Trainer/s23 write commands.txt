@@ -1,0 +1,373 @@
+--------------------------------------------------------------------------
+			Query and Write Operation Commands
+--------------------------------------------------------------------------
+				MongoDB Insert command
+--------------------------------------------------------------------------
+It inserts one or multiple documents in the collection and also returns a document containing the status of all inputs. 
+--------------------------------------------------------------------------
+The insert method uses the insert command internally, which is provided by MongoDB.
+--------------------------------------------------------------------------
+{  
+   insert: <collection>,  
+   documents: [ <document>, <document>, <document>, ... ],  
+   ordered: <boolean>,  
+   writeConcern: { <write concern> },  
+   bypassDocumentValidation: <boolean>  
+}  
+--------------------------------------------------------------------------
+> show dbs
+--------------------------------------------------------------------------
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+pfizer  0.000GB
+test    0.001GB
+--------------------------------------------------------------------------
+> use test
+--------------------------------------------------------------------------
+switched to db test
+--------------------------------------------------------------------------
+> show collections
+--------------------------------------------------------------------------
+collection
+customers
+emp2
+emp3
+items
+library
+test
+tmpuser
+users
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+>
+--------------------------------------------------------------------------
+> db.runCommand({insert:"library",documents:[{_id:101,book_id:101,status:"sold"}]})
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+> 
+--------------------------------------------------------------------------
+				MongoDB Delete Command
+--------------------------------------------------------------------------
+We can remove any document from the collection using the delete command. 
+--------------------------------------------------------------------------
+There is multiple delete specification in a single delete command. 
+--------------------------------------------------------------------------
+We cannot use it on the capped collection. 
+--------------------------------------------------------------------------
+The delete command is internally used by the removal method, which is 
+provided by the MongoDB.
+--------------------------------------------------------------------------
+{  
+   delete: <collection>,  
+   deletes: [  
+      { q : <query>, limit : <integer>, collation: <document> },  
+      { q : <query>, limit : <integer>, collation: <document> },  
+      { q : <query>, limit : <integer>, collation: <document> },  
+      ...  
+   ],  
+   ordered: <boolean>,  
+   writeConcern: { <write concern> }  
+}
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 1, "book_id" : "Java", "ord_date" : ISODate("2012-11-02T17:04:11.102Z"), "status" : "A", "amount" : 50 }
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+> 
+--------------------------------------------------------------------------
+> db.runCommand(
+...    {
+...       delete: "library",
+...       deletes: [ { q: { amount: 50 }, limit: 1 } ]
+...    }
+... )
+{ "n" : 1, "ok" : 1 }
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+>
+--------------------------------------------------------------------------
+			MongoDB Update command
+--------------------------------------------------------------------------
+The update command makes changes to the document in a collection. 
+--------------------------------------------------------------------------
+It contains multiple update statements. 
+--------------------------------------------------------------------------
+It is used by the update method provided by the MongoDB drivers.
+--------------------------------------------------------------------------
+db.runCommand(  
+   {  
+      update: <collection>,  
+      updates: [  
+         {  
+           q: <query>,  
+           u: <document or pipeline>,      
+	// Changed in MongoDB 4.2,  
+           upsert: <boolean>,  
+           multi: <boolean>,  
+           collation: <document>,  
+           arrayFilters: <array>,  
+           hint: <document|string>        
+	// Available starting in MongoDB 4.2  
+         },  
+         ...  
+      ],  
+      ordered: <boolean>,  
+      writeConcern: { <write concern> },  
+      bypassDocumentValidation: <boolean>  
+   }  
+)  
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+>
+--------------------------------------------------------------------------
+db.library.insertMany([  
+   { _id: 102, book_id: "b1", status: "A", amount:175 },  
+   { _id: 103, book_id: "b2", status: "D", amount:250 },  
+])  
+--------------------------------------------------------------------------
+> db.library.insertMany([
+...    { _id: 102, book_id: "b1", status: "A", amount:175 },
+...    { _id: 103, book_id: "b2", status: "D", amount:250 },
+... ])
+--------------------------------------------------------------------------
+{ "acknowledged" : true, "insertedIds" : [ 102, 103 ] }
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+{ "_id" : 102, "book_id" : "b1", "status" : "A", "amount" : 175 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+>
+--------------------------------------------------------------------------
+The run command uses the $set and $inc operators to update the status of a document where the member equals "john."
+--------------------------------------------------------------------------
+db.runCommand(  
+   {  
+      update: "library",  
+      updates: [  
+         {  
+           	q: { book_id: "b1" }, 
+		u: { $set: { status: "F" }, 
+		$inc: { amount: 10 } }  
+         }  
+      ],  
+      ordered: false,  
+      writeConcern: { w: "majority", wtimeout: 5000 }  
+   }  
+)  
+--------------------------------------------------------------------------
+> db.runCommand(
+...    {
+...       update: "library",
+...       updates: [
+...          {
+...            q: { book_id: "b1" },
+... u: { $set: { status: "F" },
+... $inc: { amount: 10 } }
+...          }
+...       ],
+...       ordered: false,
+...       writeConcern: { w: "majority", wtimeout: 5000 }
+...    }
+... )
+--------------------------------------------------------------------------
+{ "n" : 1, "nModified" : 1, "ok" : 1 }
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+{ "_id" : 102, "book_id" : "b1", "status" : "F", "amount" : 185 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+>
+--------------------------------------------------------------------------
+			MongoDB find command
+--------------------------------------------------------------------------
+The find command is used to execute a query and returns the first group of results and the id of the cursor from which we can construct a cursor.
+--------------------------------------------------------------------------db.runCommand(  
+  
+   {  
+      "find": <string>,  
+      "filter": <document>,  
+      "sort": <document>,  
+      "projection": <document>,  
+      "hint": <document or string>,  
+      "skip": <int>,  
+      "limit": <int>,  
+      "batchSize": <int>,  
+      "singleBatch": <bool>,  
+      "comment": <string>,  
+      "maxTimeMS": <int>,  
+      "readConcern": <document>,  
+      "max": <document>,  
+      "min": <document>,  
+      "returnKey": <bool>,  
+      "showRecordId": <bool>,  
+      "tailable": <bool>,  
+      "oplogReplay": <bool>,  
+      "noCursorTimeout": <bool>,  
+      "awaitData": <bool>,  
+      "allowPartialResults": <bool>,  
+      "collation": <document>  
+   }  
+)  
+--------------------------------------------------------------------------
+db.runCommand(  
+   {  
+     find: "library",  
+     filter: { amount: { $gte: 200 } },  
+     projection: { book_id: 1, status: 1, amount: 1 },  
+     sort: {book_id: 1 },  
+     limit: 2  
+   }  
+)  
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+{ "_id" : 102, "book_id" : "b1", "status" : "F", "amount" : 185 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+--------------------------------------------------------------------------
+> db.runCommand(
+...    {
+...      find: "library",
+...      filter: { amount: { $gte: 200 } },
+...      projection: { book_id: 1, status: 1, amount: 1 },
+...      sort: {book_id: 1 },
+...      limit: 2
+...    }
+... )
+{
+        "cursor" : {
+                "firstBatch" : [
+                        {
+                                "_id" : 103,
+                                "book_id" : "b2",
+                                "status" : "D",
+                                "amount" : 250
+                        }
+                ],
+                "id" : NumberLong(0),
+                "ns" : "test.library"
+        },
+        "ok" : 1
+}
+>
+--------------------------------------------------------------------------
+			MongoDB findAndModify command
+--------------------------------------------------------------------------
+It modifies and returns a single document at a time. 
+--------------------------------------------------------------------------
+The returned document does not include the modification made on the 
+update by default. We need to use the new option to return the modified document.
+--------------------------------------------------------------------------
+{  
+  findAndModify: <collection-name>,  
+  query: <document>,  
+  sort: <document>,  
+  remove: <boolean>,  
+  update: <document or aggregation pipeline>, // Changed in MongoDB 4.2  
+  new: <boolean>,  
+  fields: <document>,  
+  upsert: <boolean>,  
+  bypassDocumentValidation: <boolean>,  
+  writeConcern: <document>,  
+  collation: <document>,  
+  arrayFilters: <array>  
+}  
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 25 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+{ "_id" : 102, "book_id" : "b1", "status" : "F", "amount" : 185 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+>
+--------------------------------------------------------------------------
+ db.runCommand(  
+  {  
+    findAndModify: "library",  
+    query: { status: "D" },  
+    sort: { _id: 1 },  
+    update: { $inc: { amount: 500 } },  
+    upsert: true  
+  }  
+)  
+--------------------------------------------------------------------------
+> db.runCommand(
+...   {
+...     findAndModify: "library",
+...     query: { status: "D" },
+...     sort: { _id: 1 },
+...     update: { $inc: { amount: 500 } },
+...     upsert: true
+...   }
+... )
+--------------------------------------------------------------------------
+{
+        "lastErrorObject" : {
+                "n" : 1,
+                "updatedExisting" : true
+        },
+        "value" : {
+                "_id" : 0.01,
+                "book_id" : "DBMS",
+                "ord_date" : ISODate("2013-10-12T17:04:11.102Z"),
+                "status" : "D",
+                "amount" : 25
+        },
+        "ok" : 1
+}
+>
+--------------------------------------------------------------------------
+> db.library.find()
+--------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 525 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 0.02, "book_id" : "SQL", "ord_date" : ISODate("2013-11-12T17:04:11.102Z"), "status" : "A", "amount" : 25 }
+{ "_id" : 101, "book_id" : 101, "status" : "sold" }
+{ "_id" : 102, "book_id" : "b1", "status" : "F", "amount" : 185 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+>
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+
+
+
+
+

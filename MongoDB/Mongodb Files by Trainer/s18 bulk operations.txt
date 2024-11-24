@@ -1,0 +1,390 @@
+----------------------------------------------------------------------------
+			MongoDB Bulk Operation Methods
+----------------------------------------------------------------------------
+The MongoDB bulk methods are used to perform bulk operation like bulk write and bulk remove.
+----------------------------------------------------------------------------
+		1.	db.collection.initializeOrderedBulkOp()
+----------------------------------------------------------------------------
+The initializeOrderBulkOp and gives a new Bulk() operations builder for the collection. 
+----------------------------------------------------------------------------
+It constructs an ordered list of write operations that MongoDB runs in bulk.
+----------------------------------------------------------------------------
+The following initializes a Bulk() operations builder on the users 
+collection, adds a series of write operations, and executes the operations:
+----------------------------------------------------------------------------
+> var bulk = db.users.initializeOrderedBulkOp();
+>
+> bulk.insert( { user: "anil", status: "P", points: 1 } );
+> bulk.insert( { user: "sunil", status: "A", points: 0 } );
+> bulk.insert( { user: "centhil", status: "P", points:1 } );
+>
+> bulk.find( { status: "A" } ).remove();
+>
+> bulk.find( { status: "P" } ).update( { $set: { comment: "Awaited" } } );
+>
+> bulk.execute();
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 3,
+        "nUpserted" : 0,
+        "nMatched" : 2,
+        "nModified" : 2,
+        "nRemoved" : 1,
+        "upserted" : [ ]
+})
+>
+----------------------------------------------------------------------------
+> db.users.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671086584d8c8db8ced3471c"), "user" : "anil", "status" : "P", "points" : 1, "comment" : "Awaited" }
+{ "_id" : ObjectId("671086584d8c8db8ced3471e"), "user" : "centhil", "status" : "P", "points" : 1, "comment" : "Awaited" }
+>
+
+----------------------------------------------------------------------------
+		2. 	db.collection.initializeUnorderedBulkOp()
+----------------------------------------------------------------------------
+The method boot up and gives a new Bulk() operations builder for the collection. 
+----------------------------------------------------------------------------
+It constructs an unordered list of write operations that MongoDB 
+runs in bulk.
+----------------------------------------------------------------------------
+The following initializes a Bulk() operations builder and adds a series of insert operations to add multiple documents:
+----------------------------------------------------------------------------
+> db.users.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671086584d8c8db8ced3471c"), "user" : "anil", "status" : "P", "points" : 1, "comment" : "Awaited" }
+{ "_id" : ObjectId("671086584d8c8db8ced3471e"), "user" : "centhil", "status" : "P", "points" : 1, "comment" : "Awaited" }
+----------------------------------------------------------------------------
+> db.users.remove({})
+----------------------------------------------------------------------------
+WriteResult({ "nRemoved" : 2 })
+----------------------------------------------------------------------------
+> db.users.find()
+>
+----------------------------------------------------------------------------
+> var bulk = db.users.initializeUnorderedBulkOp();
+>
+>
+>  bulk.insert( { user: "anil", status: "P", points: 1 } );
+> bulk.insert( { user: "sunil", status: "A", points: 0 } );
+> bulk.insert( { user: "centhil", status: "P", points:1 } );
+>
+> bulk.execute();
+----------------------------------------------------------------------------
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 3,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+----------------------------------------------------------------------------
+> db.users.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("6710870a4d8c8db8ced3471f"), "user" : "anil", "status" : "P", "points" : 1 }
+{ "_id" : ObjectId("6710870a4d8c8db8ced34720"), "user" : "sunil", "status" : "A", "points" : 0 }
+{ "_id" : ObjectId("6710870a4d8c8db8ced34721"), "user" : "centhil", "status" : "P", "points" : 1 }
+>
+----------------------------------------------------------------------------
+		3. 	Bulk() method
+----------------------------------------------------------------------------
+Bulk method can be used to create a list of write operations to perform in bulk for one collection. 
+----------------------------------------------------------------------------
+To obejectified the builder, use either the
+db.collection.initializeOrderedBulkOp() or the db.collection.initializeUnorderedBulkOp() method. 
+ ----------------------------------------------------------------------------
+The Bulk() builder has the following methods:
+----------------------------------------------------------------------------
+			Bulk.insert()
+----------------------------------------------------------------------------
+It can be used to add an insert operation inside the list of operations.
+----------------------------------------------------------------------------
+			Bulk.find()
+----------------------------------------------------------------------------
+It specifies the query condition for a remove or an update operation.
+----------------------------------------------------------------------------
+			Bulk.find.removeOne()
+----------------------------------------------------------------------------
+It adds a remove operation to a list of operations for a single document.
+----------------------------------------------------------------------------
+			Bulk.find.remove()
+----------------------------------------------------------------------------
+It adds remove operation to a list of operations for multiple document.
+----------------------------------------------------------------------------
+			Bulk.find.replaceOne()
+----------------------------------------------------------------------------
+It adds a document replacement operation to a numbers of operations.
+----------------------------------------------------------------------------
+			Bulk.find.updateOne()
+----------------------------------------------------------------------------
+It adds a single document update operation to an array of operations.
+----------------------------------------------------------------------------
+			Bulk.find.update()
+----------------------------------------------------------------------------
+It adds a multi update operation to an array of operations.
+----------------------------------------------------------------------------
+			Bulk.find.upsert()
+----------------------------------------------------------------------------
+It can be used to specify upsert that is true for an update operation.
+----------------------------------------------------------------------------
+			Bulk.execute()
+----------------------------------------------------------------------------
+It executes an array of operations in bulk.
+----------------------------------------------------------------------------
+			Bulk.getOperations()
+----------------------------------------------------------------------------
+It gives an array of write operations executed in the Bulk() operations object.
+----------------------------------------------------------------------------
+			Bulk.tojson()
+----------------------------------------------------------------------------
+It returns a JSON document that have the number of operations and 
+batches in the Bulk() operations object.
+----------------------------------------------------------------------------
+			Bulk.toString()
+----------------------------------------------------------------------------
+It gives the Bulk.tojson() results as a string.
+----------------------------------------------------------------------------
+		4. 	Bulk.execute() method
+----------------------------------------------------------------------------
+It runs the list of operations that is built by the Bulk() methods builder.
+----------------------------------------------------------------------------
+The following initializes a Bulk() operations builder on the items collection, adds a series of insert operations, and executes the operations:
+----------------------------------------------------------------------------
+> var bulk = db.items.initializeUnorderedBulkOp();
+> bulk.insert( { item: "grinder", status: "B", defaultQty: 10, points: 10 } );  bulk.insert( { item: "grinder", status: "B", defaultQty: 10, points: 10 } );
+> bulk.execute( );
+----------------------------------------------------------------------------
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 2,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34722"), "item" : "mixer", "status" : "A", "defaultQty" : 50, "points" : 5 }
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "B", "defaultQty" : 10, "points" : 10 }
+>
+----------------------------------------------------------------------------
+		5. 	Bulk.find(<query>) method
+----------------------------------------------------------------------------
+It can be used to specify the query condition for an update or a remove operation. 
+----------------------------------------------------------------------------
+Specifies a query condition using Query Selectors to select documents 
+for an update or a remove operation. To specify all documents, use an 
+empty document {}.
+----------------------------------------------------------------------------
+Bulk.find() can be used with the following operations of write command:
+----------------------------------------------------------------------------
+			Bulk.find.removeOne()  
+			Bulk.find.remove()  
+			Bulk.find.replaceOne()  
+			Bulk.find.updateOne()  
+			Bulk.find.update()  
+----------------------------------------------------------------------------
+The examples given below initializes a Bulk() operations builder for the items collection and adds a remove operation. 
+----------------------------------------------------------------------------
+It also update the operation to the list of operations. 
+----------------------------------------------------------------------------
+Remove operation and update operation with the help Bulk.find() method, specifies a condition for their respective actions:
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34722"), "item" : "mixer", "status" : "A", "defaultQty" : 50, "points" : 5 }
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "B", "defaultQty" : 10, "points" : 10 }
+----------------------------------------------------------------------------
+> var bulk = db.items.initializeUnorderedBulkOp();
+> bulk.find( { status: "A" } ).remove();
+> bulk.find( { status: "B" } ).update( { $set: { points: 0 } } )
+> bulk.execute();
+----------------------------------------------------------------------------
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 0,
+        "nUpserted" : 0,
+        "nMatched" : 1,
+        "nModified" : 1,
+        "nRemoved" : 1,
+        "upserted" : [ ]
+})
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "B", "defaultQty" : 10, "points" : 0 }
+>
+----------------------------------------------------------------------------
+		6. 	Bulk.find.remove() method
+----------------------------------------------------------------------------
+It adds a remove operation to a bulk operations list. The Bulk.find() method can be used to specify the condition, which determines the documents to be remove. 
+----------------------------------------------------------------------------
+The Bulk.find.remove() removes all matching documents from the collection.
+----------------------------------------------------------------------------
+The example given below initializes a Bulk() operations builder for the items collection and adds remove operation. 
+----------------------------------------------------------------------------
+The remove operation can be used to remove all documents in the collection where the status equals "D":
+----------------------------------------------------------------------------
+> db.items.find()
+
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "B", "defaultQty" : 10, "points" : 0 }
+----------------------------------------------------------------------------
+> var bulk = db.items.initializeUnorderedBulkOp();
+> bulk.find( { status: "F" } ).remove();
+> bulk.execute();
+----------------------------------------------------------------------------
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 0,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "B", "defaultQty" : 10, "points" : 0 }
+>
+----------------------------------------------------------------------------
+		7. 	Bulk.find.replaceOne(<document>) method
+----------------------------------------------------------------------------
+It can be used to add a single document replacement operation to a bulk operations list. 
+----------------------------------------------------------------------------
+Use this method to specify the condition that determines the document that has to be replaced. 
+----------------------------------------------------------------------------
+The method limits the replacement to a single document.
+----------------------------------------------------------------------------
+A replacement document that completely replaces the existing document. 
+----------------------------------------------------------------------------
+Contains only field and value pairs.
+----------------------------------------------------------------------------
+The example given below initializes a Bulk() operations builder for the items collection, and adds various replaceOne operations to the list of operations.
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "B", "defaultQty" : 10, "points" : 0 }
+----------------------------------------------------------------------------
+> var bulk = db.items.initializeUnorderedBulkOp();
+> bulk.find( { item: "grinder" } ).replaceOne( { item: "grinder", status: "A", points: 100 } );  : "grinder" } )
+> bulk.execute();
+----------------------------------------------------------------------------
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 0,
+        "nUpserted" : 0,
+        "nMatched" : 1,
+        "nModified" : 1,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+----------------------------------------------------------------------------
+> db.items.find()
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "A", "points" : 100 }
+>
+----------------------------------------------------------------------------
+		8. 	Bulk.find.update(<update>) method
+----------------------------------------------------------------------------
+It can be used to add a multi update operation to a bulk operation list. 
+----------------------------------------------------------------------------
+The method updates specific fields for the existing files.
+----------------------------------------------------------------------------
+The Bulk.find() method can be used to specify the condition that 
+determines the documents that has to be updated. 
+----------------------------------------------------------------------------
+The method updates all matching documents.
+----------------------------------------------------------------------------
+The following example initializes a Bulk() operations builder for the items collection, and adds various multi update operations to the list of operations.
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "A", "points" : 100 }
+----------------------------------------------------------------------------
+> bulk.find( { status: "A" } ).update( { $set: { status: "I", points: "0" } } );  lk.find( { status: "A" } ).update( { $set: { status: "I", points: "0" } }
+> bulk.find( { item: null } ).update( { $set: { item: "Sorry" } } );
+> bulk.execute();
+----------------------------------------------------------------------------
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 0,
+        "nUpserted" : 0,
+        "nMatched" : 1,
+        "nModified" : 1,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "I", "points" : "0" }
+>
+----------------------------------------------------------------------------
+		9. 	Bulk.insert(<document>) method
+----------------------------------------------------------------------------
+It can be used to add an insert operation to a bulk operations list.
+----------------------------------------------------------------------------
+The example initializes a Bulk() operations builder for the items collection and adds a series of insert operations to add multiple documents:
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "I", "points" : "0" }
+>
+----------------------------------------------------------------------------
+>var bulk = db.items.initializeUnorderedBulkOp();  
+>bulk.insert( { item: "mixer", defaultQty: 10, status: "A", points: 10 } );  
+>bulk.insert( { item: "watch", defaultQty: 20, status: "A", points: 20 } );  
+>bulk.insert( { item: "mobile", defaultQty: 5, status: "P", points: 50 } );  
+>bulk.execute();  
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "I", "points" : "0" }
+{ "_id" : ObjectId("67108a834d8c8db8ced34724"), "item" : "mixer", "defaultQty" : 10, "status" : "A", "points" : 10 }
+{ "_id" : ObjectId("67108a834d8c8db8ced34725"), "item" : "watch", "defaultQty" : 20, "status" : "A", "points" : 20 }
+{ "_id" : ObjectId("67108a834d8c8db8ced34726"), "item" : "mobile", "defaultQty" : 5, "status" : "P", "points" : 50 }
+>
+----------------------------------------------------------------------------
+		10. 	Bulk.toString()
+----------------------------------------------------------------------------
+It can be used to return the output as a string a JSON document that 
+contains the number of operations and batches inside the Bulk() object.
+----------------------------------------------------------------------------
+The example below initializes a Bulk() operations builder on the items collection, adds a series of write operations, and calls Bulk.toString() 
+on the bulk builder object.
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "I", "points" : "0" }
+{ "_id" : ObjectId("67108a834d8c8db8ced34724"), "item" : "mixer", "defaultQty" : 10, "status" : "A", "points" : 10 }
+{ "_id" : ObjectId("67108a834d8c8db8ced34725"), "item" : "watch", "defaultQty" : 20, "status" : "A", "points" : 20 }
+{ "_id" : ObjectId("67108a834d8c8db8ced34726"), "item" : "mobile", "defaultQty" : 5, "status" : "P", "points" : 50 }
+----------------------------------------------------------------------------
+> var bulk = db.items.initializeOrderedBulkOp();
+> bulk.insert( { item: "laptop", status: "D", defaultQty: 1, points: 10 } );
+> bulk.find( { status: "D" } ).removeOne();   defaultQty: 1, points: 10 } );
+> bulk.toString();
+----------------------------------------------------------------------------
+{ "nInsertOps" : 2, "nUpdateOps" : 0, "nRemoveOps" : 1, "nBatches" : 2 }
+----------------------------------------------------------------------------
+> db.items.find()
+----------------------------------------------------------------------------
+{ "_id" : ObjectId("671088044d8c8db8ced34723"), "item" : "grinder", "status" : "I", "points" : "0" }
+{ "_id" : ObjectId("67108a834d8c8db8ced34724"), "item" : "mixer", "defaultQty" : 10, "status" : "A", "points" : 10 }
+{ "_id" : ObjectId("67108a834d8c8db8ced34725"), "item" : "watch", "defaultQty" : 20, "status" : "A", "points" : 20 }
+{ "_id" : ObjectId("67108a834d8c8db8ced34726"), "item" : "mobile", "defaultQty" : 5, "status" : "P", "points" : 50 }
+>
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+

@@ -1,0 +1,61 @@
+Key Performance Indicators - KPI
+
+Scalar Values - Card Visual
+1. Total Sales
+
+Multiple Scalar Values - Multirow Card
+2.  Total Profit
+3. Avenger Sales
+4. Min Sales
+5. Max Sales
+6.Count Of Sales
+
+Conditional Formatting - Table & Matrix
+7.catogory
+
+Matrix - Drillup, Hierarchy, GoTo Next Level In Hierarachy
+8.Category & sub-Category wise sales and Market in column
+9. Slicer - Filter Data all visual in one page
+
+Comparsion Analysis
+10. Sales by Category
+11. Sales by Category & Year
+12. Profit by Sub-Category
+
+Trend Analysis - Line Chart & Area Chart
+13. Sales by Month
+14. Sales by Year with Sales Prediction
+15. Profit by Year
+
+Percentage - Pie and Donut Charts
+16. Profit % by Market
+17. Profit % by Segment
+
+Gauge Chart
+18. Actual Sales Vs Target Sales
+
+Functinalities, Slicer
+--------------------------------------------------------------------------------------------
+Day 02
+
+1. Column Profiling - Identity and Eliminate Duplicate
+2. Replace Text
+3. Append Text
+4. Merge Query
+5. Unpivot
+6. Conditional Column
+7. CustomColun - "&" Concatenate Operator
+8. Duplication Column - Split by Delimiter
+9. Load (Enable or Disable) Table
+10. Transform - UpperCase, Trim
+
+Model View / Power Pivpt
+
+Cardinality / Relation - 1 to Many, Filter Direction - Single
+
+SQL - DATA MODEL
+Power BI 
+
+
+
+https://en.wikipedia.org/wiki/List_of_states_in_India_by_past_population

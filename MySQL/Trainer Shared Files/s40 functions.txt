@@ -1,0 +1,224 @@
+-------------------------------------------------------------------------
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test1              |
++--------------------+
+5 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> use test1;
+Database changed
+mysql>
+-------------------------------------------------------------------------
+mysql> DELIMITER $$
+mysql>
+-------------------------------------------------------------------------
+mysql> CREATE FUNCTION empAge(age int)
+    -> RETURNS VARCHAR(20)
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     DECLARE empGrade VARCHAR(20);
+    ->     IF age < 25  THEN
+    ->         SET empGrade = 'Junior';
+    ->     ELSEIF (age <= 28 AND  age >= 25) THEN
+    ->         SET empGrade = 'Senior';
+    ->     ELSEIF age > 28 THEN
+    ->         SET empGrade = 'Manager';
+    ->     END IF;
+    ->         RETURN (empGrade);
+    -> END$$
+Query OK, 0 rows affected (0.02 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> DELIMITER ;
+mysql>
+-------------------------------------------------------------------------
+mysql> select empAge(32);
++------------+
+| empAge(32) |
++------------+
+| Manager    |
++------------+
+1 row in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select empAge(18);
++------------+
+| empAge(18) |
++------------+
+| Junior     |
++------------+
+1 row in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select empAge(26);
++------------+
+| empAge(26) |
++------------+
+| Senior     |
++------------+
+1 row in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> SHOW FUNCTION STATUS WHERE db = 'test1';
++-------+--------+----------+----------------+---------------------+-------
+| Db    | Name   | Type     | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++-------+--------+----------+----------------+---------------------+-------
+| test1 | empAge | FUNCTION | root@localhost | 2023-07-08 19:03:02 | 2023-07-08 19:03:02 | DEFINER       |         | cp850                | cp850_general_ci     | latin1_swedish_ci  |
+| test1 | getSum | FUNCTION | root@localhost | 2023-07-07 20:41:38 | 2023-07-07 20:41:38 | DEFINER       |         | cp850                | cp850_general_ci     | latin1_swedish_ci  |
++-------+--------+----------+----------------+---------------------+-------
+2 rows in set (0.01 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> desc t2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | NO   | PRI | NULL    |       |
+| name  | varchar(10) | YES  |     | NULL    |       |
+| age   | int(2)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t2;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | anil   |   22 |
+| 102 | sunil  |   26 |
+| 103 | sanjay |   25 |
+| 104 | suresh |   25 |
++-----+--------+------+
+4 rows in set (0.00 sec)
+mysql> 
+-------------------------------------------------------------------------
+mysql> insert into t2 values(105,'ramesh',32),(106,'rajesh',18),(107,'naresh',28);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql>
+-------------------------------------------------------------------------
+mysql> select * from t2;
++-----+--------+------+
+| id  | name   | age  |
++-----+--------+------+
+| 101 | anil   |   22 |
+| 102 | sunil  |   26 |
+| 103 | sanjay |   25 |
+| 104 | suresh |   25 |
+| 105 | ramesh |   32 |
+| 106 | rajesh |   18 |
+| 107 | naresh |   28 |
++-----+--------+------+
+7 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> select id,name,age, empAge(age) as 'Level' from t2;
++-----+--------+------+---------+
+| id  | name   | age  | Level   |
++-----+--------+------+---------+
+| 101 | anil   |   22 | Junior  |
+| 102 | sunil  |   26 | Senior  |
+| 103 | sanjay |   25 | Senior  |
+| 104 | suresh |   25 | Senior  |
+| 105 | ramesh |   32 | Manager |
+| 106 | rajesh |   18 | Junior  |
+| 107 | naresh |   28 | Senior  |
++-----+--------+------+---------+
+7 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> create table t3(roll int primary key, name varchar(10), java int(2), linux int(2), dotnet int(2), python int(2));
+Query OK, 0 rows affected (0.01 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> desc t3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| roll   | int(11)     | NO   | PRI | NULL    |       |
+| name   | varchar(10) | YES  |     | NULL    |       |
+| java   | int(2)      | YES  |     | NULL    |       |
+| linux  | int(2)      | YES  |     | NULL    |       |
+| dotnet | int(2)      | YES  |     | NULL    |       |
+| python | int(2)      | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> insert into t3 values(101,'anil',82,90,65,85);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> insert into t3 values(102,'sunil',80,90,60,80);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> insert into t3 values(103,'suresh',81,91,61,83);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> insert into t3 values(104,'ramesh',91,95,96,89);
+Query OK, 1 row affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------mysql> select* from t3;
++------+--------+------+-------+--------+--------+
+| roll | name   | java | linux | dotnet | python |
++------+--------+------+-------+--------+--------+
+|  101 | anil   |   82 |    90 |     65 |     85 |
+|  102 | sunil  |   80 |    90 |     60 |     80 |
+|  103 | suresh |   81 |    91 |     61 |     83 |
+|  104 | ramesh |   91 |    95 |     96 |     89 |
++------+--------+------+-------+--------+--------+
+4 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> DELIMITER $$
+mysql> CREATE FUNCTION totalResult(j INT,l INT, d INT, p INT)
+    -> RETURNS INT
+    -> DETERMINISTIC
+    ->      BEGIN
+    ->          DECLARE t INT;
+    ->          set t = j+l+d+p;
+    ->          RETURN (t);
+    ->      END $$
+Query OK, 0 rows affected (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> DELIMITER ;
+mysql>
+-------------------------------------------------------------------------
+mysql> select roll, name, totalResult(java,linux,dotnet,python) as Total from t3;
++------+--------+-------+
+| roll | name   | Total |
++------+--------+-------+
+|  101 | anil   |   322 |
+|  102 | sunil  |   310 |
+|  103 | suresh |   316 |
+|  104 | ramesh |   371 |
++------+--------+-------+
+4 rows in set (0.00 sec)
+mysql>
+-------------------------------------------------------------------------
+mysql> SHOW FUNCTION STATUS WHERE db = 'test1';
++-------+-------------+----------+----------------+---------------------+--
+| Db    | Name        | Type     | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++-------+-------------+----------+----------------+---------------------+--
+| test1 | empAge      | FUNCTION | root@localhost | 2023-07-08 19:03:02 | 2023-07-08 19:03:02 | DEFINER       |         | cp850                | cp850_general_ci     | latin1_swedish_ci  |
+| test1 | getSum      | FUNCTION | root@localhost | 2023-07-07 20:41:38 | 2023-07-07 20:41:38 | DEFINER       |         | cp850                | cp850_general_ci     | latin1_swedish_ci  |
+| test1 | totalResult | FUNCTION | root@localhost | 2023-07-08 19:24:33 | 2023-07-08 19:24:33 | DEFINER       |         | cp850                | cp850_general_ci     | latin1_swedish_ci  |
++-------+-------------+----------+----------------+---------------------+--
+3 rows in set (0.01 sec)
+mysql>
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+
+
+

@@ -1,0 +1,153 @@
+----------------------------------------------------------------------------
+			MongoDB Connection Methods
+----------------------------------------------------------------------------
+The MongoDB connection method consist all the methods that is used to enable and disable the connection to our database.
+----------------------------------------------------------------------------
+		1. 	connect (url, user, password)
+----------------------------------------------------------------------------
+The connect method is used to establish a connection to a MongoDB objects. 
+----------------------------------------------------------------------------
+The method returns the reference to the database also. 
+----------------------------------------------------------------------------
+We can use the Mongo () instance and its getDB() method instead in 
+some cases.
+----------------------------------------------------------------------------
+		db = connect("localhost:27017/test")  
+----------------------------------------------------------------------------
+The above query will return a reference to tet and instantiates a fresh connection to the MongoDB objects running on the localhost 
+interface
+----------------------------------------------------------------------------
+		2. 	Mongo(host, ClientSideFieldLevelEncryptionOptions)
+----------------------------------------------------------------------------
+The mongo is a JavaScript constructor that is used to create instances 
+for a database connection that belongs to mongo shell or to a 
+JavaScript file.
+----------------------------------------------------------------------------
+A new connection object from the mongo shell will be created using the following query:
+----------------------------------------------------------------------------
+cluster = Mongo("mongodb://mymongo.example.net:27017/?
+					replicaSet=myMongoCluster")  
+----------------------------------------------------------------------------
+To interact with the mymongo.example.net:27017 cluster we will issue 
+the below query against the cluster object:
+----------------------------------------------------------------------------
+myDB = cluster.getDB("myDB");  
+myColl = myDB.getCollection("myColl");  
+----------------------------------------------------------------------------
+		3. 	Mongo.getDB(<database>)
+----------------------------------------------------------------------------
+The getDB method is used to provides access to database objects that belongs to the mongo shell or to a JavaScript file.
+----------------------------------------------------------------------------
+		db = new Mongo().getDB("test"); 
+ ----------------------------------------------------------------------------
+> db = new Mongo().getDB("test");
+test
+>
+----------------------------------------------------------------------------
+The above query establish a new connection to the MongoDB objects running on the localhost interface and returns a reference to "test":
+----------------------------------------------------------------------------
+		4. 	Mongo.isCausalConsistency()
+----------------------------------------------------------------------------
+As the name suggest of this method, the casual consistency is used 
+to returns a Boolean result that indicates whether the causal consistency 
+of the instance is enabled on the connection object.
+----------------------------------------------------------------------------
+		var conn = Mongo("localhost:27017"); 
+ 		conn.isCausalConsistency()  
+----------------------------------------------------------------------------
+> var conn = Mongo("localhost:27017");
+> conn.isCausalConsistency()
+false
+>
+----------------------------------------------------------------------------
+		db.getMongo().isCausalConsistency();  
+----------------------------------------------------------------------------
+> db.getMongo().isCausalConsistency();
+false
+>
+----------------------------------------------------------------------------
+The above query determines that the causal consistency is enabled on 
+the Mongo connection object or not, which is associated with the 
+mongo shell's global database variable:
+----------------------------------------------------------------------------
+		5. 	Mongo.setCausalConsistency(<boolean>)
+----------------------------------------------------------------------------
+The setcasualconsistency() method enables or disables the causal 
+consistency on the specified connection object. 
+----------------------------------------------------------------------------
+This method removes the object's connection by default.
+----------------------------------------------------------------------------
+The query below enables the causal consistency on the instances of 
+MongoDB which is associated with the mongo shell's global database variable:
+----------------------------------------------------------------------------
+		db.getMongo().setCausalConsistency();  
+----------------------------------------------------------------------------
+If you want to check the causal consistency is enabled or not for a connection. 
+----------------------------------------------------------------------------
+You can use the Mongo.isCausalConsistency() method.
+----------------------------------------------------------------------------
+		db.getMongo().isCausalConsistency(); 
+----------------------------------------------------------------------------
+		6. 	Mongo.setReadPref(mode, tagSet)
+----------------------------------------------------------------------------
+The setReadPref method is used on a Mongo connection object to control the reaction of the client route for all queries to members of the specified replica set.
+----------------------------------------------------------------------------
+The read preference mode is used in the following example to target the read operation to a secondary member.
+----------------------------------------------------------------------------
+		db.getMongo().setReadPref('secondary') 
+---------------------------------------------------------------------------- 
+For specific tag secondaries will include the tag set array:
+----------------------------------------------------------------------------
+db.getMongo().setReadPref(  
+   "secondary",  
+   [ { "datacenter": "test1" },     
+      { "region": "North"},        
+      { }   ])  
+----------------------------------------------------------------------------
+		7. 	Mongo.startSession(<options>)
+----------------------------------------------------------------------------
+The start session method is used to starts a session for the connection. 
+----------------------------------------------------------------------------
+The session id will be assigned to commands associated with the session by mongo shell.
+----------------------------------------------------------------------------
+db = db.getMongo().startSession({retryWrites: true, causalConsistency: true}).getDatabase(db.getName());  
+----------------------------------------------------------------------------
+To start a session with re-triable writes enabled, you have to use the 
+above query that will help you enable it with causal consistency.
+----------------------------------------------------------------------------
+		8. 	Mongo.watch(pipeline, options)
+----------------------------------------------------------------------------
+The watch method allows us to open a changed stream cursor for the specified replica set or a specified sharded cluster. 
+----------------------------------------------------------------------------
+With the exception of the local, config, and the admin databases the replica set will be changed to report on all its non-system collections across the specific DB,.
+----------------------------------------------------------------------------
+The query example opens a change stream cursor on a replica set of the mongoShell. 
+----------------------------------------------------------------------------
+Except for the admin, local, and the config databases, all databases will be reported on data changes by the returned cursor to all the non-system collections.
+----------------------------------------------------------------------------
+		watchCursor = db.getMongo().watch()
+----------------------------------------------------------------------------  
+We can use the cursor.isExhausted() method to iterate the cursor to check 
+for new events and ensure that the loop only exits in the case of changes 
+made to stream cursor.
+----------------------------------------------------------------------------
+while (!watchCursor.isExhausted())  
+{  
+   if (watchCursor.hasNext()){  
+      printjson(watchCursor.next());  
+   }}  
+----------------------------------------------------------------------------
+		9. 	Session()
+----------------------------------------------------------------------------
+The session method establishes the session object for the connection in the mongo shell. 
+----------------------------------------------------------------------------
+Use Mongo.startSession() to establish a session for the connection in the mongo shell,
+----------------------------------------------------------------------------
+A session on the Mongo connection object will be started that is associated with the mongo shell's global database variable. 
+----------------------------------------------------------------------------
+After that, to retrieve the database object associated with the session, it uses the Session.getDatabase() method.
+----------------------------------------------------------------------------
+var session = db.getMongo().startSession();  
+db = session.getDatabase(db.getName());  
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

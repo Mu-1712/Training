@@ -1,0 +1,119 @@
+-----------------------------------------------------------------------------
+				Query Modifiers
+-----------------------------------------------------------------------------
+We have number of meta operation in addition to the MongoDB Query Operators 
+to modify the output or behaviour of a query.
+-----------------------------------------------------------------------------
+db.collection.find( { <query> } )._addSpecial( <option> ) 
+ -----------------------------------------------------------------------------
+db.collection.find( { $query: { <query> }, <option> } ) 
+ -----------------------------------------------------------------------------
+> db.library.find({"amount":{$gte:200}})
+-----------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 525 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+>
+-----------------------------------------------------------------------------
+		1.	$comment
+-----------------------------------------------------------------------------
+The comment operator makes it possible to add a comment to a query in any context.
+-----------------------------------------------------------------------------
+db.collection.find( { <query> } )._addSpecial( "$comment", <comment> )
+-----------------------------------------------------------------------------
+> db.library.find({"amount":{$gte:200}})._addSpecial( "$comment", "done" )
+-----------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 525 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+> 
+-----------------------------------------------------------------------------
+		2.	$explain
+-----------------------------------------------------------------------------
+The explain modifier provides details about the query plan. 
+-----------------------------------------------------------------------------
+It returns a file that describes the process and indexes used to return the query. 
+-----------------------------------------------------------------------------
+It may give useful insight when attempting to optimize a query.
+-----------------------------------------------------------------------------
+		db.example.find( { $query: {}, $explain: 1 } ) 
+
+-----------------------------------------------------------------------------
+		3.	$hint
+-----------------------------------------------------------------------------
+This operator is deprecated in the mongo shell now. 
+-----------------------------------------------------------------------------
+The hint operator attaches the optimizer to use the declared index to fulfill the query. 
+-----------------------------------------------------------------------------
+It is also used for testing query performance and indexing strategies.
+-----------------------------------------------------------------------------
+		db.users.find().hint( { age: 1 } )
+-----------------------------------------------------------------------------
+		4.	$max
+-----------------------------------------------------------------------------
+The max operator is deprecated in mongo shell since v3.2. 
+-----------------------------------------------------------------------------
+It defines a max value to specify the exclusive upper bound for the given index in order to limit the results of find ().
+-----------------------------------------------------------------------------
+db.example.find( { <query>  } ).max( { field1: <max value>, ... fieldN: <max valueN> } )  
+-----------------------------------------------------------------------------
+		5.	$maxTimeMS
+-----------------------------------------------------------------------------
+It is also deprecated since v3.2. 
+-----------------------------------------------------------------------------
+It defines a cumulative time in ms for processing operations on the cursor.
+-----------------------------------------------------------------------------
+		db.collection.find().maxTimeMS(100) 
+-----------------------------------------------------------------------------
+		6.	$min
+-----------------------------------------------------------------------------
+The min operator is used to find a minimum value to declare the included 
+lower bound for a specified index to constrain the results of find ().
+-----------------------------------------------------------------------------
+db.collection.find( { <query> } ).min( { field1: <min value>, ... fieldN: 
+<min valueN>} )  
+-----------------------------------------------------------------------------
+		7.	$orderby
+-----------------------------------------------------------------------------
+The orderby operator arranges the results of a query in ascending or descending order.
+-----------------------------------------------------------------------------
+		db.collection.find().sort( { age: -1 } )  
+-----------------------------------------------------------------------------
+		8.	$query
+-----------------------------------------------------------------------------
+It forcefully interprets an expression as a query using MongoDB.
+-----------------------------------------------------------------------------
+	db.library.find( { $query: { status : "D" } } )  
+-----------------------------------------------------------------------------
+	db.library.find( { status : "D" } )  
+-----------------------------------------------------------------------------
+> db.library.find( { status : "D" } )
+-----------------------------------------------------------------------------
+{ "_id" : 0.01, "book_id" : "DBMS", "ord_date" : ISODate("2013-10-12T17:04:11.102Z"), "status" : "D", "amount" : 525 }
+{ "_id" : 2, "book_id" : "Python", "ord_date" : ISODate("2013-10-11T17:04:11.102Z"), "status" : "D", "amount" : 125 }
+{ "_id" : 103, "book_id" : "b2", "status" : "D", "amount" : 250 }
+>
+-----------------------------------------------------------------------------
+		9.	$returnKey
+-----------------------------------------------------------------------------
+The return key returns the index fields for the results of the query. 
+-----------------------------------------------------------------------------
+If returnkey operator is set to true then the returned documents will not contain any fields.
+-----------------------------------------------------------------------------
+db.collection.find( { <query> } )._addSpecial( "$returnKey", true ) 
+-----------------------------------------------------------------------------
+db.collection.find( { $query: { <query> }, $returnKey: true } ) 
+-----------------------------------------------------------------------------
+		10.	$showDiskLoc
+-----------------------------------------------------------------------------
+The showDiskLoc operator adds a field to the resultant documents. 
+-----------------------------------------------------------------------------
+The value of the added diskLoc field is a document that contains the disk location details.
+-----------------------------------------------------------------------------
+           "$diskLoc": {  
+"file": <int>,  
+"offset": <int>  
+-----------------------------------------------------------------------------
+		11.	$natural
+-----------------------------------------------------------------------------
+The natural operator is a special sort order operator that arranges the documents using the order of documents on disk using the cursor.hint ().
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

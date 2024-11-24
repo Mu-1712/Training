@@ -1,0 +1,118 @@
+----------------------------------------------------------------------------
+				Sharding
+----------------------------------------------------------------------------
+Sharding is the process of storing data records across multiple servers 
+and it is MongoDB's approach to meeting the demands of data growth. 
+----------------------------------------------------------------------------
+As the size of the data increases, a single machine may not be sufficient 
+to store the data nor provide an acceptable read and write throughput. 
+----------------------------------------------------------------------------
+Sharding solves the problem with horizontal scaling. 
+----------------------------------------------------------------------------
+With sharding, you add more servers to support data growth and the 
+demands of read and write operations.
+----------------------------------------------------------------------------
+Sharding adds more servers to a database and automatically balances data, 
+load across various servers
+----------------------------------------------------------------------------
+Sharding provides additional write capacity by distributing the write load
+over a number of mongod instances
+----------------------------------------------------------------------------
+Sharding splits the dataset and distributes them across multiple databases 
+or shards
+----------------------------------------------------------------------------
+Each shard serves as an independent database and together all shards makes
+up a logical database
+----------------------------------------------------------------------------
+Sharding reduces the number of operations required to be handled by each
+shard
+----------------------------------------------------------------------------
+	1 TB database -> 4 shards => each shard of 256 GB
+----------------------------------------------------------------------------
+	1 TB database -> 40 shards => each shard of 25 GB
+----------------------------------------------------------------------------
+A shard is replica set or a single mongod instance that holds the data 
+subset used in the sharded cluster
+----------------------------------------------------------------------------
+Each shard is a replica set that provides redundancy and high availability 
+for the data it holds
+----------------------------------------------------------------------------
+Every database contains a primary shard that holds all the unsharded collections in that database
+----------------------------------------------------------------------------
+MongoDB shards data on collection basis
+----------------------------------------------------------------------------
+When connected directly to a shard, only a fraction of data can be accessed
+----------------------------------------------------------------------------
+Data is not organized in any particular order in a given shard
+----------------------------------------------------------------------------
+There is assurance that the 2 contiguous data chunks will reside in any
+particular shard
+----------------------------------------------------------------------------
+				Why Sharding?
+---------------------------------------------------------------------------
+	1.	In replication all writes go to master node
+----------------------------------------------------------------------------
+	2.	Latency sensitive queries still go to master
+----------------------------------------------------------------------------
+	3.	Single replica set has limitation of 12 nodes
+----------------------------------------------------------------------------
+	4.	Memory can't be large enough when active dataset is big
+----------------------------------------------------------------------------
+	5.	Local Disk is not big enough
+----------------------------------------------------------------------------
+	6.	Vertical scaling is too expensive
+----------------------------------------------------------------------------
+			Three main components 
+----------------------------------------------------------------------------
+	1.	Shards
+----------------------------------------------------------------------------
+Shards are used to store data. 
+----------------------------------------------------------------------------
+They provide high availability and data consistency. 
+----------------------------------------------------------------------------
+In production environment each shard is a separate replica set.
+----------------------------------------------------------------------------
+	2.	Config Servers
+----------------------------------------------------------------------------
+Config servers store the cluster's metadata. 
+----------------------------------------------------------------------------
+This data contains a mapping of the cluster's data set to the shards. 
+----------------------------------------------------------------------------
+The query router uses this metadata to target operations to specific shards.
+----------------------------------------------------------------------------
+In production environment sharded clusters have exactly 3 config servers.
+----------------------------------------------------------------------------
+	3.	Query Routers
+----------------------------------------------------------------------------
+Query Routers are basically mongos instances, interface with client applications and direct operations to the appropriate shard. 
+----------------------------------------------------------------------------
+The query router processes and targets operations to shards and then 
+returns results to the clients. 
+----------------------------------------------------------------------------
+A sharded cluster can contain more than one query router to divide the 
+client request load. 
+----------------------------------------------------------------------------
+A client sends requests to one query router. 
+----------------------------------------------------------------------------
+Generally a sharded cluster have many query routers.
+----------------------------------------------------------------------------
+			Shard key
+----------------------------------------------------------------------------
+It is a key from the collection
+----------------------------------------------------------------------------
+It is used to split the data across shards
+----------------------------------------------------------------------------
+It determines document distribution among different shards in an given
+cluster
+----------------------------------------------------------------------------
+It is field which will exists in every document of an collection
+----------------------------------------------------------------------------
+It can be indexed or compound indexed
+----------------------------------------------------------------------------
+It performs data partition in a collection
+----------------------------------------------------------------------------
+It is used to distribute documents according to its range values
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+

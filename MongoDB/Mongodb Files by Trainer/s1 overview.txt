@@ -1,0 +1,1300 @@
+-----------------------------------------------------------------------------
+			NoSQL Databases
+-----------------------------------------------------------------------------
+Databases can be divided in 3 types:
+-----------------------------------------------------------------------------
+	1.		RDBMS (Relational Database Management System)
+-----------------------------------------------------------------------------
+	2.		OLAP (Online Analytical Processing)
+-----------------------------------------------------------------------------
+	3.		NoSQL (recently developed database)
+-----------------------------------------------------------------------------
+			NoSQL Database
+-----------------------------------------------------------------------------
+NoSQL Database is used to refer a non-SQL or non relational database.
+-----------------------------------------------------------------------------
+It provides a mechanism for storage and retrieval of data other than tabular relations model used in relational databases. 
+-----------------------------------------------------------------------------
+NoSQL database doesn't use tables for storing data. 
+-----------------------------------------------------------------------------
+It is generally used to store big data and real-time web applications.
+-----------------------------------------------------------------------------
+			Advantages of NoSQL
+-----------------------------------------------------------------------------
+	1.		It supports query language.
+-----------------------------------------------------------------------------
+	2.		It provides fast performance.
+-----------------------------------------------------------------------------
+	3.		It provides horizontal scalability.
+-----------------------------------------------------------------------------
+			History of MongoDB
+-----------------------------------------------------------------------------
+The initial development of MongoDB began in 2007 when the company was building a platform as a service similar to windows azure
+-----------------------------------------------------------------------------
+MongoDB was developed by a New York based organization named 10gen which is now known as MongoDB Inc. 
+-----------------------------------------------------------------------------
+It was initially developed as a PAAS (Platform As A Service). 
+-----------------------------------------------------------------------------
+Later in 2009, it was introduced in the market as an open source database server that was maintained and supported by MongoDB Inc.
+-----------------------------------------------------------------------------
+The first ready production of MongoDB has been considered from version 1.4 which was released in March 2010.
+-----------------------------------------------------------------------------
+			MongoDB
+-----------------------------------------------------------------------------
+MongoDB is an open-source document database, and leading NoSQL database. 
+-----------------------------------------------------------------------------
+MongoDB is written in c++.
+-----------------------------------------------------------------------------
+MongoDB is a cross-platform, document oriented database that provides, high performance, high availability, and easy scalability.
+-----------------------------------------------------------------------------
+MongoDB works on concept of collection and document.
+-----------------------------------------------------------------------------
+Mongo DB is a document-oriented database. 
+-----------------------------------------------------------------------------
+It is an open source product, developed and supported by a company named 10gen.
+-----------------------------------------------------------------------------
+MongoDB is a scalable, open source, high performance, document-oriented database
+-----------------------------------------------------------------------------
+MongoDB was designed to work with commodity servers. 
+-----------------------------------------------------------------------------
+Now it is used by the company of all sizes, across all industry.
+-----------------------------------------------------------------------------
+The primary purpose of building MongoDB is:
+-----------------------------------------------------------------------------
+	1.		Scalability
+-----------------------------------------------------------------------------
+	2.		Performance		
+-----------------------------------------------------------------------------
+	3.		High Availability
+-----------------------------------------------------------------------------
+	4.		Scaling from single server deployments to large,
+			 complex multi-site architectures.
+-----------------------------------------------------------------------------
+			Features of MongoDB
+-----------------------------------------------------------------------------
+These are some important features of MongoDB:
+-----------------------------------------------------------------------------
+	1. Support ad-hoc queries
+-----------------------------------------------------------------------------
+		In MongoDB, you can search by field, range query and 			it also supports regular expression searches.
+-----------------------------------------------------------------------------
+	2. Indexing
+-----------------------------------------------------------------------------		You can index any field in a document.
+-----------------------------------------------------------------------------
+	3. Replication
+-----------------------------------------------------------------------------
+		MongoDB supports Master Slave replication.
+-----------------------------------------------------------------------------
+		A master can perform Reads and Writes and a Slave copies 
+		data from the master and can only be used for reads or 
+		back up (not writes)
+-----------------------------------------------------------------------------
+	4. Duplication of data
+-----------------------------------------------------------------------------
+		MongoDB can run over multiple servers. 
+-----------------------------------------------------------------------------
+		The data is duplicated to keep the system up and also keep 
+		its running condition in case of hardware failure.
+-----------------------------------------------------------------------------
+	5. Load balancing
+-----------------------------------------------------------------------------
+		It has an automatic load balancing configuration because 
+		of data placed in shards.
+-----------------------------------------------------------------------------
+	6. Supports map reduce and aggregation tools.
+-----------------------------------------------------------------------------
+	7. Uses JavaScript instead of Procedures.
+-----------------------------------------------------------------------------
+	8. It is a schema-less database written in C++.
+-----------------------------------------------------------------------------
+	9. Provides high performance.
+-----------------------------------------------------------------------------
+	10. Stores files of any size easily without complicating your stack.
+-----------------------------------------------------------------------------
+	11. Easy to administer in the case of failures.
+-----------------------------------------------------------------------------
+	12. It also supports:
+-----------------------------------------------------------------------------
+		a.		JSON data model with dynamic schemas
+-----------------------------------------------------------------------------
+		b.		Auto-sharding for horizontal scalability
+-----------------------------------------------------------------------------
+		c.		Built in replication for high availability
+-----------------------------------------------------------------------------
+			RDBMS- MongoDB
+-----------------------------------------------------------------------------
+	1.		Database 		Database
+-----------------------------------------------------------------------------
+	2.		Table 			Collection
+-----------------------------------------------------------------------------
+	3.		Tuple/Row 		ocument
+-----------------------------------------------------------------------------
+	4.		column 			Field
+-----------------------------------------------------------------------------
+	5.		Table Join 		Embedded Documents
+-----------------------------------------------------------------------------
+	6.		Primary Key		Primary Key 
+-----------------------------------------------------------------------------				(Default key _id provided by mongodb itself)
+-----------------------------------------------------------------------------
+	7.		Mysqld/Oracle 		mongod
+-----------------------------------------------------------------------------
+	8.		mysql/sqlplus 		mongo
+-----------------------------------------------------------------------------
+Although it is 100 times faster than the traditional database but it is early to say that it will broadly replace the traditional RDBMS. 
+-----------------------------------------------------------------------------
+But it may be very useful in term to gain performance and scalability.
+-----------------------------------------------------------------------------
+A Relational database has a typical schema design that shows number of tables and the relationship between these tables, while in MongoDB there 
+is no concept of relationship.
+-----------------------------------------------------------------------------
+			Database
+-----------------------------------------------------------------------------
+Database is a physical container for collections. 
+-----------------------------------------------------------------------------
+Each database gets its own set of files on the file system. 
+-----------------------------------------------------------------------------
+A single MongoDB server typically has multiple databases.
+-----------------------------------------------------------------------------
+			Collection
+-----------------------------------------------------------------------------
+Collection is a group of MongoDB documents. 
+-----------------------------------------------------------------------------
+It is the equivalent of an RDBMS table. 
+-----------------------------------------------------------------------------
+A collection exists within a single database. 
+-----------------------------------------------------------------------------
+Collections do not enforce a schema. 
+-----------------------------------------------------------------------------
+Documents within a collection can have different fields.
+-----------------------------------------------------------------------------
+Typically, all documents in a collection are of similar or related purpose.
+-----------------------------------------------------------------------------
+			Document
+-----------------------------------------------------------------------------
+A document is a set of key-value pairs. 
+-----------------------------------------------------------------------------
+Documents have dynamic schema. 
+-----------------------------------------------------------------------------
+Dynamic schema means that documents in the same collection do not need to have the same set of fields or structure, and common fields in a collection's
+documents may hold different types of data.
+-----------------------------------------------------------------------------
+MongoDB is a document oriented database. 
+-----------------------------------------------------------------------------
+It is a key feature of MongoDB. 
+-----------------------------------------------------------------------------
+It offers a document oriented storage. 
+-----------------------------------------------------------------------------
+MongoDB stores data as documents, so it is known as document oriented database.
+-----------------------------------------------------------------------------
+example :
+-----------------------------------------------------------------------------
+		FirstName = "Ajeet",                                                                                                           
+		Address = "Laxmi Nagar",                                                                                                   
+		Spouse = [{Name: "Chaaru"}]. 
+                                                                                          
+		FirstName ="Ravi",  
+		Address = "Loni"  
+-----------------------------------------------------------------------------
+There are two different documents (separated by ".").
+-----------------------------------------------------------------------------
+Storing data in this manner is called as document oriented database.
+-----------------------------------------------------------------------------
+Mongo DB falls into a class of databases that calls Document Oriented Databases. 
+-----------------------------------------------------------------------------
+There is also a broad category of database known as NoSQL Databases.
+-----------------------------------------------------------------------------
+sample document
+-----------------------------------------------------------------------------
+{
+	_id		: 	ObjectId(7df78ad8902c)
+	title		: 	'MongoDB Overview',
+	description	: 	'MongoDB is no sql database',
+	by		: 	'tutorials point',
+	url		: 	'http://www.tutorialspoint.com',
+	tags		: 	['mongodb', 'database', 'NoSQL'],
+	likes		: 	100,
+	comments	: 	[
+				{
+			user		:	'user1',
+			message		: 	'My first comment',
+			dateCreated	: 	new Date(2011,1,20,2,15),
+			like		: 	0	
+				},
+				{
+			user		:	'user2',
+			message		: 	'My second comments',	
+			dateCreated	: 	new Date(2011,1,25,7,45),
+			like		: 	5
+				}
+				]
+}
+-----------------------------------------------------------------------------
+			id generation
+-----------------------------------------------------------------------------
+_id is a 12 bytes hexadecimal number which assures the uniqueness of every document. 
+-----------------------------------------------------------------------------
+You can provide _id while inserting the document. 
+-----------------------------------------------------------------------------
+If you didn't provide then MongoDB provide a unique id for every document.
+-----------------------------------------------------------------------------
+These 12 bytes : 
+-----------------------------------------------------------------------------
+				4 bytes for the current timestamp
+-----------------------------------------------------------------------------
+				3 bytes for machine id
+-----------------------------------------------------------------------------
+				2 bytes for process id of mongodb server
+-----------------------------------------------------------------------------
+				3 bytes are simple incremental value
+-----------------------------------------------------------------------------
+		Advantages of MongoDB over RDBMS
+-----------------------------------------------------------------------------
+			1.	Schema less 	
+-----------------------------------------------------------------------------
+MongoDB is document database in which one collection holds different ca have documents.
+-----------------------------------------------------------------------------
+Number of fields, content and size of the document can be differ from one document to another.
+-----------------------------------------------------------------------------
+Structure of a single object is clear
+-----------------------------------------------------------------------------
+No complex joins
+-----------------------------------------------------------------------------
+Deep query-ability. 
+-----------------------------------------------------------------------------
+MongoDB supports dynamic queries on documents using a document-based query language that's nearly as powerful as SQL Tuning
+-----------------------------------------------------------------------------
+			2.	Ease of scale-out 
+-----------------------------------------------------------------------------
+MongoDB is easy to scale
+-----------------------------------------------------------------------------
+Conversion / mapping of application objects to database objects not needed
+-----------------------------------------------------------------------------
+Uses internal memory for storing the (windowed) working set, enabling faster access of data
+-----------------------------------------------------------------------------
+			Why to use MongoDB
+-----------------------------------------------------------------------------
+		1.	Data is stored in the form of JSON style documents
+-----------------------------------------------------------------------------
+		2.	Index on any attribute
+-----------------------------------------------------------------------------
+		3.	Replication & High Availability
+-----------------------------------------------------------------------------
+		4. 	Auto-Sharding
+-----------------------------------------------------------------------------
+		5.	Rich Queries
+-----------------------------------------------------------------------------
+		6.	Fast In-Place Updates
+-----------------------------------------------------------------------------
+		7.	Professional Support By MongoDB
+-----------------------------------------------------------------------------
+			Where to use MongoDB?
+-----------------------------------------------------------------------------
+		1. 	Big Data
+-----------------------------------------------------------------------------
+		2. 	Content Management and Delivery
+-----------------------------------------------------------------------------
+		3. 	Mobile and Social Infrastructure
+-----------------------------------------------------------------------------
+		4.	User Data Management
+-----------------------------------------------------------------------------
+		5. 	Data Hub
+-----------------------------------------------------------------------------
+		6. 	Complex data
+-----------------------------------------------------------------------------
+			MongoDB data types
+-----------------------------------------------------------------------------
+		1.	String		
+-----------------------------------------------------------------------------
+String is the most commonly used datatype. 
+-----------------------------------------------------------------------------
+It is used to store data. 
+-----------------------------------------------------------------------------
+A string must be UTF 8 valid in mongodb.
+-----------------------------------------------------------------------------
+		2. 	Integer		
+-----------------------------------------------------------------------------
+Integer is used to store the numeric value. 
+-----------------------------------------------------------------------------
+It can be 32 bit or 64 bit depending on the server you are using.
+-----------------------------------------------------------------------------
+		3. 	Boolean		
+-----------------------------------------------------------------------------
+This datatype is used to store boolean values. 
+-----------------------------------------------------------------------------
+It just shows YES/NO values.
+-----------------------------------------------------------------------------
+		4.	Double		
+-----------------------------------------------------------------------------
+Double datatype stores floating point values.
+-----------------------------------------------------------------------------
+		5.	Min/Max Keys	
+-----------------------------------------------------------------------------
+This datatype compares a value against the lowest and highest json elements.
+-----------------------------------------------------------------------------
+		6.	Arrays		
+-----------------------------------------------------------------------------
+This datatype is used to store a list or multiple values into a single key.
+-----------------------------------------------------------------------------
+		7.	Object		
+-----------------------------------------------------------------------------
+Object datatype is used for embedded documents.
+-----------------------------------------------------------------------------
+		8.	Null		
+-----------------------------------------------------------------------------
+It is used to store null values.
+-----------------------------------------------------------------------------
+		9.	Symbol		
+-----------------------------------------------------------------------------
+It is generally used for languages that use a specific type.
+-----------------------------------------------------------------------------
+		10.	Date		
+-----------------------------------------------------------------------------
+This datatype stores the current date or time in unix time format. 
+-----------------------------------------------------------------------------
+It makes you possible to specify your own date time by creating object of date and pass the value of date, month, year into it.
+-----------------------------------------------------------------------------
+			Installation
+-----------------------------------------------------------------------------
+MongoDB does not support Window XP.
+-----------------------------------------------------------------------------
+Install MongoDB in any folder because it is self contained and does not have any other system dependency.
+-----------------------------------------------------------------------------
+32-bit versions of MongoDB only support databases smaller than 2GB and suitable only for testing and evaluation purposes.
+-----------------------------------------------------------------------------
+MongoDB’s document model is simple for developers to learn and use, while still providing all the capabilities needed to meet the most complex requirements at any scale
+-----------------------------------------------------------------------------
+MongoDB stores data in flexible, JSON-like documents, meaning fields can vary from document to document and data structure can be changed over time
+-----------------------------------------------------------------------------
+The document model maps to the objects in your application code, making data easy to work with Ad hoc queries, indexing, and real time aggregation provide powerful ways to access and analyze the data
+-----------------------------------------------------------------------------
+MongoDB is a distributed database at its core, so high availability, horizontal scaling, and geographic distribution are built in and easy to use
+-----------------------------------------------------------------------------
+MongoDB is designed to meet the demands of modern apps with a technology foundation that enables you through:
+-----------------------------------------------------------------------------
+		The document data model 	:		
+-----------------------------------------------------------------------------
+presenting the best way to work with data.
+-----------------------------------------------------------------------------
+		A distributed systems design 	:	 	
+-----------------------------------------------------------------------------
+allowing you to intelligently put data where you want it.
+-----------------------------------------------------------------------------
+		A unified experience, freedom to run anywhere	: 
+-----------------------------------------------------------------------------
+allowing you to future-proof your work and eliminate vendor lock-in.
+-----------------------------------------------------------------------------
+MongoDB offers both an Enterprise and Community version of its powerful distributed document database. 
+-----------------------------------------------------------------------------
+MongoDB Enterprise is available as part of the MongoDB Enterprise Advanced subscription, which features the most comprehensive support and the best SLA when you run MongoDB on your own infrastructure. 
+-----------------------------------------------------------------------------
+MongoDB Enterprise Advanced also gives you comprehensive operational tooling, advanced analytics and data visualization, platform integrations and certification, along with on-demand training for your teams.
+MongoDB Enterprise Server comes with:
+-----------------------------------------------------------------------------
+		1.	In-memory Storage Engine 	: 	
+-----------------------------------------------------------------------------
+deliver high throughput and predictable low latency
+-----------------------------------------------------------------------------
+		2.	Encrypted Storage Engine 	: 
+-----------------------------------------------------------------------------
+encrypt your data at rest
+-----------------------------------------------------------------------------
+		3.	Advanced Security 			: 	
+-----------------------------------------------------------------------------
+secure your data with LDAP and Kerberos access controls and comprehensive auditing
+-----------------------------------------------------------------------------
+MongoDB requires a data folder to store its files. 
+-----------------------------------------------------------------------------
+The default location for the MongoDB data directory is c:\data\db, hence create this folder in the system.
+-----------------------------------------------------------------------------
+Latest : mongodb 4.2.3 2008R2plus enterprise
+-----------------------------------------------------------------------------
+mongodb as a service, to be run as a service
+-----------------------------------------------------------------------------
+The MongoDB bin folder will contain all the runtime applications : C:\Program Files\MongoDB\Server\4.2\bin ; change to this directory 
+mongod.exe : to start MongoDB
+-----------------------------------------------------------------------------
+			> mongod
+-----------------------------------------------------------------------------
+This will start the mongoDB database process. 
+-----------------------------------------------------------------------------
+If you get a message "waiting for connection" in the console output, it indicates that the mongodb.exe process is running successfully.
+-----------------------------------------------------------------------------
+mongo.exe shell : to connect to MongoDB
+-----------------------------------------------------------------------------
+	1. Open another command prompt.
+-----------------------------------------------------------------------------
+	2. At the time of connecting, specify the data directory if necessary.
+-----------------------------------------------------------------------------
+If you use the default data directory while MongoDB installation, there is no need to specify the data directory.
+-----------------------------------------------------------------------------
+		C:\Program Files\MongoDB\Server\4.2\bin>mongo
+			MongoDB shell version v4.2.3
+			connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+			Implicit session: session { "id" : UUID("2e2b3ed7-2908-4238-9bb7-c348b94a8639") }
+			MongoDB server version: 4.2.3
+			Server has startup warnings:
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten]	
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten]
+			MongoDB Enterprise >
+-----------------------------------------------------------------------------
+if a different data directory ( for example : d:\test\mongodb\data ) is to be used, then issue following command :
+-----------------------------------------------------------------------------
+			C:\Program Files\MongoDB\Server\4.2\bin>mongod.exe-- dbpath d:\test\mongodb\data  
+-----------------------------------------------------------------------------
+		C:\Program Files\MongoDB\Server\4.2\bin>exit
+-----------------------------------------------------------------------------
+				MongoDB Shell
+-----------------------------------------------------------------------------
+MongoDB has a JavaScript shell that allows interaction with MongoDB instance from the command line.
+-----------------------------------------------------------------------------
+If you want to create a table, you should name the table and define its column and each column's data type.
+-----------------------------------------------------------------------------
+The shell is useful for performing administrative functions and running instances.
+-----------------------------------------------------------------------------
+Start mongoDB before starting the shell because shell automatically attempt to connect to a MongoDB server on startup.
+-----------------------------------------------------------------------------
+The shell is a full-featured JavaScript interpreter.
+-----------------------------------------------------------------------------
+It is capable of running Arbitrary JavaScript program.
+-----------------------------------------------------------------------------
+		C:\Program Files\MongoDB\Server\4.2\bin>mongo
+			MongoDB shell version v4.2.3
+			connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+			Implicit session: session { "id" : UUID("c1b7adbf-df1b-4625-8fb3-e2e6bfc99f5e") }
+			MongoDB server version: 4.2.3
+			Server has startup warnings:
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten]
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+			2020-02-04T13:15:13.179+0530 I  CONTROL  [initandlisten]
+			MongoDB Enterprise >
+-----------------------------------------------------------------------------
+	Simple Mathematical expressions can be issued at the shell prompt :
+-----------------------------------------------------------------------------
+			MongoDB Enterprise > x=100
+			100
+			MongoDB Enterprise > x/5
+			20
+			MongoDB Enterprise > x+2
+			102
+			MongoDB Enterprise > x*3
+			300
+			MongoDB Enterprise > x-5
+			95
+			MongoDB Enterprise > x%2
+			0
+			MongoDB Enterprise >		
+-----------------------------------------------------------------------------
+	Use of Javascrip libraries can also be done : 
+-----------------------------------------------------------------------------MongoDB Enterprise > "Hello, World!".replace("World", "MODERN");
+			Hello, MODERN!
+MongoDB Enterprise >
+	multiple line commands can be given as follows:
+			MongoDB Enterprise > x+2-
+			... 1
+			101
+MongoDB Enterprise >
+-----------------------------------------------------------------------------
+			Data Modeling in MongoDB
+-----------------------------------------------------------------------------
+In MongoDB, data has a flexible schema. 
+-----------------------------------------------------------------------------
+It is totally different from SQL database where you had to determine and declare a table's schema before inserting data. 
+-----------------------------------------------------------------------------
+MongoDB collections do not enforce document structure.
+-----------------------------------------------------------------------------
+The main challenge in data modeling is balancing the need of the application, the performance characteristics of the database engine and the data retrieval patterns.
+-----------------------------------------------------------------------------
+Consider the following things while designing the schema in MongoDB :
+-----------------------------------------------------------------------------
+		1.	Always design schema according to user requirements.
+-----------------------------------------------------------------------------
+		2.	Do join on write operations not on read operations.
+-----------------------------------------------------------------------------
+		3.	Objects which you want to use together, should be 
+			combined into one document. 
+-----------------------------------------------------------------------------
+			Otherwise they should be separated (make sure that
+			 there should not be need of joins).
+-----------------------------------------------------------------------------
+		4.	Optimize your schema for more frequent use cases.
+-----------------------------------------------------------------------------
+		5.	Do complex aggregation in the schema.
+-----------------------------------------------------------------------------
+		6.	You should duplicate the data but in a limit, 
+			because disc space is cheaper than compute time.
+-----------------------------------------------------------------------------
+				Example : 
+-----------------------------------------------------------------------------
+A client who needs a database design for his website. 
+-----------------------------------------------------------------------------
+His website has the following requirements:
+-----------------------------------------------------------------------------
+1.	Every post is distinct (contains unique title, description and url).
+-----------------------------------------------------------------------------
+2.	Every post can have one or more tags.
+-----------------------------------------------------------------------------
+3.	Every post has the name of its publisher and total number of likes.
+-----------------------------------------------------------------------------
+4.	Each post can have zero or more comments and the comments must 	
+	contain user name, message, data-time and likes.
+-----------------------------------------------------------------------------
+For the above requirement, a minimum of three tables are required in RDBMS.
+-----------------------------------------------------------------------------
+	refer the image : data modelling example
+-----------------------------------------------------------------------------
+table1 : post(id, title, description, url, likes, post_by)
+-----------------------------------------------------------------------------
+table2 : taglists(id,post_id,tag)
+-----------------------------------------------------------------------------
+table3 : comments(id,post_id, by_user, message, datetime, likes)
+-----------------------------------------------------------------------------
+But in MongoDB, schema design will have one collection post and has the following structure:
+-----------------------------------------------------------------------------
+{
+	_id		: 	POST_ID
+	title		: 	TITLE_OF_POST,
+	description	: 	POST_DESCRIPTION,
+	by		: 	POST_BY,
+	url		: 	URL_OF_POST,
+	tags		: 	[TAG1, TAG2, TAG3],
+	likes		: 	TOTAL_LIKES,
+	comments	: 
+			[
+				{
+				user		: 	'COMMENT_BY',
+				message		: 	TEXT,
+				datecreated	: 	DATE_TIME,
+				like		: 	LIKES
+				},
+				{
+				user		: 	'COMMENT_BY',
+				message		: 	TEST,
+				dateCreated	: 	DATE_TIME,
+				like		: 	LIKES
+				}
+			]
+}
+-----------------------------------------------------------------------------
+			create database
+-----------------------------------------------------------------------------
+There is no create database command in MongoDB.
+----------------------------------------------------------------------------- 
+Actually, MongoDB do not provide any command to create database.
+-----------------------------------------------------------------------------
+It may be look like a weird concept, if you are from traditional SQL background where you need to create a database, table and insert values 
+in the table manually.
+-----------------------------------------------------------------------------
+In MongoDB you don't need to create a database manually because MongoDB will create it automatically when you save the value into the defined 
+collection at first time.
+-----------------------------------------------------------------------------
+You also don't need to mention what you want to create, it will be automatically created at the time you save the value into the defined collection.
+-----------------------------------------------------------------------------
+You can create collection manually by "db.createCollection()" but not the database.
+-----------------------------------------------------------------------------
+If there is no existing database, the following command is used to create a new database.
+-----------------------------------------------------------------------------
+				use DATABASE_NAME  
+-----------------------------------------------------------------------------
+If the database already exists, it will return the existing database.	
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > use db1
+		switched to db db1
+		MongoDB Enterprise >		
+-----------------------------------------------------------------------------
+To check the currently selected database, use the command 'db':
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > db
+		db1
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+Created another db :
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > use db1
+		switched to db db1
+		MongoDB Enterprise > db
+		db1
+		MongoDB Enterprise > use db2
+		switched to db db2
+		MongoDB Enterprise > db
+		db2
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+To check the database list, use the command 'show dbs':
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > show dbs
+		admin   0.000GB
+		config  0.000GB
+		local   0.000GB
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+In the above list of databases db1, db2 are missing
+-----------------------------------------------------------------------------
+Let us get into database db2
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > use db2
+		switched to db db2
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+		insert database operation
+-----------------------------------------------------------------------------
+Use 'insert' command to insert a document in db2 database
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > db.course.insert({"name":"MongoDB"})
+
+		WriteResult({ "nInserted" : 1 })
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+Now again list the created databases, by using the 'show dbs' command :
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > show dbs
+
+		admin   0.000GB
+		config  0.000GB
+		db2     0.000GB
+		local   0.000GB
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+Above, db2 database is listed
+-----------------------------------------------------------------------------
+		drop database operation
+-----------------------------------------------------------------------------
+The dropDatabase command is used to drop a database. 
+-----------------------------------------------------------------------------
+It also deletes the associated data files. 
+-----------------------------------------------------------------------------
+Dropdatabase command operates on the current database.
+-----------------------------------------------------------------------------
+In the case you have not selected any database, it will delete default "test" database.
+-----------------------------------------------------------------------------
+Let us drop db2 database :
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > db.dropDatabase()
+
+		{ "dropped" : "db2", "ok" : 1 }
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+	Now let us check the list of databases :
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > show dbs
+
+		admin   0.000GB
+		config  0.000GB
+		local   0.000GB
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+		Create Collection
+-----------------------------------------------------------------------------
+Collection is a group of MongoDB documents. 
+-----------------------------------------------------------------------------
+It is the equivalent of an RDBMS table. 
+-----------------------------------------------------------------------------
+A collection exists within a single database.
+----------------------------------------------------------------------------- 
+Collections do not enforce a schema. 
+-----------------------------------------------------------------------------
+Documents within a collection can have different fields.
+-----------------------------------------------------------------------------
+Typically, all documents in a collection are of similar or related purpose.
+-----------------------------------------------------------------------------
+In MongoDB, db.createCollection(name, options) is used to create collection. 
+-----------------------------------------------------------------------------
+But usually you dont need to create collection. 
+-----------------------------------------------------------------------------
+MongoDB creates collection automatically when you insert some documents.
+-----------------------------------------------------------------------------
+The command is as follows : db.createCollection(name, options)
+-----------------------------------------------------------------------------
+		1.	Name	: 
+-----------------------------------------------------------------------------
+It is a string type, specifies the name of the collection to be created.
+-----------------------------------------------------------------------------
+		2.	Options	: 
+-----------------------------------------------------------------------------
+It is a document type, specifies the memory size and indexing of the collection. 
+-----------------------------------------------------------------------------
+It is an optional parameter.
+-----------------------------------------------------------------------------
+Following is the list of options that can be used. 
+-----------------------------------------------------------------------------
+		a.	Capped		
+-----------------------------------------------------------------------------
+Boolean	(Optional) 	
+-----------------------------------------------------------------------------
+If it is set to true, enables a capped collection.
+----------------------------------------------------------------------------- 
+Capped collection is a fixed size collection that automatically overwrites its oldest entries when it reaches its maximum size. 
+-----------------------------------------------------------------------------
+If you specify true, you need to specify size parameter also.
+-----------------------------------------------------------------------------
+		b.	AutoIndexID	
+-----------------------------------------------------------------------------
+Boolean	(Optional) 	
+-----------------------------------------------------------------------------
+If it is set to true, automatically create index on ID field.
+----------------------------------------------------------------------------- 
+Its default value is false.
+-----------------------------------------------------------------------------
+		c.	Size		
+-----------------------------------------------------------------------------
+Number	(Optional) 	
+-----------------------------------------------------------------------------
+It specifies a maximum size in bytes for a capped collection. 
+-----------------------------------------------------------------------------
+If capped is true, then you need to specify this field also.
+-----------------------------------------------------------------------------
+		d.	Max		
+-----------------------------------------------------------------------------
+Number	(Optional) 	
+-----------------------------------------------------------------------------
+It specifies the maximum number of documents allowed in the capped collection.
+-----------------------------------------------------------------------------
+Let us create an collection in db1
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > use db1
+		switched to db db1
+		MongoDB Enterprise > db.createCollection("courses")
+		{ "ok" : 1 }
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+	To check the created collection, use the command 'show collections'.
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > show collections
+		courses
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+MongoDB creates collections automatically when you insert some documents.
+-----------------------------------------------------------------------------
+The operation will create the collection if the collection does not currently exist.
+-----------------------------------------------------------------------------
+Let us insert a document 'java' inside the 'courses' collections	
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > db.courses.insert({"name" : "java"})
+
+		WriteResult({ "nInserted" : 1 })
+		MongoDB Enterprise > 
+-----------------------------------------------------------------------------
+If you want to see the inserted document, use the find() command.
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > db.courses.find()
+
+		{ "_id" : ObjectId("5e3a978329afb51d0d311555"), 
+			"name" : "java" }
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+In MongoDB, db.collection.drop() method is used to drop a collection from a database. 
+-----------------------------------------------------------------------------
+It completely removes a collection from the database and does not leave any indexes associated with the dropped collections.
+-----------------------------------------------------------------------------
+The db.collection.drop() method does not take any argument and produce an error when it is called with an argument. 
+-----------------------------------------------------------------------------
+This method removes all the indexes associated with the dropped collection.
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > db.courses.drop()
+
+		true
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+	Let us ckeck the list of collections :
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > show collections
+
+		MongoDB Enterprise > 
+-----------------------------------------------------------------------------
+The drop command returns true if it successfully drops a collection. 
+-----------------------------------------------------------------------------
+It returns false when there is no existing collection to drop.
+-----------------------------------------------------------------------------
+			Insert Documents
+-----------------------------------------------------------------------------
+In MongoDB, the db.collection.insert() method is used to add or insert new documents into a collection in your database.
+-----------------------------------------------------------------------------
+There are also two methods 
+-----------------------------------------------------------------------------
+			1.	db.collection.update()
+-----------------------------------------------------------------------------
+			2.	db.collection.save()
+-----------------------------------------------------------------------------
+These methods add new documents through an operation called upsert.
+-----------------------------------------------------------------------------
+Upsert is an operation that performs either an update of existing document or an insert of new document if the document to modify does not exist.
+-----------------------------------------------------------------------------
+Create a new 'courses' collection again :
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > show collections
+		MongoDB Enterprise > db.createCollection("courses")
+		{ "ok" : 1 }
+		MongoDB Enterprise > show collections
+		courses
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+Now let us insert a document in this collection :
+-----------------------------------------------------------------------------
+	db.mca.insert(  
+   			{
+     			subject		: 	"core java",  
+     			details		: 
+					{  	duration : "10 days",  
+        					Trainer	 : "modern college"  
+     					},       
+												Batch		: [ 
+						{ size : "Small",  qty: 10 }, 
+						{ size : "Medium", qty: 25 },						{ size : "Large",  qty: 50 },
+				  	],  							category	: 	"programming language"  
+   			}  
+			)
+-----------------------------------------------------------------------------
+At the command prompt, enter the above code :
+-----------------------------------------------------------------------------
+			MongoDB Enterprise > db.mca.insert(
+			... {
+			... subject: "core java",
+			... details:
+			... {
+			... duration: "10 days",
+			... Trainer: "modern college"
+			... },
+			... Batch:
+			... [
+			... { size: "Small", qty: 10 },
+			... { size: "Medium", qty: 25 },
+			... { size: "Large", qty: 50 },
+			... ],
+			... category: "programming language"
+			... }
+			... )
+			WriteResult({ "nInserted" : 1 })
+			MongoDB Enterprise >  
+----------------------------------------------------------------------------- 
+After the successful insertion of the document, the operation will return a WriteResult object with its status.
+-----------------------------------------------------------------------------
+The nInserted field specifies the number of documents inserted. 
+-----------------------------------------------------------------------------
+If an error is occurred then the WriteResult will specify the error information.
+-----------------------------------------------------------------------------
+If the insertion is successful, you can view the inserted document by find() query.
+-----------------------------------------------------------------------------
+	MongoDB Enterprise > 	db.mca.find()
+
+{ 	"_id" 		: ObjectId("5e3a9d2dc6a59fdf265322c6"), 
+	"subject" 	: "core java", 
+	"details" 	: { "duration" : "10 days", "Trainer" : "modern 				college" }, 
+	"Batch" 	: [ { "size" : "Small", "qty" : 10 }, 
+				{ "size" : "Medium", "qty" : 25 }, 
+					{ "size" : "Large", "qty" : 50 } ], 
+	"category" 	: "programming language" 
+}
+			MongoDB Enterprise > 
+-----------------------------------------------------------------------------
+The ObjectId value is generated by MongoDB itself
+-----------------------------------------------------------------------------
+If you want to insert multiple documents in a collection : inertMany() command
+-----------------------------------------------------------------------------
+For example :
+-----------------------------------------------------------------------------
+db.customers.insertMany(
+    	[
+        	{ 	name	: 	"anil", 
+			age	: 	24, 
+			cars	: 	[ "BMW ", "Maruti" ], 
+			place	:	"chennai" 
+		},
+        	{ 	name	: 	"sunil", 
+			age	: 	23, 
+			cars	: 	[ "Honda", "Maruti" ], 
+			place	:	"Banglore" 
+		},
+        	{ 	name	: 	"suresh", 
+			age	: 	22, 
+			cars	: 	[ "Kia" ] 
+		}
+    	]
+			)
+-----------------------------------------------------------------------------
+The console output will be as follows:
+-----------------------------------------------------------------------------
+MongoDB Enterprise > db.customers.insertMany(
+...     [
+...         { name: "anil", age: 24, cars: [ "BMW", "Maruti" ],
+place:"chennai" },
+...         { name: "sunil", age: 23, cars: [ "Honda", "Maruti" ], 
+place:"banglore" },
+...         { name: "suresh", age: 22, cars: [ "Kia" ] }
+...     ]
+... )
+{
+        "acknowledged" : true,
+        "insertedIds" : 	[
+                						ObjectId("5e3aa713c6a59fdf265322c7"),
+                						ObjectId("5e3aa713c6a59fdf265322c8"),
+                						ObjectId("5e3aa713c6a59fdf265322c9")
+        						]
+}
+
+MongoDB Enterprise >
+----------------------------------------------------------------------------- 
+If you want to insert multiple documents in a collection, you have to pass an array of documents to the db.collection.insert() method.
+-----------------------------------------------------------------------------
+Define a variable, which will be passed to the insert command.
+-----------------------------------------------------------------------------
+var Allcourses = [  
+      			{  
+        		Course: "Java",  
+        		details: { Duration: "6 months", Trainer: "Rajesh" },  
+        		Batch: [ { size: "Medium", qty: 25 } ],  
+        		category: "Programming Language"  
+      			},  
+      			{  
+        		Course: ".Net",  
+        		details: { Duration: "6 months", Trainer: "Suresh" },  
+        		Batch: [ 	{ size: "Small", 	qty: 5 }, 
+					{ size: "Medium", 	qty: 10 }, ],  
+        		category: "Programming Language"  
+      			},  
+      			{  
+        		Course: "Web Designing",  
+        		details: { Duration: "3 months", Trainer: "Ramesh" },  
+        		Batch: [ 	{ size: "Small", qty: 5 }, 
+					{ size: "Large", qty: 10 } ],  
+        		category: "Programming Language"  
+      			}  
+    		];
+-----------------------------------------------------------------------------
+Pass this Allcourses array to the db.collection.insert() method to perform a bulk insert.
+-----------------------------------------------------------------------------
+			Update documents
+-----------------------------------------------------------------------------
+In MongoDB, update() method is used to update or modify the existing documents of a collection.
+-----------------------------------------------------------------------------
+		db.COLLECTION_NAME.update(SELECTIOIN_CRITERIA, UPDATED_DATA)
+-----------------------------------------------------------------------------
+Create a new collection 'training', as follows :
+-----------------------------------------------------------------------------
+		MongoDB Enterprise > use db1
+		switched to db db1
+		MongoDB Enterprise > db.createCollection("training")
+		{ "ok" : 1 }
+		MongoDB Enterprise > show collections
+		courses
+		training
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+Now let us insert a document in this collection
+-----------------------------------------------------------------------------
+		db.training.insert(  
+   		{  
+     			course		: "java",  
+     			duration	: "40 hours",  
+        		trainer		: "suresh"      
+   		}  
+				)  
+-----------------------------------------------------------------------------
+The console will be as follows :
+-----------------------------------------------------------------------------MongoDB Enterprise > db.training.insert( 
+		{  	course	: "java", 
+			duration: "40 hours", 
+			trainer	: "suresh"  
+		} 
+					)
+		WriteResult({ "nInserted" : 1 })
+		MongoDB Enterprise >
+-----------------------------------------------------------------------------
+Let us check the document now :
+-----------------------------------------------------------------------------
+MongoDB Enterprise > db.training.find()
+{ "_id" : ObjectId("5e3bc26c11706ec1ad86bf50"), "course" : "java", "duration" : "40 hours", "trainer" : "suresh" }
+
+MongoDB Enterprise > 
+-----------------------------------------------------------------------------
+Update the existing course "java" into "python":
+-----------------------------------------------------------------------------
+	db.training.update({'course':'java'},{$set:{'course':'python'}})
+-----------------------------------------------------------------------------
+The console will be as follows :
+-----------------------------------------------------------------------------
+MongoDB Enterprise > db.training.update({'course':'java'},{$set:{'course':'python'}})
+-----------------------------------------------------------------------------
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+-----------------------------------------------------------------------------
+	Now let us check the updated document :
+-----------------------------------------------------------------------------
+MongoDB Enterprise > db.training.find()
+
+{ 		"_id" 		: ObjectId("5e3bc26c11706ec1ad86bf50"), 
+		"course" 	: "python", 
+		"duration" 	: "40 hours", 
+		"trainer" 	: "suresh" 
+}
+MongoDB Enterprise >  
+-----------------------------------------------------------------------------
+			Delete documents
+-----------------------------------------------------------------------------
+In MongoDB, the db.collection.remove() method is used to delete documents from a collection. 
+-----------------------------------------------------------------------------
+The remove() method works on two parameters.
+-----------------------------------------------------------------------------
+		1. Deletion criteria: 
+-----------------------------------------------------------------------------
+With the use of its syntax you can remove the documents from the collection.
+-----------------------------------------------------------------------------
+		2. JustOne: 
+-----------------------------------------------------------------------------
+It removes only one document when set to true or 1.
+-----------------------------------------------------------------------------		Remove all documents
+-----------------------------------------------------------------------------
+If you want to remove all documents from a collection, pass an empty query document {} to the remove() method. 
+-----------------------------------------------------------------------------
+The remove() method does not remove the indexes.
+-----------------------------------------------------------------------------
+			db.training.remove({}) 
+----------------------------------------------------------------------------- 
+Remove all documents that match a condition
+-----------------------------------------------------------------------------
+If you want to remove a document that match a specific condition, call the remove() method with the <query> parameter.
+-----------------------------------------------------------------------------
+The following command will remove all documents from the 'training' collection where the 'trainer' field is equal to 'suresh'.
+-----------------------------------------------------------------------------
+			db.training.remove( { trainer : "suresh" } )
+-----------------------------------------------------------------------------
+The console will be as follows :
+-----------------------------------------------------------------------------
+MongoDB Enterprise > 
+
+db.training.update({'course':'java'},{$set:{'course':'python'}})
+
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+-----------------------------------------------------------------------------
+MongoDB Enterprise > 	db.training.find()
+			{ 	"_id" : ObjectId("5e3bc26c11706ec1ad86bf50"),
+				 "course" : "python", 
+				"duration" : "40 hours", 
+				"trainer" : "suresh" 
+			}
+-----------------------------------------------------------------------------
+MongoDB Enterprise > 	db.training.remove( { trainer : "suresh" } )
+
+			WriteResult({ "nRemoved" : 1 })
+-----------------------------------------------------------------------------
+MongoDB Enterprise > db.training.find()
+-----------------------------------------------------------------------------MongoDB Enterprise >  
+-----------------------------------------------------------------------------
+		Remove a single document that match a condition
+-----------------------------------------------------------------------------
+If you want to remove a single document that match a specific condition, call the remove() method with justOne parameter set to true or 1.
+-----------------------------------------------------------------------------
+The following command will remove a single document from the 'training' collection where the 'trainer' field is equal to 'suresh'.
+-----------------------------------------------------------------------------
+		db.training.remove( { trainer : "suresh'}, 1 ) 
+-----------------------------------------------------------------------------
+			Query documents
+-----------------------------------------------------------------------------
+In MongoDB, the db.collection.find() method is used to retrieve documents from a collection. 
+-----------------------------------------------------------------------------
+This method returns a cursor to the retrieved documents.
+-----------------------------------------------------------------------------
+The db.collection.find() method reads operations in mongoDB shell and retrieves documents containing all their fields.
+-----------------------------------------------------------------------------
+You can also restrict the fields to return in the retrieved documents by using some specific queries. 
+-----------------------------------------------------------------------------
+You can use the db.collection.findOne() method to return a single document, which works same as the db.collection.find() method with a limit of 1.
+-----------------------------------------------------------------------------
+				Limit
+-----------------------------------------------------------------------------
+In MongoDB, limit() method is used to limit the fields of document that you want to show. 
+-----------------------------------------------------------------------------
+Sometimes, you have a lot of fields in collection of your database and have to retrieve only 1 or 2. 
+-----------------------------------------------------------------------------
+In such case, limit() method is used.
+-----------------------------------------------------------------------------
+The MongoDB limit() method is used with find() method.
+-----------------------------------------------------------------------------
+		db.your_collection_name.find().limit(NUMBER)
+-----------------------------------------------------------------------------
+Consider the following collection 'training'
+-----------------------------------------------------------------------------
+[  
+  	{  
+    		course: "java",  
+    		details: { duration: "40 hours", trainer: "suresh"},  
+    		Batch: [ { size: "medium", qty: 10 } ],  
+    		category: "programming language"  
+  	},  
+  	{  
+    		course: "dotnet",  
+    		details: { duration: "40 hours", trainer: "ramesh"},  
+    		Batch: [ { size: "medium", qty: 15 } ],  
+    		category: "programming language"  
+  	}, 
+  	{  
+    		course: "php",  
+    		details: { duration: "40 hours", trainer: "rajesh"},  
+    		Batch: [ { size: "medium", qty: 10 } ],  
+    		category: "programming language"  
+  	},
+];  
+-----------------------------------------------------------------------------
+If you have to display only one field by using limit() method.
+-----------------------------------------------------------------------------
+		db.training.find().limit(1) 
+-----------------------------------------------------------------------------
+The console will display only the first document
+-----------------------------------------------------------------------------
+				Skip
+-----------------------------------------------------------------------------
+In MongoDB, skip() method is used to skip the document. 
+-----------------------------------------------------------------------------
+It is used with find() and limit() methods.
+-----------------------------------------------------------------------------		db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER) 
+-----------------------------------------------------------------------------  
+If you want to skip first 2 documents from the collection 'training', issue following command :
+-----------------------------------------------------------------------------
+		db.training.find().limit(1).skip(2)
+----------------------------------------------------------------------------- 
+In this case the skip() method will skip first and second documents and will show only third document
+-----------------------------------------------------------------------------
+				Sort
+-----------------------------------------------------------------------------
+In MongoDB, sort() method is used to sort the documents in the collection. 
+-----------------------------------------------------------------------------
+This method accepts a document containing list of fields along with their sorting order.
+-----------------------------------------------------------------------------
+The sorting order is specified as 1 or -1.
+-----------------------------------------------------------------------------
+			1 is used for ascending order sorting.
+-----------------------------------------------------------------------------
+			-1 is used for descending order sorting.
+-----------------------------------------------------------------------------
+To display docuemnts in the descending order :
+-----------------------------------------------------------------------------
+		db.training.find().sort({"course":-1})	
+-----------------------------------------------------------------------------
+By default sort() method displays the documents in ascending order. 
+-----------------------------------------------------------------------------
+If you don't specify the sorting preference, it will display documents in ascending order.
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+		
+		
+
+		  
+	
+
+		  	
+	
+		
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+	
+
+
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
