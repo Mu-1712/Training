@@ -1,0 +1,51 @@
+ProductID,ProductName,Stock,Warehouse
+111,8 GB RAM 4800,18,Warehouse3
+117,HP Laptop,59,Warehouse3
+114,16 GB RAM 4800,83,Warehouse3
+113,16 GB RAM 2400,,Warehouse3
+105,"Monitor 17""",43,Warehouse3
+120,Mouse Flexi,98,Warehouse3
+114,16 GB RAM 4800,46,Warehouse3
+107,"Monitor 21""",,Warehouse3
+118,Dell Laptop,96,Warehouse3
+108,"Monitor 17""",25,Warehouse3
+101,Acer Laptop,32,Warehouse3
+106,"Monitor 19""",95,Warehouse3
+112,500 GB HDD,79,Warehouse3
+109,250 GB SSD,84,Warehouse3
+115,128 GB SSD,62,Warehouse3
+104,"Monitor 15""",64,Warehouse3
+109,250 GB SSD,93,Warehouse3
+105,"Monitor 17""",INVALID,Warehouse3
+116,4 GB RAM 4800,19,Warehouse3
+100,4 GB RAM 2400,10,Warehouse3
+101,Acer Laptop,22,Warehouse3
+101,Acer Laptop,78,Warehouse3
+113,16 GB RAM 2400,28,Warehouse3
+102,Mouse,39,Warehouse3
+116,4 GB RAM 4800,96,Warehouse3
+103,Keyboard,63,Warehouse3
+107,"Monitor 21""",25,Warehouse3
+117,HP Laptop,,Warehouse3
+100,4 GB RAM 2400,84,Warehouse3
+120,Mouse Flexi,,Warehouse3
+111,8 GB RAM 4800,92,Warehouse3
+106,"Monitor 19""",60,Warehouse3
+110,8 GB RAM 2400,67,Warehouse3
+116,4 GB RAM 4800,33,Warehouse3
+118,Dell Laptop,58,Warehouse3
+106,"Monitor 19""",21,Warehouse3
+107,"Monitor 21""",89,Warehouse3
+103,Keyboard,49,Warehouse3
+105,"Monitor 17""",49,Warehouse3
+116,4 GB RAM 4800,18,Warehouse3
+115,128 GB SSD,82,Warehouse3
+117,HP Laptop,65,Warehouse3
+119,Keyboard Color,87,Warehouse3
+113,16 GB RAM 2400,67,Warehouse3
+120,Mouse Flexi,27,Warehouse3
+117,HP Laptop,55,Warehouse3
+103,Keyboard,44,Warehouse3
+118,Dell Laptop,38,Warehouse3
+117,HP Laptop,INVALID,Warehouse3
+113,16 GB RAM 2400,68,Warehouse3

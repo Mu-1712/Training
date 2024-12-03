@@ -1,0 +1,51 @@
+ProductID,ProductName,Stock,Warehouse
+119,Keyboard Color,20,Warehouse1
+107,"Monitor 21""",INVALID,Warehouse1
+101,Acer Laptop,73,Warehouse1
+103,Keyboard,99,Warehouse1
+120,Mouse Flexi,72,Warehouse1
+101,Acer Laptop,60,Warehouse1
+103,Keyboard,100,Warehouse1
+110,8 GB RAM 2400,43,Warehouse1
+103,Keyboard,79,Warehouse1
+105,"Monitor 17""",81,Warehouse1
+111,8 GB RAM 4800,54,Warehouse1
+110,8 GB RAM 2400,87,Warehouse1
+106,"Monitor 19""",98,Warehouse1
+113,16 GB RAM 2400,,Warehouse1
+117,HP Laptop,79,Warehouse1
+113,16 GB RAM 2400,39,Warehouse1
+115,128 GB SSD,59,Warehouse1
+110,8 GB RAM 2400,62,Warehouse1
+114,16 GB RAM 4800,,Warehouse1
+119,Keyboard Color,60,Warehouse1
+109,250 GB SSD,44,Warehouse1
+119,Keyboard Color,72,Warehouse1
+106,"Monitor 19""",79,Warehouse1
+119,Keyboard Color,34,Warehouse1
+112,500 GB HDD,,Warehouse1
+117,HP Laptop,66,Warehouse1
+116,4 GB RAM 4800,INVALID,Warehouse1
+113,16 GB RAM 2400,91,Warehouse1
+106,"Monitor 19""",67,Warehouse1
+109,250 GB SSD,99,Warehouse1
+113,16 GB RAM 2400,12,Warehouse1
+104,"Monitor 15""",18,Warehouse1
+119,Keyboard Color,27,Warehouse1
+112,500 GB HDD,22,Warehouse1
+120,Mouse Flexi,53,Warehouse1
+107,"Monitor 21""",43,Warehouse1
+104,"Monitor 15""",42,Warehouse1
+112,500 GB HDD,93,Warehouse1
+118,Dell Laptop,63,Warehouse1
+117,HP Laptop,50,Warehouse1
+103,Keyboard,77,Warehouse1
+106,"Monitor 19""",31,Warehouse1
+116,4 GB RAM 4800,INVALID,Warehouse1
+106,"Monitor 19""",91,Warehouse1
+104,"Monitor 15""",,Warehouse1
+114,16 GB RAM 4800,79,Warehouse1
+110,8 GB RAM 2400,INVALID,Warehouse1
+113,16 GB RAM 2400,45,Warehouse1
+100,4 GB RAM 2400,35,Warehouse1
+116,4 GB RAM 4800,94,Warehouse1

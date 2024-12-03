@@ -1,0 +1,10 @@
+Expression For Stock:
+row4.Stock != null && !row4.Stock.trim().isEmpty() && row4.Stock.matches("^-?\\d*(\\.\\d+)?$")
+
+Expression For ProductName:
+row4.ProductName != null ? row4.ProductName.replaceAll("\"", "").trim() : "" 
+
+Expression For TotalStock(Converting String To Integer):
+Integer.parseInt(row4.Stock)
+
+ 
