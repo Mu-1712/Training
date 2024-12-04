@@ -7,4 +7,70 @@ row4.ProductName != null ? row4.ProductName.replaceAll("\"", "").trim() : ""
 Expression For TotalStock(Converting String To Integer):
 Integer.parseInt(row4.Stock)
 
+select * from Products;
+
+CREATE TABLE inventory_warehouse5 (
+    	ProductID INT NOT NULL,  
+    	ProductName VARCHAR(255) NOT NULL,     
+    	Stock INT DEFAULT NULL,             
+	Warehouse VARCHAR(100) NOT NULL  
+);
+
+INSERT INTO inventory_warehouse5 (ProductID, ProductName, Stock, Warehouse) 
+			VALUES  (115, '128 GB SSD', 36, 'Warehouse5') ,
+ 					(118, 'Dell Laptop', 57, 'Warehouse5') ,
+ 					(108, 'Monitor 17"', NULL, 'Warehouse5') ,
+ 					(108, 'Monitor 17"', 29, 'Warehouse5') ,
+ 					(113, '16 GB RAM 2400', 30, 'Warehouse5') ,
+ 					(119, '1 TB HDD', 44, 'Warehouse5') ,
+					(110, 'Gaming Keyboard', NULL, 'Warehouse5') ,
+  					(120, 'Gaming Mouse', 50, 'Warehouse5') ,
+  					(114, 'Graphics Card 8GB', NULL, 'Warehouse5') ,
+  					(122, 'Power Supply 550W', 42, 'Warehouse5') ,
+  					(116, 'Motherboard ATX', 31, 'Warehouse5') ,
+  					(117, 'Processor i7', 28, 'Warehouse5') ,
+  					(112, '16 GB RAM 3200', 22, 'Warehouse5') ,
+  					(115, '128 GB SSD', 36, 'Warehouse5') ,
+  					(123, 'Casing Mid-Tower', NULL, 'Warehouse5') ,
+ 					(121, 'Laptop Cooler', 18, 'Warehouse5') ,
+  					(113, '16 GB RAM 2400', 30, 'Warehouse5') ,
+  					(118, 'Dell Laptop', 57, 'Warehouse5') ,
+  					(108, 'Monitor 17"', 29, 'Warehouse5') ,
+  					(119, '1 TB HDD', 44, 'Warehouse5') ,
+  					(120, 'Gaming Mouse', 50, 'Warehouse5') ,
+  					(121, 'Laptop Cooler', 18, 'Warehouse5') ,
+  					(122, 'Power Supply 550W', 42, 'Warehouse5') ,
+  					(123, 'Casing Mid-Tower', NULL, 'Warehouse5') ,
+  					(116, 'Motherboard ATX', 31, 'Warehouse5') ,
+  					(117, 'Processor i7', 28, 'Warehouse5') ,
+  					(114, 'Graphics Card 8GB', NULL, 'Warehouse5') ,
+  					(112, '16 GB RAM 3200', 22, 'Warehouse5') ,
+  					(110, 'Gaming Keyboard', NULL, 'Warehouse5') ,
+  					(108, 'Monitor 17"', NULL, 'Warehouse5') ,
+  					(115, '128 GB SSD', 36, 'Warehouse5') ,
+  					(113, '16 GB RAM 2400', 30, 'Warehouse5') ,
+  					(118, 'Dell Laptop', 57, 'Warehouse5') ,
+  					(108, 'Monitor 17"', 29, 'Warehouse5') ,
+  					(119, '1 TB HDD', 44, 'Warehouse5') ,
+  					(120, 'Gaming Mouse', 50, 'Warehouse5') ,
+  					(121, 'Laptop Cooler', 18, 'Warehouse5') ,
+  					(122, 'Power Supply 550W', 42, 'Warehouse5') ,
+  					(123, 'Casing Mid-Tower', NULL, 'Warehouse5') ,
+  					(116, 'Motherboard ATX', 31, 'Warehouse5') ,
+  					(117, 'Processor i7', 28, 'Warehouse5') ,
+  					(114, 'Graphics Card 8GB', NULL, 'Warehouse5') ,
+ 			 		(112, '16 GB RAM 3200', 22, 'Warehouse5') ,
+  					(110, 'Gaming Keyboard', NULL, 'Warehouse5') ,
+					(115, '128 GB SSD', null, 'Warehouse5') ,
+  					(113, '16 GB RAM 2400', 30, 'Warehouse5') ,
+  					(118, 'Dell Laptop', 57, 'Warehouse5') ,
+  					(108, 'Monitor 17"', 29, 'Warehouse5') ,
+  					(119, '1 TB HDD', null, 'Warehouse5') ,
+					(116, 'Motherboard ATX', 31, 'Warehouse5') ,
+  					(117, 'Processor i7', 28, 'Warehouse5') ,
+  					(112, '16 GB RAM 3200', 22, 'Warehouse5');
+                    
+                    select * from inventory_warehouse5 ;
+                    select count(ProductID) from inventory_warehouse5 ;
+
  
