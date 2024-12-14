@@ -18,9 +18,12 @@ select * from sales.staffs;
 go
 select * from sales.order_items;
 go
+select * from production.products;
+go
 select * from sales.orders;
 go
-
+select * from sales.customers;
+go
 
 
 

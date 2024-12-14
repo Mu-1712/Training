@@ -197,7 +197,8 @@ go
 
 --4)List all products that have been ordered more than 10 times
 select p.product_id, p.product_name from production.products p 
-where p.product_id in (select oi.product_id from sales.order_items oi group by oi.product_id having count(oi.product_id)>10);
+where p.product_id in (select oi.product_id from sales.order_items oi 
+group by oi.product_id having count(oi.product_id)>10);
 go
 
 --5)Retrieve the details of the latest order placed by each customer.

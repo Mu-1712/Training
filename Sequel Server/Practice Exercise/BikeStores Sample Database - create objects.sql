@@ -1,3 +1,7 @@
+create database BikeStores;
+
+use BikeStores;
+go
 
 CREATE SCHEMA production;
 go
