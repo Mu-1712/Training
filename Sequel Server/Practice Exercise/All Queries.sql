@@ -41,7 +41,10 @@ go
 --8) Retrieve the details of the product with the highest list price.
 SELECT * 
 FROM production.products
-WHERE list_price = (SELECT MAX(list_price) FROM production.products);
+WHERE list_price = (
+		SELECT MAX(list_price) 
+		FROM production.products
+		);
 
 --9) List all orders along with the customer names who placed them.
 select s.order_id, s.order_date, concat(c.first_name, +' '+c.last_name) as "Name"
@@ -145,75 +148,94 @@ HAVING count(o.order_id) > 5 ;
 --7)Retrieve the details of all orders placed by customers from California (CA).
 select o.order_id,c.customer_id,c.first_name,c.last_name
 from sales.customers c
-join sales.orders o
-on c.customer_id=o.customer_id
+join sales.orders o on c.customer_id=o.customer_id
 where c.city='California' or state='CA';
 
 --8)List all products along with the total quantity sold for each product.
 select p.product_id,p.product_name,SUM(oi.quantity) as "Total_Quantity_Sold"
 from production.products p
-left join sales.order_items oi
-on p.product_id=oi.product_id
+left join sales.order_items oi on p.product_id=oi.product_id
 group by p.product_id,p.product_name
 order by Total_Quantity_Sold desc;
 
 --9)Find all orders that include products from the 'Electric Bikes' category.
 select o.order_id,p.product_name,c.category_name
 from sales.orders o
-join sales.order_items oi
-on o.order_id=oi.order_id
-join production.products p
-on oi.product_id=p.product_id
-join production.categories c
-on p.category_id=c.category_id
+join sales.order_items oi on o.order_id=oi.order_id
+join production.products p on oi.product_id=p.product_id
+join production.categories c on p.category_id=c.category_id
 where c.category_name='Electric Bikes';
  
 --10) Retrieve the details of all orders along with the total discount applied.
 select o.order_id,sum(oi.quantity*oi.list_price*discount) as "Total_Discount"
 from sales.orders o
-join
-sales.order_items oi
-on o.order_id=oi.order_id
+join sales.order_items oi on o.order_id=oi.order_id
 group by o.order_id;
 ------------------------------------------------------------------------------------------
 --SUB-QUERY
 --1) Find the product with the second highest list price.
-select * from production.products where list_price=(select max(list_price) 
+select * from production.products 
+where list_price=(select max(list_price) 
 from production.products 
-where list_price<(select max(list_price) from production.products));
+where list_price<(
+		select max(list_price) 
+		from production.products));
 go
 
 --2)Retrieve the details of the most expensive product in each category.
 select p.product_id, p.product_name, p.brand_id, p.category_id, p.model_year, p.list_price 
 from production.products p 
-where p.list_price=(select max(p2.list_price) from production.products p2 where p2.category_id=p.category_id);
+where p.list_price=(
+		select max(p2.list_price) 
+		from production.products p2 
+		where p2.category_id=p.category_id);
 go
 
 --3)Find all customers who have never placed an order.
 select c.customer_id, c.first_name, c.last_name
 from sales.customers c 
-where c.customer_id not in (select o.customer_id from sales.orders o where o.customer_id is not null);
+where c.customer_id not in (
+			select o.customer_id 
+			from sales.orders o
+			where o.customer_id is not null);
 go
 
 --4)List all products that have been ordered more than 10 times
 select p.product_id, p.product_name from production.products p 
-where p.product_id in (select oi.product_id from sales.order_items oi 
-group by oi.product_id having count(oi.product_id)>10);
+where p.product_id in (
+	select oi.product_id
+	from sales.order_items oi 
+	group by oi.product_id 
+	having count(oi.product_id)>10
+	);
 go
 
 --5)Retrieve the details of the latest order placed by each customer.
 select o.order_id, o.customer_id, o.order_date from sales.orders o
-where o.order_id=(select max (o2.order_id) from sales.orders o2 where o2.customer_id=o.customer_id);
+where o.order_id=(
+		select max (o2.order_id) 
+		from sales.orders o2 
+		where o2.customer_id=o.customer_id
+		);
 go
 
 --6)Find the total revenue generated from orders placed in the first quarter of 2016
 select sum(o.list_price) As total_revenue from sales.order_items o
-where o.order_id in(select o2.order_id from sales.orders o2 where o2.order_date BETWEEN '2016-01-01' AND '2016-03-31');
+where o.order_id in(
+		select o2.order_id 
+		from sales.orders o2 
+		where o2.order_date 
+		BETWEEN '2016-01-01' AND '2016-03-31'
+		);
 go
 
 --7)List all products that have a list price higher than the average list price.
-select p.product_id, p.product_name, p.list_price from production.products p 
-where p.list_price>(select AVG(p2.list_price) from production.products p2);
+select p.product_id, p.product_name, p.list_price 
+from production.products p 
+where p.list_price>(
+	select AVG(p2.list_price) 
+	from production.products p2
+	);
 go
 
 --8)Retrieve the details of all orders placed in the last month.
@@ -225,10 +247,15 @@ FROM sales.orders);
 
 --9)Find the customer who has placed the highest number of orders.
 select c.customer_id,c.first_name,c.last_name, count(o.order_id) as "Total_orders" 
-from sales.customers c,sales.orders o where c.customer_id=o.customer_id 
+from sales.customers c,sales.orders o 
+where c.customer_id=o.customer_id 
 group by c.customer_id,c.first_name,c.last_name
-having count(order_id)=(select max(order_count) from(select count(order_id) as order_count
-from sales.orders group by customer_id) as subquery)
+having count(order_id)=(
+			select max(order_count) 
+			from(
+				select count(order_id) as order_count
+				from sales.orders 
+				group by customer_id) as subquery)
  
 --10) List all products that belong to brands that have more than 5 products.
 SELECT p.product_id, p.product_name, p.brand_id, p.list_price
@@ -243,16 +270,21 @@ WHERE p.brand_id IN (
 --ADVANCED QUERIES
 
 --1) Calculate the total revenue generated from each customer.
-SELECT customer_id,(SELECT SUM(quantity * list_price * discount)
-FROM sales.order_items WHERE order_id IN (SELECT order_id FROM sales.orders
-WHERE customer_id = o.customer_id)) AS Total_Revenue
+SELECT customer_id,(
+		SELECT SUM(quantity * list_price * discount)
+		FROM sales.order_items 
+		WHERE order_id IN (
+				SELECT order_id 
+				FROM sales.orders
+				WHERE customer_id = o.customer_id)) AS Total_Revenue
 FROM sales.orders o
 GROUP BY customer_id;
  
 --2) Find the top 5 products with the highest total sales.
 select top 5 p.product_id,p.product_name,
 sum(oi.quantity*oi.list_price*oi.discount) as Total
-from sales.order_items oi join production.products p on oi.product_id=p.product_id
+from sales.order_items oi 
+join production.products p on oi.product_id=p.product_id
 group by p.product_id,p.product_name
 order by Total desc;
  
@@ -266,21 +298,25 @@ having count(distinct(oi.product_id))>3;
 --4) Calculate the total discount given to each customer.
 select c.customer_id,c.first_name+' '+c.last_name as FullName,
 sum(oi.quantity*oi.list_price*oi.discount) as Total_Discount 
-from sales.orders o join sales.order_items oi
-on o.order_id=oi.order_id join sales.customers c on o.customer_id=c.customer_id
+from sales.orders o 
+join sales.order_items oi on o.order_id=oi.order_id 
+join sales.customers c on o.customer_id=c.customer_id
 group by c.customer_id,c.first_name,c.last_name
 order by c.customer_id;
  
 --5) Find the average list price of products for each brand.
 select b.brand_name,AVG(p.list_price) as Average_list_price
-from production.products p join production.brands b
-on p.brand_id=b.brand_id
+from production.products p 
+join production.brands b on p.brand_id=b.brand_id
 group by b.brand_name;
  
 --6) Retrieve the details of all orders placed in the last 7 days.
 select o.order_id,o.customer_id,o.order_date 
 from sales.orders o 
-where o.order_date>=(select DATEADD(day,-7,MAX(order_date)) from sales.orders);
+where o.order_date>=(
+		select DATEADD(day,-7,MAX(order_date))
+		from sales.orders
+		);
  
 --7) Find the total quantity of products sold in each store.
 select s.store_id,s.store_name,SUM(oi.quantity) as Total_Quantity_Sold 
