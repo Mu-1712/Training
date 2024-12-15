@@ -577,11 +577,9 @@ SELECT
     (SUM((oi.list_price - averages.avg_price) * (oi.quantity - averages.avg_quantity)) /
     SQRT(SUM(POWER(oi.list_price - averages.avg_price, 2)) * 
 	SUM(POWER(oi.quantity - averages.avg_quantity, 2)))) AS correlation
-FROM
-    sales.order_items oi,
-    (SELECT
-         AVG(list_price) AS avg_price,
-         AVG(quantity) AS avg_quantity
+FROM sales.order_items oi,
+    (SELECT AVG(list_price) AS avg_price,
+            AVG(quantity) AS avg_quantity
      FROM sales.order_items) AS averages;
  
 --4) Analyze the sales performance of each store.
@@ -649,24 +647,18 @@ JOIN production.brands b ON p.brand_id = b.brand_id
 JOIN sales.orders o ON oi.order_id = o.order_id   
 WHERE o.order_status = 4 
 GROUP BY p.brand_id, b.brand_name
-ORDER BY total_sales DESC;
+ORDER BY p.brand_id;
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --MISCELLENEOUS
 --1) Retrieve the details of all orders that were shipped late.
 select * from sales.orders
-
 where shipped_date > required_date;
+
 --2) Find the total number of products that have been discontinued
  select count (order_status) as "total_discontinued_products"
 from sales.orders where order_status=3 ;
 
 --3) Retrieve the details of all customers who have not placed an order in the last year
-SELECT c.*
-FROM sales.customers c
-LEFT JOIN sales.orders o ON c.customer_id = o.customer_id
-    AND o.order_date >= DATEADD(YEAR, -1, GETDATE())
-WHERE o.Order_id IS NULL;
-
 SELECT 
     c.customer_id, 
     c.first_name, 
@@ -677,8 +669,8 @@ LEFT JOIN sales.orders o ON c.customer_id = o.customer_id
 WHERE o.order_id IS NULL;
 
 --4)Find the total revenue generated from orders placed on weekends.
-SELECT SUM(list_price) AS total_weekend_revenue
-FROM sales.orders, production.products
+SELECT SUM(soi.list_price * soi.quantity * (1- soi.discount /100)) AS total_weekend_revenue
+FROM sales.order_items soi, sales.orders
 WHERE DATEPART(WEEKDAY, order_date) IN (1, 7);
 
 --5) Retrieve the details of all products that have been ordered in the last month.
@@ -713,9 +705,12 @@ JOIN production.categories pc ON p.category_id = pc.category_id
 WHERE pc.category_id = 1;
 
 --8) Find the total revenue generated from each customer in each year
-SELECT SUM(list_price) AS total_revenue
-FROM sales.orders, production.products
-WHERE DATEPART(WEEKDAY, order_date) IN (1, 7); 
+SELECT 
+		DATEPART(year, order_date) as Year, 
+		SUM(soi.list_price * soi.quantity * (1- soi.discount /100)) AS total_revenue
+FROM sales.order_items soi, sales.orders
+group by datepart(year, order_date);
+ 
 
 --9)Retrieve the details of all orders that were placed but not shipped
 SELECT order_id, order_status, order_date
@@ -723,7 +718,6 @@ FROM sales.orders
 WHERE shipped_date IS NULL;
 
 --10) Find the total number of products that belong to each brand.
-
 SELECT 
     (SELECT COUNT(p.product_id) 
      FROM production.products p 
@@ -748,11 +742,14 @@ select
 	product_name,
 	brand_name,
 	category_name,
-	quantity
+	sum(quantity) As totalquantitysold
 from production.products pp
 join production.brands pb on pb.brand_id = pp.brand_id
 join production.categories pc on pc.category_id = pp.category_id
 join production.stocks ps on ps.product_id = pp.product_id 
+group by pp.product_name, 
+    pb.brand_name, 
+    pc.category_name;
 
 --3) Find all customers who have placed orders for products from more than one category.
 select o.customer_id,c.first_name,c.last_name,count(p.category_id) as CountofCategory from sales.customers c
