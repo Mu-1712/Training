@@ -396,7 +396,7 @@ SET IDENTITY_INSERT production.categories OFF;
 --FUNCTION & STORED PROCEDURE'S
  
 --1.Create a function to calculate the total sales for a given product.
-CREATE FUNCTION CalculateTotalSales1(@ProductID INT)
+CREATE FUNCTION CalculateTotalSales(@ProductID INT)
 RETURNS DECIMAL(10, 2)
 AS
 BEGIN
@@ -406,7 +406,7 @@ BEGIN
     WHERE oi.product_id = @ProductID;
     RETURN ISNULL(@TotalSales, 0);
 END;
- 
+  SELECT dbo.CalculateTotalSales(7) AS TotalSales;
 --2.Write a stored procedure to retrieve all orders for a given customer
 CREATE PROCEDURE dbo.GetOrdersByCustomer (@CustomerID INT)
 AS
@@ -427,7 +427,7 @@ BEGIN
        WHERE p.category_id = @CategoryID
    );
 END;
- 
+ SELECT dbo.CalculateAverageListPrice(7) AS AverageListPrice;
 --4.Write a stored procedure to insert a new order.
 CREATE PROCEDURE dbo.InsertNewOrder2 (
    @CustomerID INT,
@@ -449,12 +449,12 @@ CREATE FUNCTION dbo.Calculatediscount ()
 RETURNS DECIMAL(10, 2)
 AS
 BEGIN
-   RETURN (
+   RETURN(
        SELECT SUM(oi.quantity * oi.list_price * (oi.discount / 100))
        FROM sales.order_items oi
    );
 END;
- 
+  SELECT dbo.Calculatediscount() AS discount;
 --6.Write a stored procedure to update the list price of a product.
 CREATE PROCEDURE dbo.UpdateProductListPrice (
    @ProductID INT,
@@ -478,7 +478,7 @@ BEGIN
       WHERE oi.product_id = @ProductID
    );
 END;
- 
+ SELECT dbo.CalculateTotalQuantitySold (15) AS TotalQuantitySold;
 --8.Write a stored procedure to delete an order.
 CREATE PROCEDURE dbo.DeleteOrder1 (@OrderID INT)
 AS
@@ -500,6 +500,7 @@ BEGIN
    );
 END;
  
+ select dbo.CalculateTotalRevenueByCategory (7);
 --10.Write a stored procedure to retrieve all products in a given category
 CREATE PROCEDURE dbo.GetProductsByCategory1 (@CategoryID INT)
 AS
@@ -537,6 +538,7 @@ GROUP BY store_id;
 --6.Optimize a query to retrieve all customers who have placed more than 5 orders
 SELECT customer_id
 FROM sales.orders
+
 GROUP BY customer_id
 HAVING COUNT(order_id) > 5;
  
@@ -573,7 +575,8 @@ FROM production.products;
 --3) Find the correlation between product price and quantity sold.
 SELECT
     (SUM((oi.list_price - averages.avg_price) * (oi.quantity - averages.avg_quantity)) /
-    SQRT(SUM(POWER(oi.list_price - averages.avg_price, 2)) * SUM(POWER(oi.quantity - averages.avg_quantity, 2)))) AS correlation
+    SQRT(SUM(POWER(oi.list_price - averages.avg_price, 2)) * 
+	SUM(POWER(oi.quantity - averages.avg_quantity, 2)))) AS correlation
 FROM
     sales.order_items oi,
     (SELECT
@@ -584,34 +587,23 @@ FROM
 --4) Analyze the sales performance of each store.
 SELECT
     s.store_name,
-SUM(oi.quantity * oi.list_price * (1 - oi.discount)) AS total_sales
-FROM
-    sales.order_items oi
-JOIN
-    sales.orders o ON oi.order_id = o.order_id
-JOIN
-    sales.stores s ON o.store_id = s.store_id    
-WHERE
-    o.order_status = 4  
-GROUP BY
-    s.store_name
-ORDER BY
-    total_sales DESC;
+	SUM(oi.quantity * oi.list_price * (1 - oi.discount)) AS total_sales
+FROM sales.order_items oi
+JOIN sales.orders o ON oi.order_id = o.order_id
+JOIN sales.stores s ON o.store_id = s.store_id    
+WHERE o.order_status = 4  
+GROUP BY s.store_name
+ORDER BY total_sales DESC;
  
 --5) Find the most popular product category.
 SELECT TOP 1
     c.category_name,
     SUM(oi.quantity) AS total_quantity_sold
-FROM
-    production.products p
-JOIN
-    sales.order_items oi ON p.product_id = oi.product_id
-JOIN
-    production.categories c ON p.category_id = c.category_id 
-GROUP BY
-    c.category_name
-ORDER BY
-    total_quantity_sold DESC;
+FROM production.products p
+JOIN sales.order_items oi ON p.product_id = oi.product_id
+JOIN production.categories c ON p.category_id = c.category_id 
+GROUP BY c.category_name
+ORDER By  total_quantity_sold DESC;
  
 --6) Analyze the purchasing behavior of customers from different states.
 SELECT c.state,
@@ -651,20 +643,13 @@ SELECT
     p.brand_id,
     b.brand_name,
 SUM(oi.quantity * oi.list_price * (1 - oi.discount)) AS total_sales
-FROM
-    sales.order_items oi
-JOIN
-    production.products p ON oi.product_id = p.product_id    
-JOIN
-    production.brands b ON p.brand_id = b.brand_id    
-JOIN
-    sales.orders o ON oi.order_id = o.order_id   
-WHERE
-    o.order_status = 4 
-GROUP BY
-    p.brand_id, b.brand_name
-ORDER BY
-    total_sales DESC;
+FROM sales.order_items oi
+JOIN production.products p ON oi.product_id = p.product_id    
+JOIN production.brands b ON p.brand_id = b.brand_id    
+JOIN sales.orders o ON oi.order_id = o.order_id   
+WHERE o.order_status = 4 
+GROUP BY p.brand_id, b.brand_name
+ORDER BY total_sales DESC;
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --MISCELLENEOUS
 --1) Retrieve the details of all orders that were shipped late.
@@ -673,14 +658,12 @@ select * from sales.orders
 where shipped_date > required_date;
 --2) Find the total number of products that have been discontinued
  select count (order_status) as "total_discontinued_products"
-
 from sales.orders where order_status=3 ;
 
 --3) Retrieve the details of all customers who have not placed an order in the last year
 SELECT c.*
 FROM sales.customers c
-LEFT JOIN sales.orders o
-    ON c.customer_id = o.customer_id
+LEFT JOIN sales.orders o ON c.customer_id = o.customer_id
     AND o.order_date >= DATEADD(YEAR, -1, GETDATE())
 WHERE o.Order_id IS NULL;
 
@@ -689,12 +672,9 @@ SELECT
     c.first_name, 
     c.last_name, 
     c.email
-FROM 
-    sales.customers c
-LEFT JOIN 
-    sales.orders o ON c.customer_id = o.customer_id
-WHERE 
-    o.order_id IS NULL;
+FROM  sales.customers c
+LEFT JOIN sales.orders o ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL;
 
 --4)Find the total revenue generated from orders placed on weekends.
 SELECT SUM(list_price) AS total_weekend_revenue
@@ -715,31 +695,22 @@ select
   DATEPART(YEAR,order_date) AS year,
   DATEPART(QUARTER,order_date) AS quarter,
   SUM(quantity) AS total_quantity_sold
-
-FROM
-  sales.order_items,sales.orders
+FROM sales.order_items,sales.orders
 GROUP BY
   DATEPART(year,order_date),
   DATEPART(QUARTER,order_date)
-
-ORDER BY
-  year,quarter;
+ORDER BY year,quarter;
 
 --7) Retrieve the details of all orders that include products from the 'Children Bicycles' category.
   SELECT 
     o.order_id,
     o.order_date,
     oi.product_id
-FROM 
-    sales.orders o
-JOIN 
-    sales.order_items oi ON o.order_id = oi.order_id
-JOIN 
-    production.products p ON oi.product_id = p.product_id
-JOIN 
-    production.categories pc ON p.category_id = pc.category_id
-WHERE 
-    pc.category_id = 1;
+FROM sales.orders o
+JOIN sales.order_items oi ON o.order_id = oi.order_id
+JOIN production.products p ON oi.product_id = p.product_id
+JOIN production.categories pc ON p.category_id = pc.category_id
+WHERE pc.category_id = 1;
 
 --8) Find the total revenue generated from each customer in each year
 SELECT SUM(list_price) AS total_revenue
@@ -748,9 +719,7 @@ WHERE DATEPART(WEEKDAY, order_date) IN (1, 7);
 
 --9)Retrieve the details of all orders that were placed but not shipped
 SELECT order_id, order_status, order_date
-
 FROM sales.orders
-
 WHERE shipped_date IS NULL;
 
 --10) Find the total number of products that belong to each brand.
@@ -760,8 +729,7 @@ SELECT
      FROM production.products p 
      WHERE p.brand_id = b.brand_id) AS "Total_Products", 
     b.brand_name
-FROM 
-    production.brands b;
+FROM production.brands b;
 -----------------------------------------------------------------------------------------------------------------------------------------------
 --Joins (Set 2)
 --1) Retrieve all orders along with the customer and store details.
@@ -813,8 +781,7 @@ select
 from sales.customers sc
 join sales.orders so on so.customer_id = sc.customer_id
 join sales.order_items soi on soi.order_id = so.order_id
-GROUP BY 
-    sc.customer_id, sc.first_name,sc.last_name
+GROUP BY sc.customer_id, sc.first_name,sc.last_name
 ORDER BY total_order_value DESC;
 
 --6) Find all stores that have sold products from the 'Electric Bikes' category.
@@ -825,10 +792,8 @@ JOIN sales.orders so ON ss.store_id = so.store_id
 JOIN sales.order_items soi ON soi.order_id = so.order_id
 JOIN production.products pp ON pp.product_id = soi.product_id
 JOIN production.categories pc ON pp.category_id = pc.category_id
-group by
-	ss.store_name,pc.category_name
-having 
-	pc.category_name = 'Electric Bikes';
+group by ss.store_name,pc.category_name
+having pc.category_name = 'Electric Bikes';
 
 --7) Retrieve the details of all orders along with the customer and product details, sorted by order date.
 SELECT 
